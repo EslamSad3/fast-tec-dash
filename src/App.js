@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+import Home from "./components/Home";
+import Customers from "./components/Customers";
+import Technicians from "./components/Technicians";
+import Orders from "./components/Orders";
+import Configuration from "./components/Configuration";
+import Login from "./components/Login";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import Layout from "./components/LayOut";
+import theme from "./theme";
+import { ContextProvider } from "./context";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<Home />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/technicians" element={<Technicians />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/configuration" element={<Configuration />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </ThemeProvider>
+      </ContextProvider>
+    </BrowserRouter>
   );
 }
 
