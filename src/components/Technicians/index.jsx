@@ -45,7 +45,7 @@ const Technicians = () => {
                   borderRadius: "0.55rem",
                 }}
               >
-                <CardContent>
+                <CardContent sx={{ position: "relative" }}>
                   <FlexBetween>
                     <Box>
                       <Typography sx={{ fontSize: 14 }} color={""} gutterBottom>
@@ -55,27 +55,26 @@ const Technicians = () => {
                         {phone}
                       </Typography>
                     </Box>
-
-                    <Box
-                      display={"flex"}
-                      justifyContent={"space-between"}
-
-                    >
-                      <Button
-                        sx={{
-                          "& .MuiSvgIcon-root": { color: "red" },
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography variant="p" color="initial">
-                          suspend
-                        </Typography>
-                        <DeleteForeverIcon backgroundColor="danger" />
-                      </Button>
-                    </Box>
                   </FlexBetween>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    sx={{ position: "absolute", top: "0", right: "0" }}
+                  >
+                    <Button
+                      sx={{
+                        "& .MuiSvgIcon-root": { color: "red" },
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography variant="p" color="initial">
+                        suspend
+                      </Typography>
+                      <DeleteForeverIcon backgroundColor="danger" />
+                    </Button>
+                  </Box>
                   {/* <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
           ${Number(price).toFixed(2)}
         </Typography> */}

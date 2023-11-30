@@ -11,6 +11,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import Layout from "./components/LayOut";
 import theme from "./theme";
 import { ContextProvider } from "./context";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           </Routes>
         </ThemeProvider>
       </ContextProvider>
+        <ToastContainer />
     </BrowserRouter>
   );
 }

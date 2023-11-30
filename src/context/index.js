@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 export const Context = createContext();
 
 export function ContextProvider(props) {
@@ -24,8 +24,16 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
-      if ((response.status = 200)) {
+      console.log(response);
+      if (response.status === 200) {
+        toast.success(`${response.data.message}`, {
+          position: "top-center",
+        });
         navigate("/dashboard");
+      } else {
+        toast.error(`${response.data.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     } catch (error) {
       setIsLsLoading(false);

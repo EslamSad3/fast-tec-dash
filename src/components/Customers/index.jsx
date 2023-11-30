@@ -14,7 +14,6 @@ import { Context } from "../../context";
 import FlexBetween from "../FlexBetween";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-
 const Customers = () => {
   const { customers, isLoading } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
@@ -45,7 +44,7 @@ const Customers = () => {
                 borderRadius: "0.55rem",
               }}
             >
-              <CardContent>
+              <CardContent sx={{ position: "relative" }}>
                 <FlexBetween>
                   <Box>
                     <Typography sx={{ fontSize: 14 }} color={""} gutterBottom>
@@ -56,7 +55,11 @@ const Customers = () => {
                     </Typography>
                   </Box>
 
-                  <Box display={"flex"} justifyContent={"space-between"}>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    sx={{ position: "absolute", top: "0", right: "0" }}
+                  >
                     <Button
                       sx={{
                         "& .MuiSvgIcon-root": { color: "red" },
