@@ -1,3 +1,11 @@
+// import React from "react";
+
+// function Availtechnicians() {
+//   return <div>Availtechnicians</div>;
+// }
+
+// export default Availtechnicians;
+
 import React, { useContext, useState } from "react";
 import {
   Box,
@@ -11,35 +19,24 @@ import {
   useTheme,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-// import Header from "components/Header";
 import { Context } from "../../context";
 import FlexBetween from "../FlexBetween";
 import Header from "../Header";
-import { useNavigate } from "react-router-dom";
 
-
-const Technicians = () => {
-  const theme = useTheme();
-  const { technicians, isLoading } = useContext(Context);
+const Availtechnicians = () => {
+  const theme = useTheme()
+  const { availableTechnicians, isLoading } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const [isExpanded, setIsExpanded] = useState(false);
-  const navigate = useNavigate();
+
   return (
     <Box m="1.5rem 2.5rem">
-      <FlexBetween>
-        <Box>
-          <Header
-            title="Technicians"
-            subtitle="See your list of Technicians."
-          />
-          <small>Number of Technicians : {technicians.length}</small>
-        </Box>
-        <Button variant="contained" onClick={() => navigate("/addtech")}>
-          Add New Technicians
-        </Button>
-      </FlexBetween>
-
-      {technicians || !isLoading ? (
+      <Header
+        title="Available Technicians"
+        subtitle="See your list of Available Technicians."
+      />
+      <h4>Number of Available Techs : {availableTechnicians.length} </h4>
+      {availableTechnicians || !isLoading ? (
         <Box
           mt="20px"
           display="grid"
@@ -51,7 +48,7 @@ const Technicians = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {technicians.map(
+          {availableTechnicians.map(
             ({ id, name, phone, online, suspended, assigned }) => (
               <Card
                 key={id}
@@ -138,4 +135,4 @@ const Technicians = () => {
   );
 };
 
-export default Technicians;
+export default Availtechnicians;

@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  useTheme,
 } from "@mui/material";
 
 import {
@@ -23,10 +24,12 @@ import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import profileImage from "../../assets/images/Fastteclogopng.png";
+
 
 const navItems = [
   {
@@ -42,8 +45,16 @@ const navItems = [
     icon: <EngineeringOutlinedIcon />,
   },
   {
+    text: "Available Technicians",
+    icon: <EngineeringOutlinedIcon />,
+  },
+  {
     text: "Orders",
     icon: <BorderColorOutlinedIcon />,
+  },
+  {
+    text: "Coupons",
+    icon: <LocalOfferIcon />,
   },
   {
     text: "Configuration",
@@ -60,6 +71,8 @@ const SideBar = ({
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
+  const theme = useTheme();
+
 
   useEffect(() => {
     setActive(pathname.substring(1));
@@ -76,16 +89,18 @@ const SideBar = ({
           sx={{
             width: drawerWidth,
             "& .MuiDrawer-paper": {
+              color: theme.palette.secondary[200],
+              backgroundColor: theme.palette.background.alt,
               boxSixing: "border-box",
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
-              boxShadow:"0 0 4px rgba(0,0,0,0.5)"
+              boxShadow: "0 0 4px rgba(0,0,0,0.5)",
             },
           }}
         >
           <Box width="100%">
             <Box m="1.5rem 2rem 2rem 3rem">
-              <FlexBetween>
+              <FlexBetween color={theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
                   <Typography variant="h4" fontWeight="bold">
                     Fast-Tec
@@ -107,7 +122,7 @@ const SideBar = ({
                     </Typography>
                   );
                 }
-                const lcText = text.toLowerCase();
+                const lcText = text.split(" ").join("").toLowerCase();
 
                 return (
                   <ListItem key={text} disablePadding>
@@ -119,12 +134,12 @@ const SideBar = ({
                       sx={{
                         backgroundColor:
                           active === lcText
-                            ? ""
+                            ? theme.palette.secondary[300]
                             : "transparent",
                         color:
                           active === lcText
-                            ? ""
-                            : "",
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
                       }}
                     >
                       <ListItemIcon
@@ -132,8 +147,8 @@ const SideBar = ({
                           ml: "2rem",
                           color:
                             active === lcText
-                              ? ""
-                              : "",
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
                         }}
                       >
                         {icon}
@@ -165,20 +180,20 @@ const SideBar = ({
                 <Typography
                   fontWeight="bold"
                   fontSize="0.9rem"
-                  sx={{ color: "" }}
+                  sx={{ color: theme.palette.secondary[100] }}
                 >
                   Admin
                 </Typography>
                 <Typography
                   fontSize="0.8rem"
-                  sx={{ color: "" }}
+                  sx={{ color: theme.palette.secondary[200] }}
                 >
                   Admin
                 </Typography>
               </Box>
               <SettingsOutlined
                 sx={{
-                  color: "",
+                  color: theme.palette.secondary[300],
                   fontSize: "25px ",
                 }}
               />

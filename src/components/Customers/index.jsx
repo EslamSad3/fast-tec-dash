@@ -1,115 +1,161 @@
-import React, { useContext, useState } from "react";
 import {
   Box,
-  Card,
-  CardActions,
-  CardContent,
-  Collapse,
   Button,
   Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
-// import Header from "components/Header";
+import Header from "./../Header";
+import { DataGrid } from "@mui/x-data-grid";
+import React, { useContext } from "react";
 import { Context } from "../../context";
 import FlexBetween from "../FlexBetween";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-
 const Customers = () => {
   const { customers, isLoading } = useContext(Context);
-  const isNonMobile = useMediaQuery("(min-width: 1000px)");
-  const [isExpanded, setIsExpanded] = useState(false);
+  const theme = useTheme();
+  console.log(theme.palette.primary);
+const isNonMobile = useMediaQuery("(min-width: 1000px)");
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.1,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 0.25,
+    },
+    // {
+    //   field: "phone",
+    //   headerName: "Phone",
+    //   flex: 1,
+    // },
+    {
+      field: "phone",
+      headerName: "Phone",
+      flex: 0.35,
+    },
+    {
+      field: "active",
+      headerName: "Active",
+      flex: 0.35,
+      renderCell: (params) => {
+        return (
+          <>
+            <Box sx={{ width: "85%", marginRight: "1.25rem" }}>
+              {params.value === true ? (
+                <FlexBetween
+                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
+                >
+                  <Typography variant="body1">
+                    Yes
+                  </Typography>
+                  <Button variant="contained" color="error">
+                    Deactivate
+                  </Button>
+                </FlexBetween>
+              ) : (
+                <FlexBetween
+                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
+                >
+                  <Typography variant="body1">
+                    No
+                  </Typography>
+                  <Button variant="contained" color="success">
+                    Reactivate
+                  </Button>
+                </FlexBetween>
+              )}
+            </Box>
+          </>
+        );
+      },
+    },
+    {
+      field: "verified",
+      headerName: "Verified",
+      flex: 0.35,
+      renderCell: (params) => {
+        return (
+          <>
+            <Box sx={{ width: "85%", marginRight: "0.25rem" }}>
+              {params.value === true ? (
+                <FlexBetween
+                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
+                >
+                  <Typography variant="body1" >
+                    Yes
+                  </Typography>
+                  <Button variant="contained" color="error">
+                    Unverfiy
+                  </Button>
+                </FlexBetween>
+              ) : (
+                <FlexBetween
+                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
+                >
+                  <Typography variant="body1">
+                    No
+                  </Typography>
+                  <Button variant="contained" color="success">
+                    Reverfiy
+                  </Button>
+                </FlexBetween>
+              )}
+            </Box>
+          </>
+        );
+      },
+    },
+    // {
+    //   field: "role",
+    //   headerName: "Role",
+    //   flex: 0.5,
+    // },
+  ];
 
   return (
     <Box m="1.5rem 2.5rem">
-      {/* <Header title="PRODUCTS" subtitle="See your list of products." /> */}
-      <h1>Customers</h1>
-      {customers || !isLoading ? (
-        <Box
-          mt="20px"
-          display="grid"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          justifyContent="space-between"
-          rowGap="20px"
-          columnGap="1.33%"
-          sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          }}
-        >
-          {customers.map(({ id, name, phone, active, verified }) => (
-            <Card
-              key={id}
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: "",
-                borderRadius: "0.55rem",
-              }}
-            >
-              <CardContent sx={{ position: "relative" }}>
-                <FlexBetween>
-                  <Box>
-                    <Typography sx={{ fontSize: 14 }} color={""} gutterBottom>
-                      {name}
-                    </Typography>
-                    <Typography variant="h5" component="div">
-                      {phone}
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    display={"flex"}
-                    justifyContent={"space-between"}
-                    sx={{ position: "absolute", top: "0", right: "0" }}
-                  >
-                    <Button
-                      sx={{
-                        "& .MuiSvgIcon-root": { color: "red" },
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography variant="p" color="initial">
-                        Deactivate
-                      </Typography>
-                      <DeleteForeverIcon backgroundColor="danger" />
-                    </Button>
-                  </Box>
-                </FlexBetween>
-                {/* <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
-          ${Number(price).toFixed(2)}
-        </Typography> */}
-                {/* <Rating value={1} readOnly /> */}
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={() => setIsExpanded(!isExpanded)}
-                >
-                  See More
-                </Button>
-              </CardActions>
-              <Collapse
-                in={isExpanded}
-                timeout="auto"
-                unmountOnExit
-                sx={{
-                  color: "",
-                }}
-              >
-                <CardContent>
-                  <Typography>id: {id}</Typography>
-
-                  <Typography>active: {active ? "Yes" : "No"}</Typography>
-                  <Typography>verified :{verified ? "Yes" : "No"}</Typography>
-                </CardContent>
-              </Collapse>
-            </Card>
-          ))}
-        </Box>
-      ) : (
-        <>Loading...</>
-      )}
+      <Header title="customers" subtitle="List of Customers" />
+      <h4 sx={{ backgroundColor: theme.palette.secondary.main }}>
+        Number of customers : {customers.length}
+      </h4>
+      <Box
+        mt="40px"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: theme.palette.background.alt,
+            color: theme.palette.secondary[100],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: theme.palette.primary.light,
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: theme.palette.background.alt,
+            color: theme.palette.secondary[100],
+            borderTop: "none",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${theme.palette.secondary[200]} !important`,
+          },
+        }}
+      >
+        <DataGrid
+          rows={customers || []}
+          loading={isLoading || !customers}
+          getRowId={(row) => row.id}
+          columns={columns}
+        />
+      </Box>
     </Box>
   );
 };

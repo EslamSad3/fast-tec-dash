@@ -11,8 +11,15 @@ export function ContextProvider(props) {
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
   const [allCoupons, setAllCoupons] = useState([]);
+  const [adminToken, setAdminToken] = useState(
+    localStorage.getItem("AdminToken")
+  );
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
+
+  function saveAdminToken() {
+    setAdminToken(localStorage.getItem("AdminToken"));
+  }
 
   //   login
   async function handleLogingIn(values) {
@@ -98,12 +105,16 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/add-tech.php`,
-        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } },
-        values
+        values,
+        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success(response.message);
+        setIsLsLoading(false);
+      }
       setIsLsLoading(false);
     } catch (error) {
+      toast.error(error.response.data.message);
       setIsLsLoading(false);
       console.log(error);
     }
@@ -134,8 +145,8 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/coupons/create-coupon.php`,
-        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } },
-        values
+        values,
+        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
       );
       console.log(response);
       setIsLsLoading(false);
@@ -150,6 +161,7 @@ export function ContextProvider(props) {
     fetchAllTechnicians();
     fetchAvailableTechnicians();
     fetchAllCoupons();
+    saveAdminToken();
   }, []);
 
   return (
@@ -167,6 +179,7 @@ export function ContextProvider(props) {
         technicians,
         availableTechnicians,
         allCoupons,
+        adminToken,
       }}
     >
       {props.children}

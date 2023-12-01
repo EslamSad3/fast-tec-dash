@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {
   ArrowDropDownOutlined,
+  DarkModeOutlined,
+  LightModeOutlined,
   Menu as MenuIcon,
   SettingsOutlined,
 } from "@mui/icons-material";
@@ -17,7 +19,12 @@ import {
 } from "@mui/material";
 import profileImage from "../../assets/images/Fastteclogopng.png";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
+import { useDispatch } from "react-redux";
+import { setMode } from "../../state";
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
+  const dispatch = useDispatch();
+  const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
@@ -31,7 +38,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
     <AppBar
       sx={{
         position: "static",
-        background: "none",
+        background: `${theme.palette.background.alt}`,
         boxShadow: " 1px 1px 1px 1px rgba(0, 0, 0, 0.25)",
       }}
     >
@@ -45,8 +52,15 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
 
         {/* Right */}
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={() => console.log("settings")}>
-            <SettingsOutlined />
+          <IconButton onClick={() => dispatch(setMode())}>
+            {theme.palette.mode === "dark" ? (
+              <DarkModeOutlined sx={{ fontSize: "25px" }} />
+            ) : (
+              <LightModeOutlined sx={{ fontSize: "25px" }} />
+            )}
+          </IconButton>
+          <IconButton>
+            <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
 
           <FlexBetween>
@@ -73,20 +87,25 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
                 <Typography
                   fontWeight="bold"
                   fontSize="0.85rem"
-                  sx={{ color: "" }}
+                  sx={{ color: theme.palette.secondary[100] }}
                 >
                   Admin
                 </Typography>
-                <Typography fontSize="0.75rem" sx={{ color: "" }}>
+                <Typography
+                  fontSize="0.75rem"
+                  sx={{ color: theme.palette.secondary[200] }}
+                >
                   Admin
                 </Typography>
               </Box>
-              <ArrowDropDownOutlined sx={{ color: "", fontSize: "25px" }} />
+              <ArrowDropDownOutlined
+                sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
+              />
             </Button>
             <Menu
               anchorEl={anchorEl}
               open={isOpen}
-              onClose={()=>setAnchorEl(null)}
+              onClose={() => setAnchorEl(null)}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem onClick={handleClose}>Log Out</MenuItem>
