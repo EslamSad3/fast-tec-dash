@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 function ProtectedRoute(props) {
   const { adminToken } = useContext(Context);
-  if (!adminToken) {
+  if (!localStorage.getItem("AdminToken")) {
     return <Navigate to={"/login"} />;
   } else {
     return props.children;
