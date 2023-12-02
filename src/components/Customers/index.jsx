@@ -87,6 +87,7 @@ const Customers = () => {
   ];
 
   return (
+    
     <Box m="1.5rem 2.5rem">
       <Header title="customers" subtitle="List of Customers" />
       <h4 sx={{ backgroundColor: theme.palette.secondary.main }}>
