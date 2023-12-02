@@ -18,6 +18,9 @@ import AddNewTech from "./Actions/Techs/AddNewTech";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import CustomerDetailsPage from "./components/Customers/CustomerDetailsPage/CustomerDetailsPage";
+import TechnicianDetailsPage from "./components/Technicians/TechnicianDetailsPage/TechnicianDetailsPage";
+import AvailableTechnicianDetails from "./components/AvailableTechs/AvailableTechnicianDetails/AvailableTechniciansDetails";
 
 function App() {
     const mode = useSelector((state) => state.global.mode);
@@ -54,6 +57,14 @@ function App() {
                 }
               />
               <Route
+                path="/customers/:id"
+                element={
+                  <ProtectedRoute>
+                    <CustomerDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/technicians"
                 element={
                   <ProtectedRoute>
@@ -62,10 +73,26 @@ function App() {
                 }
               />
               <Route
+                path="/technicians/:id"
+                element={
+                  <ProtectedRoute>
+                    <TechnicianDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/availabletechnicians"
                 element={
                   <ProtectedRoute>
                     <Availtechnicians />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/availabletechnicians/:id"
+                element={
+                  <ProtectedRoute>
+                    <AvailableTechnicianDetails />
                   </ProtectedRoute>
                 }
               />

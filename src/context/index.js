@@ -7,6 +7,20 @@ export const Context = createContext();
 export function ContextProvider(props) {
   const navigate = useNavigate();
   const [isLoading, setIsLsLoading] = useState(false);
+  const [fetchCustomersLoading, setfetchCustomersLoading] = useState(false);
+  const [deleteCustomersLoading, setdeleteCustomersLoading] = useState(false);
+  const [fetchAllTechniciansLoading, setfetchAllTechniciansLsLoading] =
+    useState(false);
+  const [
+    fetchAvailableTechniciansLoading,
+    setfetchAvailableTechniciansLsLoading,
+  ] = useState(false);
+  const [updateTechnicianLoading, setupdateTechnicianLsLoading] =
+    useState(false);
+  const [deletTechnicianLoading, setdeletTechnicianLsLoading] = useState(false);
+  const [updateCustomerLoading, setupdateCustomerLoading] = useState(false);
+  // const [isLoading, setIsLsLoading] = useState(false);
+
   const [customers, setCustomers] = useState([]);
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
@@ -51,7 +65,7 @@ export function ContextProvider(props) {
   // fetch All Customers
   async function fetchAllCustomers() {
     try {
-      setIsLsLoading(true);
+      setfetchCustomersLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/fetch-customers.php`,
         { headers: adminheaders }
@@ -59,16 +73,80 @@ export function ContextProvider(props) {
 
       console.log(customers, "All Customers");
       setCustomers(response.data.data);
-      setIsLsLoading(false);
+      setfetchCustomersLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setfetchCustomersLoading(false);
       console.log(error, "All Customers");
     }
   }
+
+  // update  Customer
+  async function updateCustomer(id, verified, active) {
+    try {
+      setupdateCustomerLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
+        { id, verified, active },
+        { headers: adminheaders }
+      );
+
+      console.log("Response:", response);
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        toast.error("Failed to update Customer");
+      }
+
+      setupdateCustomerLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("Customer Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
+      setupdateCustomerLoading(false);
+    }
+  }
+
+  // delete Customer
+  async function deleteCustomer(id) {
+    try {
+      setdeleteCustomersLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/auth/customer/delete-customer.php`,
+        {
+          headers: adminheaders,
+          data: { id },
+        }
+      );
+      setdeleteCustomersLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else if (response.status === 404) {
+        toast.error("Customer Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setdeleteCustomersLoading(false);
+        toast.error("Customer Not Found");
+      } else {
+        toast.error("Server Error");
+        setdeleteCustomersLoading(false);
+      }
+    }
+  }
+
   // fetch All technicians
   async function fetchAllTechnicians() {
     try {
-      setIsLsLoading(true);
+      setfetchAllTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-techs.php`,
         { headers: adminheaders }
@@ -76,25 +154,25 @@ export function ContextProvider(props) {
       console.log(technicians, "All technicians");
       setTechnicians(response.data.data);
 
-      setIsLsLoading(false);
+      setfetchAllTechniciansLsLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setfetchAllTechniciansLsLoading(false);
       console.log(error, "All technicians");
     }
   }
   // fetch Available technicians
   async function fetchAvailableTechnicians() {
     try {
-      setIsLsLoading(true);
+      setfetchAvailableTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-available-techs.php`,
         { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
       );
       console.log(availableTechnicians, "Available technicians");
       setAvailableTechnicians(response.data.data);
-      setIsLsLoading(false);
+      setfetchAvailableTechniciansLsLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setfetchAvailableTechniciansLsLoading(false);
       console.log(error, "Available technicians");
     }
   }
@@ -106,7 +184,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/add-tech.php`,
         values,
-        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
+        { headers: adminheaders }
       );
       if (response.status === 200) {
         toast.success(response.message);
@@ -117,6 +195,58 @@ export function ContextProvider(props) {
       toast.error(error.response.data.message);
       setIsLsLoading(false);
       console.log(error);
+    }
+  }
+
+  // update  technician
+  async function updateTechnician(id, status) {
+    try {
+      setupdateTechnicianLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/auth/tech/update-tech.php`,
+        { id, suspended: status },
+        { headers: adminheaders }
+      );
+      if (response.status === 200) {
+        toast.success(response.message);
+        setupdateTechnicianLsLoading(false);
+      }
+      setupdateTechnicianLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setupdateTechnicianLsLoading(false);
+      console.log(error);
+    }
+  }
+
+  // delete technician
+  async function deletTechnician(id) {
+    try {
+      setdeletTechnicianLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/auth/tech/delete-tech.php`,
+        {
+          headers: adminheaders,
+          data: { id },
+        }
+      );
+      setdeletTechnicianLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else if (response.status === 404) {
+        toast.error("Technician Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setdeletTechnicianLsLoading(false);
+        toast.error("Technician Not Found");
+      } else {
+        toast.error("Server Error");
+        setdeletTechnicianLsLoading(false);
+      }
     }
   }
 
@@ -169,12 +299,23 @@ export function ContextProvider(props) {
       value={{
         handleLogingIn,
         fetchAllCustomers,
+        updateCustomer,
+        deleteCustomer,
         fetchAllTechnicians,
         fetchAvailableTechnicians,
         addNewTechnician,
+        deletTechnician,
+        updateTechnician,
         fetchAllCoupons,
         createCoupons,
         isLoading,
+        fetchCustomersLoading,
+        deleteCustomersLoading,
+        fetchAllTechniciansLoading,
+        fetchAvailableTechniciansLoading,
+        updateCustomerLoading,
+        updateTechnicianLoading,
+        deletTechnicianLoading,
         customers,
         technicians,
         availableTechnicians,

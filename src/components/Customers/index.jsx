@@ -2,19 +2,17 @@ import {
   Box,
   Button,
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import Header from "./../Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext } from "react";
 import { Context } from "../../context";
-import FlexBetween from "../FlexBetween";
+import { Link } from "react-router-dom";
 const Customers = () => {
-  const { customers, isLoading } = useContext(Context);
+  const { customers, fetchCustomersLoading } = useContext(Context);
   const theme = useTheme();
-  console.log(theme.palette.primary);
-const isNonMobile = useMediaQuery("(min-width: 1000px)");
+
   const columns = [
     {
       field: "id",
@@ -39,35 +37,15 @@ const isNonMobile = useMediaQuery("(min-width: 1000px)");
     {
       field: "active",
       headerName: "Active",
-      flex: 0.35,
+      flex: 0.25,
       renderCell: (params) => {
         return (
           <>
-            <Box sx={{ width: "85%", marginRight: "1.25rem" }}>
-              {params.value === true ? (
-                <FlexBetween
-                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
-                >
-                  <Typography variant="body1">
-                    Yes
-                  </Typography>
-                  <Button variant="contained" color="error">
-                    Deactivate
-                  </Button>
-                </FlexBetween>
-              ) : (
-                <FlexBetween
-                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
-                >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
-                  <Button variant="contained" color="success">
-                    Reactivate
-                  </Button>
-                </FlexBetween>
-              )}
-            </Box>
+            {params.value === true ? (
+              <Typography variant="body1">Yes</Typography>
+            ) : (
+              <Typography variant="body1">No</Typography>
+            )}
           </>
         );
       },
@@ -75,39 +53,32 @@ const isNonMobile = useMediaQuery("(min-width: 1000px)");
     {
       field: "verified",
       headerName: "Verified",
-      flex: 0.35,
+      flex: 0.25,
       renderCell: (params) => {
         return (
           <>
-            <Box sx={{ width: "85%", marginRight: "0.25rem" }}>
-              {params.value === true ? (
-                <FlexBetween
-                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
-                >
-                  <Typography variant="body1" >
-                    Yes
-                  </Typography>
-                  <Button variant="contained" color="error">
-                    Unverfiy
-                  </Button>
-                </FlexBetween>
-              ) : (
-                <FlexBetween
-                  sx={{ flexDirection: isNonMobile ? "row" : "column" }}
-                >
-                  <Typography variant="body1">
-                    No
-                  </Typography>
-                  <Button variant="contained" color="success">
-                    Reverfiy
-                  </Button>
-                </FlexBetween>
-              )}
-            </Box>
+            {params.value === true ? (
+              <Typography variant="body1">Yes</Typography>
+            ) : (
+              <Typography variant="body1">No</Typography>
+            )}
           </>
         );
       },
     },
+    {
+      field: "viewDetails",
+      headerName: "View Details",
+      flex: 1,
+      renderCell: (params) => (
+        <Link to={`/customers/${params.row.id}`}>
+          <Button variant="contained" color="primary">
+            View Details
+          </Button>
+        </Link>
+      ),
+    },
+
     // {
     //   field: "role",
     //   headerName: "Role",
@@ -151,7 +122,7 @@ const isNonMobile = useMediaQuery("(min-width: 1000px)");
       >
         <DataGrid
           rows={customers || []}
-          loading={isLoading || !customers}
+          loading={fetchCustomersLoading || !customers}
           getRowId={(row) => row.id}
           columns={columns}
         />
