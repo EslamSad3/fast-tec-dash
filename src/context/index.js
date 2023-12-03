@@ -266,6 +266,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/coupons/fetch-coupons.php`,
+        {},
         { headers: adminheaders }
       );
       setAllCoupons(response.data.data);
@@ -284,7 +285,7 @@ export function ContextProvider(props) {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/coupons/create-coupon.php`,
         values,
-        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
+        { headers: adminheaders }
       );
       console.log(response);
       setIsLsLoading(false);
