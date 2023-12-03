@@ -16,13 +16,26 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Input,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
+
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+
 import profileImage from "../../assets/images/Fastteclogopng.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
+
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
+  const [Language, setLanguage] = useState("en");
+  const handleChange = (event) => {
+    setLanguage(event.target.value);
+    localStorage.setItem("locale", event.target.value);
+  };
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -30,7 +43,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
-    localStorage.clear();
+    localStorage.removeItem("AdminToken")
     navigate("/login");
     setAnchorEl(null);
   };
@@ -59,6 +72,18 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
+          <Box>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={Language}
+              label="Language"
+              onChange={handleChange}
+            >
+              <MenuItem value="ar">عربي</MenuItem>
+              <MenuItem value="en">English</MenuItem>
+            </Select>
+          </Box>
           <IconButton>
             <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>

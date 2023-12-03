@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 export const Context = createContext();
 
 export function ContextProvider(props) {
-
   const navigate = useNavigate();
   const [isLoading, setIsLsLoading] = useState(false);
   const [fetchCustomersLoading, setfetchCustomersLoading] = useState(false);
@@ -22,7 +21,6 @@ export function ContextProvider(props) {
   const [updateCustomerLoading, setupdateCustomerLoading] = useState(false);
   // const [isLoading, setIsLsLoading] = useState(false);
 
-
   const [customers, setCustomers] = useState([]);
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
@@ -31,10 +29,9 @@ export function ContextProvider(props) {
     localStorage.getItem("AdminToken")
   );
 
-
-
-
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
+  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
+  console.log(localeHeader);
 
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
@@ -78,7 +75,7 @@ export function ContextProvider(props) {
       setfetchCustomersLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/fetch-customers.php`,
-        { headers: adminheaders }
+        { headers: adminheaders, ...localeHeader }
       );
       setCustomers(response.data.data);
       console.log(customers, "All Customers");
@@ -96,7 +93,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
         { id, verified, active },
-        { headers: adminheaders }
+        { headers: adminheaders,localeHeader }
       );
 
       console.log("Response:", response);
