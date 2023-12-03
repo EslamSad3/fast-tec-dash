@@ -30,7 +30,7 @@ export function ContextProvider(props) {
   );
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
-  const localeHeader = { Locale: `${localStorage.getItem("locale")}` };
+  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
   console.log(localeHeader);
 
   function saveAdminToken() {
@@ -43,7 +43,8 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
-        values
+        values,
+        { headers: { ...localeHeader } }
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
@@ -75,7 +76,7 @@ export function ContextProvider(props) {
       setfetchCustomersLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/fetch-customers.php`,
-        { headers: adminheaders, ...localeHeader }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       setCustomers(response.data.data);
       console.log(customers, "All Customers");
@@ -93,9 +94,8 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
         { id, verified, active },
-        { headers: adminheaders, localeHeader }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
-
       console.log("Response:", response);
 
       if (response.status === 200) {
@@ -125,7 +125,7 @@ export function ContextProvider(props) {
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/delete-customer.php`,
         {
-          headers: adminheaders,
+          headers: { ...localeHeader, ...adminheaders },
           data: { id },
         }
       );
@@ -155,8 +155,7 @@ export function ContextProvider(props) {
       setfetchAllTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-techs.php`,
-        {},
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       setTechnicians(response.data.data);
       console.log(technicians, "All technicians");
@@ -173,8 +172,7 @@ export function ContextProvider(props) {
       setfetchAvailableTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-available-techs.php`,
-        {},
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       setAvailableTechnicians(response.data.data);
       console.log(availableTechnicians, "Available technicians");
@@ -192,7 +190,7 @@ export function ContextProvider(props) {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/add-tech.php`,
         values,
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       if (response.status === 200) {
         toast.success(response.message);
@@ -213,7 +211,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/update-tech.php`,
         { id, suspended: status },
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       if (response.status === 200) {
         toast.success(response.message);
@@ -234,7 +232,7 @@ export function ContextProvider(props) {
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/delete-tech.php`,
         {
-          headers: adminheaders,
+          headers: { ...localeHeader, ...adminheaders },
           data: { id },
         }
       );
@@ -266,8 +264,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/coupons/fetch-coupons.php`,
-        {},
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
       setAllCoupons(response.data.data);
       console.log(allCoupons, "All coupons");
@@ -285,13 +282,18 @@ export function ContextProvider(props) {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/coupons/create-coupon.php`,
         values,
-        { headers: adminheaders }
+        { headers: { ...localeHeader, ...adminheaders } }
       );
-      console.log(response);
       setIsLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+      setIsLsLoading(false);
+        toast.error(response.data.message);
+      }
     } catch (error) {
       setIsLsLoading(false);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   }
 

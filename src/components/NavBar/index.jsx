@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowDropDownOutlined,
   DarkModeOutlined,
@@ -22,8 +22,7 @@ import {
   Select,
 } from "@mui/material";
 
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-
+import { Us, Sa } from "react-flags-select";
 import profileImage from "../../assets/images/Fastteclogopng.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
@@ -31,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
-  const [Language, setLanguage] = useState("en");
+  const [Language, setLanguage] = useState(<Us />);
   const handleChange = (event) => {
     setLanguage(event.target.value);
     localStorage.setItem("locale", event.target.value);
@@ -43,10 +42,11 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
-    localStorage.removeItem("AdminToken")
+    localStorage.removeItem("AdminToken");
     navigate("/login");
     setAnchorEl(null);
   };
+
   return (
     <AppBar
       sx={{
@@ -72,7 +72,12 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
-          <Box>
+          <FlexBetween
+            sx={{ " .MuiOutlinedInput-notchedOutline": { border: "0px" },border:"1px " }}
+          >
+            <Typography>
+              {Language && Language === "en" ? <Us /> : <Sa />}
+            </Typography>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -80,10 +85,16 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               label="Language"
               onChange={handleChange}
             >
-              <MenuItem value="ar">عربي</MenuItem>
-              <MenuItem value="en">English</MenuItem>
+              <MenuItem value="ar">
+                {/* <Sa value="ar" /> */}
+                عربي
+              </MenuItem>
+              <MenuItem value="en">
+                {/* <Us value="en" /> */}
+                English
+              </MenuItem>
             </Select>
-          </Box>
+          </FlexBetween>
           <IconButton>
             <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>

@@ -103,7 +103,7 @@ function AddNewCoupon() {
             value={formik.values.discountValue}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            type="text"
+            type="number"
             name="discountValue"
             id="discountValue"
             margin="normal"
