@@ -9,7 +9,7 @@ import Configuration from "./components/Configuration";
 import Login from "./components/Login";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 import Layout from "./components/LayOut";
-import  { themeSettings } from "./theme";
+import { themeSettings } from "./theme";
 import { ContextProvider } from "./context";
 import { ToastContainer } from "react-toastify";
 import Availtechnicians from "./components/AvailableTechs";
@@ -21,10 +21,12 @@ import { useMemo } from "react";
 import CustomerDetailsPage from "./components/Customers/CustomerDetailsPage/CustomerDetailsPage";
 import TechnicianDetailsPage from "./components/Technicians/TechnicianDetailsPage/TechnicianDetailsPage";
 import AvailableTechnicianDetails from "./components/AvailableTechs/AvailableTechnicianDetails/AvailableTechniciansDetails";
+import CouponDetailsPage from "./components/Coupons/CouponDetailsPage/CouponDetailsPage";
+import AddNewCoupon from "./Actions/Coupons/AddNewCoupon";
 
 function App() {
-    const mode = useSelector((state) => state.global.mode);
-    const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const mode = useSelector((state) => state.global.mode);
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -50,6 +52,7 @@ function App() {
               />
               <Route
                 path="/customers"
+                forceRefresh={true}
                 element={
                   <ProtectedRoute>
                     <Customers />
@@ -101,6 +104,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Coupons />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/coupons/:id"
+                element={
+                  <ProtectedRoute>
+                    <CouponDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/addCoupons"
+                element={
+                  <ProtectedRoute>
+                    <AddNewCoupon />
                   </ProtectedRoute>
                 }
               />

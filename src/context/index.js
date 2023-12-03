@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 export const Context = createContext();
 
 export function ContextProvider(props) {
+
   const navigate = useNavigate();
   const [isLoading, setIsLsLoading] = useState(false);
   const [fetchCustomersLoading, setfetchCustomersLoading] = useState(false);
@@ -21,6 +22,7 @@ export function ContextProvider(props) {
   const [updateCustomerLoading, setupdateCustomerLoading] = useState(false);
   // const [isLoading, setIsLsLoading] = useState(false);
 
+
   const [customers, setCustomers] = useState([]);
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
@@ -28,6 +30,9 @@ export function ContextProvider(props) {
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
+
+
+
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
 
@@ -57,8 +62,13 @@ export function ContextProvider(props) {
         });
       }
     } catch (error) {
-      setIsLsLoading(false);
-      console.log(error);
+      if (error.response.status !== 200) {
+        toast.error(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setIsLsLoading(false);
+        console.log(error);
+      }
     }
   }
 
@@ -70,9 +80,8 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/auth/customer/fetch-customers.php`,
         { headers: adminheaders }
       );
-
-      console.log(customers, "All Customers");
       setCustomers(response.data.data);
+      console.log(customers, "All Customers");
       setfetchCustomersLoading(false);
     } catch (error) {
       setfetchCustomersLoading(false);
@@ -84,7 +93,7 @@ export function ContextProvider(props) {
   async function updateCustomer(id, verified, active) {
     try {
       setupdateCustomerLoading(true);
-      const response = await axios.post(
+      const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
         { id, verified, active },
         { headers: adminheaders }
@@ -151,8 +160,8 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-techs.php`,
         { headers: adminheaders }
       );
-      console.log(technicians, "All technicians");
       setTechnicians(response.data.data);
+      console.log(technicians, "All technicians");
 
       setfetchAllTechniciansLsLoading(false);
     } catch (error) {
@@ -168,8 +177,8 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-available-techs.php`,
         { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
       );
-      console.log(availableTechnicians, "Available technicians");
       setAvailableTechnicians(response.data.data);
+      console.log(availableTechnicians, "Available technicians");
       setfetchAvailableTechniciansLsLoading(false);
     } catch (error) {
       setfetchAvailableTechniciansLsLoading(false);
@@ -181,7 +190,7 @@ export function ContextProvider(props) {
   async function addNewTechnician(values) {
     try {
       setIsLsLoading(true);
-      const response = await axios.post(
+      const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/add-tech.php`,
         values,
         { headers: adminheaders }
@@ -202,7 +211,7 @@ export function ContextProvider(props) {
   async function updateTechnician(id, status) {
     try {
       setupdateTechnicianLsLoading(true);
-      const response = await axios.post(
+      const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/update-tech.php`,
         { id, suspended: status },
         { headers: adminheaders }
@@ -260,8 +269,8 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/coupons/fetch-coupons.php`,
         { headers: adminheaders }
       );
-      console.log(allCoupons, "All coupons");
       setAllCoupons(response.data.data);
+      console.log(allCoupons, "All coupons");
       setIsLsLoading(false);
     } catch (error) {
       setIsLsLoading(false);
@@ -273,7 +282,7 @@ export function ContextProvider(props) {
   async function createCoupons(values) {
     try {
       setIsLsLoading(true);
-      const response = await axios.post(
+      const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/coupons/create-coupon.php`,
         values,
         { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
