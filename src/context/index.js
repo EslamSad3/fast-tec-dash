@@ -98,7 +98,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
         { id, verified, active },
-        { headers: adminheaders, ...localeHeader }
+        { headers: adminheaders, localeHeader }
       );
 
       console.log("Response:", response);
