@@ -155,6 +155,7 @@ export function ContextProvider(props) {
       setfetchAllTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-techs.php`,
+        {},
         { headers: adminheaders }
       );
       setTechnicians(response.data.data);
@@ -172,7 +173,8 @@ export function ContextProvider(props) {
       setfetchAvailableTechniciansLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/fetch-available-techs.php`,
-        { headers: { Authorization: `${localStorage.getItem("AdminToken")}` } }
+        {},
+        { headers: adminheaders }
       );
       setAvailableTechnicians(response.data.data);
       console.log(availableTechnicians, "Available technicians");
