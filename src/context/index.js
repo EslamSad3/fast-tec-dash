@@ -43,7 +43,12 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
-        values
+        values,
+        {
+          headers: {
+            ...localeHeader,
+          },
+        }
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
@@ -93,7 +98,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/customer/update-customer.php`,
         { id, verified, active },
-        { headers: adminheaders,localeHeader }
+        { headers: adminheaders, ...localeHeader }
       );
 
       console.log("Response:", response);
