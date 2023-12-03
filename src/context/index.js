@@ -30,7 +30,7 @@ export function ContextProvider(props) {
   );
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
-  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
+  const localeHeader = { Locale: `${localStorage.getItem("locale")}` };
   console.log(localeHeader);
 
   function saveAdminToken() {
@@ -43,12 +43,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
-        values,
-        {
-          headers: {
-            ...localeHeader,
-          },
-        }
+        values
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
