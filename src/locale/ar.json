@@ -28,5 +28,11 @@
     "list of Coupons":"قايمة قسائم الخصم",
     "Number of Coupons":"عدد قسائم الخصم",
     "Yes":"نعم",
-    "No":"لا"
+    "No":"لا",
+    "Incorect Email Formate":"بريد غير صالح",
+    "Email Required":"البريد مطلوب",
+    "Password Required":"كلمة المرور مطلوبه",
+    "Sign in":"تسجيل الدخول",
+    "Email Address":"البريد",
+    "Password":"كلمة المرور"
 }

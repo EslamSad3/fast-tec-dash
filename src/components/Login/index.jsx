@@ -13,14 +13,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const [t] = useTranslation();
   const { handleLogingIn, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email("Incorect Email Formate")
-      .required("Email Required"),
-    password: Yup.string().required(""),
+      .email(t("Incorect Email Formate"))
+      .required(t("Email Required")),
+    password: Yup.string().required(t("Password Required")),
   });
 
   async function handleLogin(values) {
@@ -49,7 +51,7 @@ function Login() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Sign in
+              {t("Sign in")}
             </Typography>
 
             <TextField
@@ -57,7 +59,7 @@ function Login() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={t("Email Address")}
               name="email"
               autoComplete="email"
               autoFocus
@@ -70,7 +72,7 @@ function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("Password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -88,7 +90,7 @@ function Login() {
               {isLoading ? (
                 <CircularProgress sx={{ color: "#fafafa" }} />
               ) : (
-                "Sign In"
+                t("Sign in")
               )}
             </Button>
           </Box>
