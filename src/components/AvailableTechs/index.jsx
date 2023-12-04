@@ -1,17 +1,15 @@
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import Header from "./../Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext } from "react";
 import { Context } from "../../context";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Availtechnicians = () => {
-  const { availableTechnicians, fetchAvailableTechniciansLoading } = useContext(Context);
+  const [t] = useTranslation();
+  const { availableTechnicians, fetchAvailableTechniciansLoading } =
+    useContext(Context);
   const theme = useTheme();
 
   const columns = [
@@ -22,7 +20,7 @@ const Availtechnicians = () => {
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("Name"),
       flex: 0.75,
     },
     // {
@@ -32,19 +30,19 @@ const Availtechnicians = () => {
     // },
     {
       field: "phone",
-      headerName: "Phone",
+      headerName: t("Phone"),
       flex: 0.35,
     },
     {
       field: "online",
-      headerName: "Online",
+      headerName: t("Online"),
       flex: 0.25,
       renderCell: (params) => {
         console.log(params);
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
               <Typography variant="body1">No</Typography>
             )}
@@ -53,32 +51,32 @@ const Availtechnicians = () => {
       },
     },
     {
-      field: "suspended ",
-      headerName: "Suspended ",
+      field: "suspended",
+      headerName: t("Suspended"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
       },
     },
     {
-      field: "assigned  ",
-      headerName: "Assigned  ",
+      field: "assigned",
+      headerName: t("Assigned"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
@@ -86,27 +84,26 @@ const Availtechnicians = () => {
     },
     {
       field: "viewDetails",
-      headerName: "View Details",
+      headerName: t("View Details"),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/availableTechnicians/${params.row.id}`}>
           <Button variant="contained" color="primary">
-            View Details
+            {t("View Details")}
           </Button>
         </Link>
       ),
     },
-
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
       <Header
-        title="Available Technicians"
-        subtitle="List of Available Technicians"
+        title={t("Available Technicians")}
+        subtitle={t("List of Available Technicians")}
       />
       <h4 sx={{ backgroundColor: theme.palette.secondary.main }}>
-        Number of Available Technicians : {availableTechnicians.length}
+        {t("Number of Available Technicians")} : {availableTechnicians.length}
       </h4>
       <Box
         mt="40px"

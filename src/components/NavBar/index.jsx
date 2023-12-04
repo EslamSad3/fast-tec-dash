@@ -28,8 +28,11 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
+import { useTranslation } from "react-i18next";
+
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
+  const [t, i18n] = useTranslation();
   const [Language, setLanguage] = useState(<Us />);
   const handleChange = (event) => {
     setLanguage(event.target.value);
@@ -73,7 +76,10 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
             )}
           </IconButton>
           <FlexBetween
-            sx={{ " .MuiOutlinedInput-notchedOutline": { border: "0px" },border:"1px " }}
+            sx={{
+              " .MuiOutlinedInput-notchedOutline": { border: "0px" },
+              border: "1px ",
+            }}
           >
             <Typography>
               {Language && Language === "en" ? <Us /> : <Sa />}
@@ -85,11 +91,20 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               label="Language"
               onChange={handleChange}
             >
-              <MenuItem value="ar">
-                {/* <Sa value="ar" /> */}
+              <MenuItem
+                value="ar"
+                onClick={() => {
+                  i18n.changeLanguage("ar");
+                }}
+              >
                 عربي
               </MenuItem>
-              <MenuItem value="en">
+              <MenuItem
+                value="en"
+                onClick={() => {
+                  i18n.changeLanguage("en");
+                }}
+              >
                 {/* <Us value="en" /> */}
                 English
               </MenuItem>

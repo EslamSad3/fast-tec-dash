@@ -11,7 +11,9 @@ import { Context } from "../../context";
 import { Link } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const Technicians = () => {
+  const [t] = useTranslation()
    const navigate = useNavigate();
   const { technicians, fetchAllTechniciansLoading } = useContext(Context);
   const theme = useTheme();
@@ -24,30 +26,25 @@ const Technicians = () => {
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("Name"),
       flex: 0.45,
     },
-    // {
-    //   field: "email",
-    //   headerName: "Email",
-    //   flex: 1,
-    // },
     {
       field: "phone",
-      headerName: "Phone",
+      headerName: t("Phone"),
       flex: 0.65,
     },
     {
       field: "online",
-      headerName: "Online",
+      headerName: t("Online"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
@@ -55,32 +52,32 @@ const Technicians = () => {
     },
     {
       field: "suspended",
-      headerName: "Suspended ",
+      headerName: t("Suspended"),
       flex: 0.25,
       renderCell: (params) => {
         console.log(params);
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
       },
     },
     {
-      field: "assigned  ",
-      headerName: "Assigned  ",
+      field: "assigned",
+      headerName: t("Assigned"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
@@ -88,12 +85,12 @@ const Technicians = () => {
     },
     {
       field: "viewDetails",
-      headerName: "View Details",
+      headerName: t("View Details"),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/technicians/${params.row.id}`}>
           <Button variant="contained" color="primary">
-            View Details
+            {t("View Details")}
           </Button>
         </Link>
       ),
@@ -105,13 +102,15 @@ const Technicians = () => {
       <FlexBetween>
         <Box>
           <Header
-            title="Technicians"
-            subtitle="See your list of Technicians."
+            title={t("Technicians")}
+            subtitle={t("list of Technicians")}
           />
-          <small>Number of Technicians : {technicians.length}</small>
+          <small>
+            {t("Number of Technicians")} : {technicians.length}
+          </small>
         </Box>
         <Button variant="contained" onClick={() => navigate("/addtech")}>
-          Add New Technicians
+          {t("Add New Technician")}
         </Button>
       </FlexBetween>
 

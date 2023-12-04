@@ -1,18 +1,14 @@
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import Header from "./../Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext } from "react";
 import { Context } from "../../context";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const Customers = () => {
   const { customers, fetchCustomersLoading } = useContext(Context);
   const theme = useTheme();
-
+  const [t] = useTranslation();
   const columns = [
     {
       field: "id",
@@ -21,30 +17,25 @@ const Customers = () => {
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: t("Name"),
       flex: 0.25,
     },
-    // {
-    //   field: "phone",
-    //   headerName: "Phone",
-    //   flex: 1,
-    // },
     {
       field: "phone",
-      headerName: "Phone",
+      headerName: t("Phone"),
       flex: 0.35,
     },
     {
       field: "active",
-      headerName: "Active",
+      headerName: t("Active"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
@@ -52,15 +43,15 @@ const Customers = () => {
     },
     {
       field: "verified",
-      headerName: "Verified",
+      headerName: t("Verified"),
       flex: 0.25,
       renderCell: (params) => {
         return (
           <>
             {params.value === true ? (
-              <Typography variant="body1">Yes</Typography>
+              <Typography variant="body1">{t("Yes")}</Typography>
             ) : (
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">{t("No")}</Typography>
             )}
           </>
         );
@@ -68,12 +59,12 @@ const Customers = () => {
     },
     {
       field: "viewDetails",
-      headerName: "View Details",
+      headerName: t("View Details"),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/customers/${params.row.id}`}>
           <Button variant="contained" color="primary">
-            View Details
+            {t("View Details")}
           </Button>
         </Link>
       ),
@@ -87,11 +78,10 @@ const Customers = () => {
   ];
 
   return (
-    
     <Box m="1.5rem 2.5rem">
-      <Header title="customers" subtitle="List of Customers" />
+      <Header title={t("Customers")} subtitle={t("List of Customers")} />
       <h4 sx={{ backgroundColor: theme.palette.secondary.main }}>
-        Number of customers : {customers.length}
+        {t("Number of customers")} : {customers.length}
       </h4>
       <Box
         mt="40px"

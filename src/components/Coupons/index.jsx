@@ -82,15 +82,7 @@
 
 // export default Coupons;
 
-
-
-
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import Header from "./../Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext } from "react";
@@ -98,46 +90,51 @@ import { Context } from "../../context";
 import { Link } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 const Coupons = () => {
-   const navigate = useNavigate();
+  const [t] = useTranslation();
+  const navigate = useNavigate();
   const { allCoupons, isLoading } = useContext(Context);
   const theme = useTheme();
 
   const columns = [
-        {
+    {
       field: "id",
       headerName: "ID",
       flex: 0.25,
     },
     {
       field: "couponCode",
-      headerName: "Code",
+      headerName: t("Code"),
       flex: 0.5,
     },
     {
       field: "expires",
-      headerName: "Expires",
+      headerName: t("Expires"),
       flex: 0.5,
     },
     {
       field: "active",
-      headerName: "Active",
+      headerName: t("Active"),
       flex: 0.4,
-      renderCell: (params) =>  <Box>{(params.formattedValue = "1" ? "Yes" : "No")}</Box>,
+      renderCell: (params) => (
+        <Box>{(params.formattedValue = "1" ? t("Yes") : t("No"))}</Box>
+      ),
     },
     {
       field: "discountValue",
-      headerName: "Discount Value",
+      headerName: t("Discount Value"),
       flex: 0.5,
     },
     {
       field: "viewDetails",
-      headerName: "View Details",
+      headerName: t("View Details"),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/coupons/${params.row.id}`}>
           <Button variant="contained" color="primary">
-            View Details
+            {t("View Details")}
           </Button>
         </Link>
       ),
@@ -148,14 +145,11 @@ const Coupons = () => {
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Box>
-          <Header
-            title="Coupons"
-            subtitle="See your list of Coupons."
-          />
-          <small>Number of Coupons : {allCoupons.length}</small>
+          <Header title={t("Coupons")} subtitle={t("list of Coupons")} />
+          <small>{t("Number of Coupons")} : {allCoupons.length}</small>
         </Box>
         <Button variant="contained" onClick={() => navigate("/addCoupons")}>
-          Add New Coupons
+          {t("Add New Coupon")}
         </Button>
       </FlexBetween>
 

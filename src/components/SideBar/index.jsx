@@ -29,38 +29,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import profileImage from "../../assets/images/Fastteclogopng.png";
-
-
-const navItems = [
-  {
-    text: "Dashboard",
-    icon: <HomeOutlined />,
-  },
-  {
-    text: "Customers",
-    icon: <EmojiPeopleOutlinedIcon />,
-  },
-  {
-    text: "Technicians",
-    icon: <EngineeringOutlinedIcon />,
-  },
-  {
-    text: "Available Technicians",
-    icon: <EngineeringOutlinedIcon />,
-  },
-  {
-    text: "Orders",
-    icon: <BorderColorOutlinedIcon />,
-  },
-  {
-    text: "Coupons",
-    icon: <LocalOfferIcon />,
-  },
-  {
-    text: "Configuration",
-    icon: <ToggleOnOutlinedIcon />,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const SideBar = ({
   drawerWidth,
@@ -72,7 +41,45 @@ const SideBar = ({
   const [active, setActive] = useState("");
   const navigate = useNavigate();
   const theme = useTheme();
+  const [t] = useTranslation();
 
+  const navItems = [
+    {
+      text: t("Dashboard"),
+      entext: "Dashboard",
+      icon: <HomeOutlined />,
+    },
+    {
+      text: t("Customers"),
+      entext: "Customers",
+      icon: <EmojiPeopleOutlinedIcon />,
+    },
+    {
+      text: t("Technicians"),
+      entext: "Technicians",
+      icon: <EngineeringOutlinedIcon />,
+    },
+    {
+      text: t("Available Technicians"),
+      entext: "Available Technicians",
+      icon: <EngineeringOutlinedIcon />,
+    },
+    {
+      text: t("Orders"),
+      entext: "Orders",
+      icon: <BorderColorOutlinedIcon />,
+    },
+    {
+      text: t("Coupons"),
+      entext: "Coupons",
+      icon: <LocalOfferIcon />,
+    },
+    {
+      text: t("Configuration"),
+      entext: "Configuration",
+      icon: <ToggleOnOutlinedIcon />,
+    },
+  ];
 
   useEffect(() => {
     setActive(pathname.substring(1));
@@ -114,7 +121,7 @@ const SideBar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon }) => {
+              {navItems.map(({ entext, text, icon }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -128,7 +135,9 @@ const SideBar = ({
                   <ListItem key={text} disablePadding>
                     <ListItemButton
                       onClick={() => {
-                        navigate(`/${lcText}`);
+                        navigate(
+                          `/${entext.split(" ").join("").toLowerCase()}`
+                        );
                         setActive(lcText);
                       }}
                       sx={{
