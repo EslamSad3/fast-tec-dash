@@ -21,17 +21,14 @@ const Availtechnicians = () => {
     {
       field: "name",
       headerName: t("Name"),
-      flex: 0.75,
+      flex: 1,
+      minWidth: 150,
     },
-    // {
-    //   field: "email",
-    //   headerName: "Email",
-    //   flex: 1,
-    // },
     {
       field: "phone",
       headerName: t("Phone"),
-      flex: 0.35,
+      flex: 1,
+      minWidth: 100,
     },
     {
       field: "online",
@@ -86,6 +83,7 @@ const Availtechnicians = () => {
       field: "viewDetails",
       headerName: t("View Details"),
       flex: 1,
+      minWidth: 100,
       renderCell: (params) => (
         <Link to={`/availableTechnicians/${params.row.id}`}>
           <Button variant="contained" color="primary">

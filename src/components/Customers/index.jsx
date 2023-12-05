@@ -18,17 +18,20 @@ const Customers = () => {
     {
       field: "name",
       headerName: t("Name"),
-      flex: 0.25,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: "phone",
       headerName: t("Phone"),
-      flex: 0.35,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: "active",
       headerName: t("Active"),
-      flex: 0.25,
+      flex: 1,
+      minWidth: 50,
       renderCell: (params) => {
         return (
           <>
@@ -44,7 +47,8 @@ const Customers = () => {
     {
       field: "verified",
       headerName: t("Verified"),
-      flex: 0.25,
+      flex: 1,
+      minWidth: 50,
       renderCell: (params) => {
         return (
           <>
@@ -61,6 +65,8 @@ const Customers = () => {
       field: "viewDetails",
       headerName: t("View Details"),
       flex: 1,
+      minWidth: 100,
+
       renderCell: (params) => (
         <Link to={`/customers/${params.row.id}`}>
           <Button variant="contained" color="primary">
@@ -69,12 +75,6 @@ const Customers = () => {
         </Link>
       ),
     },
-
-    // {
-    //   field: "role",
-    //   headerName: "Role",
-    //   flex: 0.5,
-    // },
   ];
 
   return (

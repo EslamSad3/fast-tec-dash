@@ -2,11 +2,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../../../context";
-import { Box, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import Header from "../../Header";
+import { useTranslation } from "react-i18next";
 
 const TechnicianDetailsPage = () => {
+  const [t] = useTranslation();
   const { id } = useParams();
+
   const {
     technicians,
     deletTechnician,
@@ -14,15 +26,34 @@ const TechnicianDetailsPage = () => {
     updateTechnicianLoading,
     deletTechnicianLoading,
   } = useContext(Context);
+
   const [technician, setTechnician] = useState(null);
-  console.log(technician);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
+  // Edit
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+  async function handleUpdateTec(status) {
+    await updateTechnician(id, status);
+    setOpenEdit(false);
+  }
+
+  // Delete
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
 
   async function handleDeleteTec() {
     await deletTechnician(id);
-  }
-
-  async function handleUpdateTec(status) {
-    await updateTechnician(id, status);
+    setOpenDelete(false);
   }
 
   useEffect(() => {
@@ -45,20 +76,29 @@ const TechnicianDetailsPage = () => {
     >
       <Header title={technician.name} />
 
-      <p>ID: {technician.id}</p>
-      <p>Name: {technician.name}</p>
-      <p>Phone: {technician.phone}</p>
-      <p>suspended: {technician.suspended === true ? "Yes" : "No"}</p>
-      {/* Add more technician details as needed */}
+      <p>
+        {t("ID")}: {technician.id}
+      </p>
+      <p>
+        {t("Name")}: {technician.name}
+      </p>
+      <p>
+        {t("Phone")}: {technician.phone}
+      </p>
+      <p>
+        {t("Active")}: {technician.active === true ? t("Yes") : t("No")}
+      </p>
+
       <Button
         variant="outlined"
         color="error"
-        onClick={() => handleDeleteTec()}
+        // onClick={() => handleDeleteTec()}
+        onClick={() => handleClickOpenDelete()}
       >
         {deletTechnicianLoading ? (
           <CircularProgress sx={{ color: "#fafafa" }} />
         ) : (
-          "Delete"
+          t("Delete")
         )}
       </Button>
 
@@ -68,11 +108,70 @@ const TechnicianDetailsPage = () => {
         <Button
           variant="outlined"
           color="success"
-          onClick={() => handleUpdateTec(!technician.suspended)}
+          // onClick={() => handleUpdateTec(!technician.active)}
+          onClick={() => handleClickOpenEdit()}
         >
-          {technician.suspended === true ? "Unsuspend" : "Suspend"}
+          {technician.active === true ? t("Deactivate") : t("Reactivate")}
         </Button>
       )}
+      {/* edit */}
+      <Dialog
+        open={openEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {technician.active === true ? t("Deactivate") : t("Reactivate")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Edit")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="error" onClick={handleCloseEdit}>
+            {t("No")}
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleUpdateTec(!technician.active)}
+            autoFocus
+          >
+            {t("Yes")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete */}
+
+      <Dialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{t("Delete")}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Edit")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="error" onClick={handleCloseDelete}>
+            {t("No")}
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleDeleteTec()}
+            autoFocus
+          >
+            {t("Yes")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

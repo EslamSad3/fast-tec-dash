@@ -23,6 +23,7 @@ import TechnicianDetailsPage from "./components/Technicians/TechnicianDetailsPag
 import AvailableTechnicianDetails from "./components/AvailableTechs/AvailableTechnicianDetails/AvailableTechniciansDetails";
 import CouponDetailsPage from "./components/Coupons/CouponDetailsPage/CouponDetailsPage";
 import AddNewCoupon from "./Actions/Coupons/AddNewCoupon";
+import OrderDetailsPage from "./components/Orders/OrderDetailsPage/OrderDetailsPage";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -128,6 +129,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Orders />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderDetailsPage />
                   </ProtectedRoute>
                 }
               />

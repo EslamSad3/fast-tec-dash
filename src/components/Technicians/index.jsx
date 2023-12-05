@@ -27,12 +27,14 @@ const Technicians = () => {
     {
       field: "name",
       headerName: t("Name"),
-      flex: 0.45,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: "phone",
       headerName: t("Phone"),
-      flex: 0.65,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: "online",
@@ -87,6 +89,7 @@ const Technicians = () => {
       field: "viewDetails",
       headerName: t("View Details"),
       flex: 1,
+      minWidth: 100,
       renderCell: (params) => (
         <Link to={`/technicians/${params.row.id}`}>
           <Button variant="contained" color="primary">

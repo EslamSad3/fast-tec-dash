@@ -40,6 +40,50 @@ export const tokensDark = {
     800: "#665429",
     900: "#332a14",
   },
+  success: {
+    100: "#dbefdc",
+    200: "#b7dfb9",
+    300: "#94cf96",
+    400: "#70bf73",
+    500: "#4caf50",
+    600: "#3d8c40",
+    700: "#2e6930",
+    800: "#1e4620",
+    900: "#0f2310",
+  },
+  info: {
+    100: "#cdeefd",
+    200: "#9addfb",
+    300: "#68cbf8",
+    400: "#35baf6",
+    500: "#03a9f4",
+    600: "#0287c3",
+    700: "#026592",
+    800: "#014462",
+    900: "#012231",
+  },
+  warning: {
+    100: "#ffeacc",
+    200: "#ffd699",
+    300: "#ffc166",
+    400: "#ffad33",
+    500: "#ff9800",
+    600: "#cc7a00",
+    700: "#995b00",
+    800: "#663d00",
+    900: "#331e00",
+  },
+  error: {
+    100: "#fcdddc",
+    200: "#f9bab9",
+    300: "#f59896",
+    400: "#f27573",
+    500: "#ef5350",
+    600: "#bf4240",
+    700: "#8f3230",
+    800: "#602120",
+    900: "#301110",
+  },
 };
 
 // function that reverses the color palette
@@ -80,6 +124,22 @@ export const themeSettings = (mode) => {
               ...tokensDark.grey,
               main: tokensDark.grey[500],
             },
+            success: {
+              ...tokensDark.success,
+              main: tokensDark.success[500],
+            },
+            info: {
+              ...tokensDark.info,
+              main: tokensDark.info[500],
+            },
+            warning: {
+              ...tokensDark.warning,
+              main: tokensDark.warning[500],
+            },
+            error: {
+              ...tokensDark.error,
+              main: tokensDark.error[500],
+            },
             background: {
               default: tokensDark.primary[600],
               alt: tokensDark.primary[500],
@@ -100,6 +160,22 @@ export const themeSettings = (mode) => {
             neutral: {
               ...tokensLight.grey,
               main: tokensDark.grey[500],
+            },
+            success: {
+              ...tokensLight.success,
+              main: tokensDark.success[500],
+            },
+            info: {
+              ...tokensLight.info,
+              main: tokensDark.info[500],
+            },
+            warning: {
+              ...tokensLight.warning,
+              main: tokensDark.warning[500],
+            },
+            error: {
+              ...tokensLight.error,
+              main: tokensDark.error[500],
             },
             background: {
               default: tokensDark.grey[0],

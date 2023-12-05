@@ -30,7 +30,6 @@ import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
 import { useTranslation } from "react-i18next";
 
-
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const [t, i18n] = useTranslation();
   const [Language, setLanguage] = useState(<Us />);

@@ -22,6 +22,7 @@ export function ContextProvider(props) {
   // const [isLoading, setIsLsLoading] = useState(false);
 
   const [customers, setCustomers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
   const [allCoupons, setAllCoupons] = useState([]);
@@ -32,7 +33,6 @@ export function ContextProvider(props) {
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
   const localeHeader = { locale: `${localStorage.getItem("locale")}` };
   console.log(localeHeader);
-
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
   }
@@ -210,11 +210,13 @@ export function ContextProvider(props) {
       setupdateTechnicianLsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/auth/tech/update-tech.php`,
-        { id, suspended: status },
+        { id, active: status },
         { headers: { ...localeHeader, ...adminheaders } }
       );
+      console.log(response);
       if (response.status === 200) {
-        toast.success(response.message);
+        console.log(response.status);
+        toast.success(response.data.message);
         setupdateTechnicianLsLoading(false);
       }
       setupdateTechnicianLsLoading(false);
@@ -248,7 +250,7 @@ export function ContextProvider(props) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
         setdeletTechnicianLsLoading(false);
-        toast.error("Technician Not Found");
+        toast.error(error.response.data.message);
       } else {
         toast.error("Server Error");
         setdeletTechnicianLsLoading(false);
@@ -288,12 +290,32 @@ export function ContextProvider(props) {
       if (response.status === 200) {
         toast.success(response.data.message);
       } else {
-      setIsLsLoading(false);
+        setIsLsLoading(false);
         toast.error(response.data.message);
       }
     } catch (error) {
       setIsLsLoading(false);
       toast.error(error.response.data.message);
+    }
+  }
+
+  // orders
+
+  // Get orders
+  async function fetchOrders() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/orders/fetch-orders.php`,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      setOrders(response.data.data);
+      console.log(orders);
+      console.log(response);
+    } catch (error) {
+      setIsLsLoading(false);
+      console.log(error);
     }
   }
 
@@ -303,6 +325,7 @@ export function ContextProvider(props) {
     fetchAvailableTechnicians();
     fetchAllCoupons();
     saveAdminToken();
+    fetchOrders();
   }, []);
 
   return (
@@ -314,6 +337,7 @@ export function ContextProvider(props) {
         deleteCustomer,
         fetchAllTechnicians,
         fetchAvailableTechnicians,
+        fetchOrders,
         addNewTechnician,
         deletTechnician,
         updateTechnician,
@@ -332,6 +356,7 @@ export function ContextProvider(props) {
         availableTechnicians,
         allCoupons,
         adminToken,
+        orders,
       }}
     >
       {props.children}
