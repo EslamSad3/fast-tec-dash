@@ -30,7 +30,7 @@ const OrderDetailsPage = () => {
     );
     setTechnician(selectedTechnician);
     // Set the Order state with the selected Order data
-  }, [id, orders]);
+  }, [id, orders, customers]);
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -105,94 +105,114 @@ const OrderDetailsPage = () => {
               flexDirection: "column",
             }}
           >
+            {/* Customer */}
+            {orders && order && customers && customer ? (
+              <Box
+                sx={{
+                  boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  p: "1rem",
+                }}
+                onClick={() => navigate(`/customers/${customer.id}`)}
+              >
+                <Typography variant="h6">{t("Customer")} </Typography>
+
+                <Typography variant="p">
+                  {t("Name")} :{orders && order && customer && customer.name}
+                </Typography>
+                <br />
+                <Typography variant="p">
+                  {t("Phone")} :{orders && order && customer && customer.phone}
+                </Typography>
+              </Box>
+            ) : (
+              <Typography variant="h6">{t("Customer Not Found")} </Typography>
+            )}
+          </Box>
+          {/* Tec */}
+          {orders && order && technicians && technician ? (
             <Box
               sx={{
-                boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
-                borderRadius: "10px",
-                cursor: "pointer",
-                p: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
               }}
-              onClick={() => navigate(`/customers/${customer.id}`)}
             >
-              <Typography variant="h6">{t("Customer")} </Typography>
+              <Box
+                sx={{
+                  boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  p: "1rem",
+                }}
+                onClick={() => navigate(`/technicians/${technician.id}`)}
+              >
+                <Typography variant="h6">{t("Technician")} </Typography>
 
-              <Typography variant="p">
-                {t("Name")} :{orders && order && customer && customer.name}
-              </Typography>
-              <br />
-              <Typography variant="p">
-                {t("Phone")} :{orders && order && customer && customer.phone}
-              </Typography>
+                <Typography variant="p">
+                  {t("Name")} :
+                  {orders && order && technician && technician.name}{" "}
+                </Typography>
+                <br />
+                <Typography variant="p">
+                  {t("Phone")} :
+                  {orders && order && technician && technician.phone}{" "}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-            }}
-          >
+          ) : (
+            <Typography variant="h6">{t("Technician Not Found")} </Typography>
+          )}
+
+          {/* invoice */}
+
+          {orders && order && order.invoiceId ? (
             <Box
               sx={{
-                boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
-                borderRadius: "10px",
-                cursor: "pointer",
-                p: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
               }}
-              onClick={() => navigate(`/technicians/${technician.id}`)}
             >
-              <Typography variant="h6">{t("Technician")} </Typography>
+              <Box>
+                <Typography variant="h6">{t("Order Info")} </Typography>
 
-              <Typography variant="p">
-                {t("Name")} :{orders && order && technician && technician.name}{" "}
-              </Typography>
-              <br />
-              <Typography variant="p">
-                {t("Phone")} :
-                {orders && order && technician && technician.phone}{" "}
-              </Typography>
+                <Typography variant="p">
+                  {t("Invoice ID")}:
+                  {orders && order && order.invoiceId === null
+                    ? t("No ID")
+                    : order.invoiceId}{" "}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-            }}
-          >
-            <Box>
-              <Typography variant="h6">{t("Order Info")} </Typography>
+          ) : (
+            <Typography variant="p">{t("No ID")}</Typography>
+          )}
 
-              <Typography variant="p">
-                {t("Invoice ID")}:
-                {orders && order && order.invoiceId === null
-                  ? t("No ID")
-                  : order.invoiceId}{" "}
-              </Typography>
-              <br />
-              <Typography variant="p"></Typography>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-            }}
-          >
-            <Box>
-              <Typography variant="h6">{t("Payment Info")} </Typography>
+          {/* Paymnet */}
+          {orders && order && order.paymentInfo ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
+              }}
+            >
+              <Box>
+                <Typography variant="h6">{t("Payment Info")} </Typography>
 
-              <Typography variant="p">
-                {t("Invoice ID")} :
-                {orders && order && order.invoiceId === null
-                  ? t("No ID")
-                  : order.invoiceId}{" "}
-              </Typography>
-              <br />
-              <Typography variant="p"></Typography>
+                <Typography variant="p">
+                  {t("Invoice ID")} :
+                  {orders && order && order.paymentInfo === null
+                    ? t("No ID")
+                    : order.paymentInfo}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          ) : (
+            <Typography variant="h6">{t("No ID")} </Typography>
+          )}
         </Box>
       </Box>
     </Box>

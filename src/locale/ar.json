@@ -72,5 +72,7 @@
   "Actions": "الإجراءات",
   "Technician Orders": "طلبات الفني",
   "Customer Details" :"تفاصيل العميل",
-  "Customer Orders":"طلبات العميل"
+  "Customer Orders":"طلبات العميل",
+  "Customer Not Found":"العميل غير متوفر",
+  "Technician Not Found":"الفني غير متوفر"
 }

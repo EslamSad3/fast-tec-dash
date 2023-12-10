@@ -67,5 +67,7 @@
   "Actions": "Actions",
   "Technician Orders": "Technician Orders",
   "Customer Details": "Customer Details",
-  "Customer Orders":"Customer Orders"
+  "Customer Orders":"Customer Orders",
+  "Customer Not Found":"Customer Not Found",
+  "Technician Not Found":"Technician Not Found"
 }
