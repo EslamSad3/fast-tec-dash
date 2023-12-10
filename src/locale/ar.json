@@ -1,7 +1,9 @@
 {
   "Customers": "العملاء",
+  "Customer": "العميل",
   "Dashboard": "الرئيسيه",
   "Technicians": "الفنيين",
+  "Technician": "الفني",
   "Available Technicians": "الفنيين المتاحين",
   "Orders": "الطلبات",
   "Coupons": "قسائم خصم",
@@ -45,6 +47,7 @@
   "Warning": "برجاء الإنتباه !",
   "Language": "اللغه",
   "ar": "العربيه",
+  "en":"الإنجليزيه",
   "list of Orders": "قائمة الطلبات",
   "Number Of Orders": "عدد الطلبات",
   "Status": "الحاله",
@@ -56,5 +59,18 @@
   "PENDING_PAYMENT": "بإنتظار الدفع",
   "COMPLETED": "مكتمل",
   "Order ID": "رقم الطلب",
-  "Customer ID": "معرف العميل"
+  "Customer ID": "معرف العميل",
+  "Order Details": "تفاصيل الطلب",
+  "Date": "التاريخ",
+  "Order Info": "بيانات الطلب",
+  "Payment Info": "بيانات الدفع",
+  "Invoice ID": "رقم الفاتوره",
+  "No ID": "لا يوجد رقم فاتوره",
+  "Technician Details": "تفاصيل الفني",
+  "Technician ID": "معرف الفني",
+  "Creation Date": "تاريخ الإنشاء",
+  "Actions": "الإجراءات",
+  "Technician Orders": "طلبات الفني",
+  "Customer Details" :"تفاصيل العميل",
+  "Customer Orders":"طلبات العميل"
 }

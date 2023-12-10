@@ -1,31 +1,17 @@
 // technicianDetailsPage.jsx
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  DialogActions,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-  Alert,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Typography, Alert, useTheme, useMediaQuery } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
-import FlexBetween from "../../FlexBetween";
 const OrderDetailsPage = () => {
   const [t] = useTranslation();
   const { id } = useParams();
   const theme = useTheme();
   const { orders, customers, technicians } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
-
+  const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [customer, setCusomer] = useState(null);
   const [technician, setTechnician] = useState(null);
@@ -52,7 +38,7 @@ const OrderDetailsPage = () => {
 
   return (
     <Box>
-      <Header title="Order Details" />
+      <Header title={t("Order Details")} />
 
       <Box
         sx={{
@@ -70,10 +56,12 @@ const OrderDetailsPage = () => {
           }}
         >
           <Box>
-            <Typography variant="h6">Order ID : {order.id}</Typography>
+            <Typography variant="h6">
+              {t("Order ID")} : {order.id}
+            </Typography>
             <Typography variant="small">
               {" "}
-              Date : {order.creationDate}
+              {t("Date")} : {order.creationDate}
             </Typography>
           </Box>
           <Box>
@@ -117,15 +105,51 @@ const OrderDetailsPage = () => {
               flexDirection: "column",
             }}
           >
-            <Box>
-              <Typography variant="h6">Customer </Typography>
+            <Box
+              sx={{
+                boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+                borderRadius: "10px",
+                cursor: "pointer",
+                p: "1rem",
+              }}
+              onClick={() => navigate(`/customers/${customer.id}`)}
+            >
+              <Typography variant="h6">{t("Customer")} </Typography>
 
               <Typography variant="p">
-                Name :{orders && order && customer && customer.name}{" "}
+                {t("Name")} :{orders && order && customer && customer.name}
               </Typography>
               <br />
               <Typography variant="p">
-                Phone :{orders && order && customer && customer.phone}{" "}
+                {t("Phone")} :{orders && order && customer && customer.phone}
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              sx={{
+                boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+                borderRadius: "10px",
+                cursor: "pointer",
+                p: "1rem",
+              }}
+              onClick={() => navigate(`/technicians/${technician.id}`)}
+            >
+              <Typography variant="h6">{t("Technician")} </Typography>
+
+              <Typography variant="p">
+                {t("Name")} :{orders && order && technician && technician.name}{" "}
+              </Typography>
+              <br />
+              <Typography variant="p">
+                {t("Phone")} :
+                {orders && order && technician && technician.phone}{" "}
               </Typography>
             </Box>
           </Box>
@@ -137,37 +161,16 @@ const OrderDetailsPage = () => {
             }}
           >
             <Box>
-              <Typography variant="h6">Technician </Typography>
+              <Typography variant="h6">{t("Order Info")} </Typography>
 
               <Typography variant="p">
-                Name :{orders && order && technician && technician.name}{" "}
-              </Typography>
-              <br />
-              <Typography variant="p">
-                Phone :{orders && order && technician && technician.phone}{" "}
-              </Typography>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-            }}
-          >
-            <Box>
-              <Typography variant="h6">Order Info </Typography>
-
-              <Typography variant="p">
-                Invoice ID :
+                {t("Invoice ID")}:
                 {orders && order && order.invoiceId === null
-                  ? "No ID"
+                  ? t("No ID")
                   : order.invoiceId}{" "}
               </Typography>
               <br />
-              <Typography variant="p">
-
-              </Typography>
+              <Typography variant="p"></Typography>
             </Box>
           </Box>
           <Box
@@ -178,18 +181,16 @@ const OrderDetailsPage = () => {
             }}
           >
             <Box>
-              <Typography variant="h6">Payment Info </Typography>
+              <Typography variant="h6">{t("Payment Info")} </Typography>
 
               <Typography variant="p">
-                Invoice ID :
+                {t("Invoice ID")} :
                 {orders && order && order.invoiceId === null
-                  ? "No ID"
+                  ? t("No ID")
                   : order.invoiceId}{" "}
               </Typography>
               <br />
-              <Typography variant="p">
-                
-              </Typography>
+              <Typography variant="p"></Typography>
             </Box>
           </Box>
         </Box>
