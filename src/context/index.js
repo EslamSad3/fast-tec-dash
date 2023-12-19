@@ -43,8 +43,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
-        values,
-        { headers: { ...localeHeader } }
+        values
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
