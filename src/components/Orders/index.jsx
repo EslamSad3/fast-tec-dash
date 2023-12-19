@@ -12,13 +12,19 @@ import { useContext } from "react";
 import { Context } from "../../context";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 function Orders() {
   const navigate = useNavigate();
-  const { orders, isLoading } = useContext(Context);
+  const { orders, isLoading, refreshData } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const [t] = useTranslation();
+
+  useEffect(() => {
+    refreshData();
+  }, []);
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title={t("Orders")} subtitle={t("list of Orders")} />
@@ -39,6 +45,7 @@ function Orders() {
         >
           {orders.map(({ id, customerId, status }) => (
             <Card
+              key={id}
               sx={{
                 backgroundImage: "none",
                 backgroundColor: theme.palette.background.alt,
@@ -86,7 +93,7 @@ function Orders() {
                       {t("COMPLETED")}
                     </Typography>
                   ) : (
-                    ""
+                    "Not Listed"
                   )}
                 </Typography>
                 <Typography variant="body2">

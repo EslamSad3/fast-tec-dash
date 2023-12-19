@@ -5,8 +5,9 @@ import React, { useContext } from "react";
 import { Context } from "../../context";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 const Customers = () => {
-  const { customers, fetchCustomersLoading } = useContext(Context);
+  const { customers, fetchCustomersLoading, refreshData } = useContext(Context);
   const theme = useTheme();
   const {t} = useTranslation();
   const columns = [
@@ -77,6 +78,10 @@ const Customers = () => {
     },
   ];
 
+  useEffect(() => {
+      refreshData();
+  }, [])
+  
   return (
     <Box m="1.5rem 2.5rem">
       <Header title={t("Customers")} subtitle={t("List of Customers")} />

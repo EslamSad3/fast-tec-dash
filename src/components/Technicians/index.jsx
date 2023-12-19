@@ -12,12 +12,15 @@ import { Link } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 const Technicians = () => {
   const [t] = useTranslation()
    const navigate = useNavigate();
-  const { technicians, fetchAllTechniciansLoading } = useContext(Context);
+  const { technicians, fetchAllTechniciansLoading, refreshData } =
+    useContext(Context);
   const theme = useTheme();
 
+  console.log(technicians, "technicians");
   const columns = [
     {
       field: "id",
@@ -99,6 +102,10 @@ const Technicians = () => {
       ),
     },
   ];
+
+    useEffect(() => {
+      refreshData();
+    }, []);
 
   return (
     <Box m="1.5rem 2.5rem">

@@ -5,11 +5,15 @@ import React, { useContext } from "react";
 import { Context } from "../../context";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const Availtechnicians = () => {
   const [t] = useTranslation();
-  const { availableTechnicians, fetchAvailableTechniciansLoading } =
-    useContext(Context);
+  const {
+    availableTechnicians,
+    fetchAvailableTechniciansLoading,
+    refreshData,
+  } = useContext(Context);
   const theme = useTheme();
 
   const columns = [
@@ -93,6 +97,10 @@ const Availtechnicians = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    refreshData();
+  }, []);
 
   return (
     <Box m="1.5rem 2.5rem">

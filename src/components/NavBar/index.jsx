@@ -32,7 +32,7 @@ import { useTranslation } from "react-i18next";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const [t, i18n] = useTranslation();
-  const [Language, setLanguage] = useState(<Us />);
+  const [Language, setLanguage] = useState(null);
   const handleChange = (event) => {
     setLanguage(event.target.value || "en");
     localStorage.setItem("locale", event.target.value);

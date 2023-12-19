@@ -32,9 +32,10 @@ const CustomerDetailsPage = () => {
     deleteCustomersLoading,
     orders,
     customers,
+    refreshData,
   } = useContext(Context);
 
-  const [techOrders, setOrder] = useState(null);
+  const [custOrders, setOrder] = useState(null);
   const [customer, setCustomer] = useState(null);
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -54,6 +55,7 @@ const CustomerDetailsPage = () => {
   async function handleUpdateCus(verified, active) {
     try {
       await updateCustomer(id, verified, active);
+      refreshData()
       setOpenEdit(false);
     } catch (error) {
       setOpenEdit(false);
@@ -72,12 +74,15 @@ const CustomerDetailsPage = () => {
   async function handleDeleteCus() {
     try {
       await deleteCustomer(id);
+      refreshData()
       setOpenDelete(false);
     } catch (error) {
       setOpenDelete(false);
     }
   }
   useEffect(() => {
+      
+
     // Find the customer with the matching id from the URL
     const selectedCustomer = customers.find((c) => String(c.id) === id);
     // Set the customer state with the selected customer data
@@ -260,11 +265,11 @@ const CustomerDetailsPage = () => {
               <Header title={t("Customer Orders")} />
               <Typography variant="p" mx="20px">
                 {t("Number Of Orders")} :
-                {customers && customer && orders && techOrders.length}
+                {customers && customer && orders && custOrders.length}
               </Typography>
             </Box>
 
-            {customers && customer && orders && techOrders ? (
+            {customers && customer && orders && custOrders ? (
               <Box
                 mt="20px"
                 mx="20px"
@@ -280,7 +285,7 @@ const CustomerDetailsPage = () => {
                 {customers &&
                   customer &&
                   orders &&
-                  techOrders.map((torder) => {
+                  custOrders.map((torder) => {
                     return (
                       <>
                         <Card

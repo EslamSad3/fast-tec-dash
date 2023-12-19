@@ -12,11 +12,20 @@ import Box from "@mui/material/Box";
 
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Us, Sa } from "react-flags-select";
+import FlexBetween from "../FlexBetween";
 
 function Login() {
-  const [t] = useTranslation();
+  const [Language, setLanguage] = useState("en");
+  const handleChange = (event) => {
+    setLanguage(event.target.value || "en");
+    localStorage.setItem("locale", event.target.value);
+  };
+  const [t, i18n] = useTranslation();
   const { handleLogingIn, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -36,6 +45,10 @@ function Login() {
     validationSchema,
     onSubmit: handleLogin,
   });
+
+  useEffect(() => {
+    i18n.changeLanguage(localStorage.getItem("locale"));
+  }, [i18n]);
 
   return (
     <>
@@ -80,19 +93,53 @@ function Login() {
               onChange={formik.handleChange}
               value={formik.values.password}
             />
-            <Button
-              disabled={!(formik.isValid && formik.dirty)}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {isLoading ? (
-                <CircularProgress sx={{ color: "#fafafa" }} />
-              ) : (
-                t("Sign in")
-              )}
-            </Button>
+            <FlexBetween>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Lang
+                </InputLabel>
+                <Select
+                  sx={{
+                    "& .MuiSelect-select": { paddingX: "2rem", mx: "1rem" },
+                  }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={Language}
+                  label="Language"
+                  onChange={handleChange}
+                >
+                  <MenuItem
+                    value="ar"
+                    onClick={() => {
+                      i18n.changeLanguage("ar");
+                    }}
+                  >
+                    عربي <Sa />
+                  </MenuItem>
+                  <MenuItem
+                    value="en"
+                    onClick={() => {
+                      i18n.changeLanguage("en");
+                    }}
+                  >
+                    English <Us />
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                disabled={!(formik.isValid && formik.dirty)}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mx: "1rem" }}
+              >
+                {isLoading ? (
+                  <CircularProgress sx={{ color: "#fafafa" }} />
+                ) : (
+                  t("Sign in")
+                )}
+              </Button>
+            </FlexBetween>
           </Box>
         </form>
       </Container>

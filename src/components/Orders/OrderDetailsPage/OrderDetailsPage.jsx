@@ -1,4 +1,3 @@
-// technicianDetailsPage.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
@@ -8,29 +7,25 @@ import { useTranslation } from "react-i18next";
 const OrderDetailsPage = () => {
   const [t] = useTranslation();
   const { id } = useParams();
-  const theme = useTheme();
-  const { orders, customers, technicians } = useContext(Context);
+  const { order, fetchOneOrder, refreshData, oneCustomer, oneTech } =
+    useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
-  const [order, setOrder] = useState(null);
-  const [customer, setCusomer] = useState(null);
-  const [technician, setTechnician] = useState(null);
+
+  // Fetch order
+
+  async function fetchOrder() {
+    await fetchOneOrder(id);
+
+    refreshData();
+  }
 
   useEffect(() => {
-    // Find the technician with the matching id from the URL
-    const selectedOrder = orders.find((o) => String(o.id) === id);
-    setOrder(selectedOrder);
-    const selectedCustomer = customers.find(
-      (c) => String(c.id) === selectedOrder?.customerId
-    );
-    console.log(selectedCustomer, "selectedCustomer");
-    setCusomer(selectedCustomer);
-    const selectedTechnician = technicians.find(
-      (t) => String(t.id) === selectedOrder?.techId
-    );
-    setTechnician(selectedTechnician);
-    // Set the Order state with the selected Order data
-  }, [id, orders, customers]);
+    fetchOrder();
+  }, []);
+
+  // console.log(oneCustomer, "oneCustomer");
+  // console.log(oneTech, "oneTech");
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -57,28 +52,28 @@ const OrderDetailsPage = () => {
         >
           <Box>
             <Typography variant="h6">
-              {t("Order ID")} : {order.id}
+              {t("Order ID")} : {order && order.data?.id}
             </Typography>
             <Typography variant="small">
               {" "}
-              {t("Date")} : {order.creationDate}
+              {t("Date")} : {order && order.data?.creationDate}
             </Typography>
           </Box>
           <Box>
             <Typography variant="p" component="div">
-              {order.status === "0" ? (
+              {order && order.data?.status === "0" ? (
                 <Alert severity="success">{t("NEW")}</Alert>
-              ) : order.status === "1" ? (
+              ) : order && order.data?.status === "1" ? (
                 <Alert severity="error">{t("CANCELLED")}</Alert>
-              ) : order.status === "2" ? (
+              ) : order && order.data?.status === "2" ? (
                 <Alert severity="warning">{t("REJECTED")}</Alert>
-              ) : order.status === "3" ? (
+              ) : order && order.data?.status === "3" ? (
                 <Alert severity="info">{t("ON_WAY")}</Alert>
-              ) : order.status === "4" ? (
+              ) : order && order.data?.status === "4" ? (
                 <Alert severity="info">{t("IN_PROGRESS")}</Alert>
-              ) : order.status === "5" ? (
+              ) : order && order.data?.status === "5" ? (
                 <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
-              ) : order.status === "6" ? (
+              ) : order && order.data?.status === "6" ? (
                 <Alert severity="success">{t("COMPLETED")}</Alert>
               ) : (
                 ""
@@ -106,7 +101,7 @@ const OrderDetailsPage = () => {
             }}
           >
             {/* Customer */}
-            {orders && order && customers && customer ? (
+            {order && oneCustomer ? (
               <Box
                 sx={{
                   boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -114,16 +109,16 @@ const OrderDetailsPage = () => {
                   cursor: "pointer",
                   p: "1rem",
                 }}
-                onClick={() => navigate(`/customers/${customer.id}`)}
+                onClick={() => navigate(`/customers/${oneCustomer.id}`)}
               >
                 <Typography variant="h6">{t("Customer")} </Typography>
 
                 <Typography variant="p">
-                  {t("Name")} :{orders && order && customer && customer.name}
+                  {t("Name")} :{order && oneCustomer && oneCustomer.name}
                 </Typography>
                 <br />
                 <Typography variant="p">
-                  {t("Phone")} :{orders && order && customer && customer.phone}
+                  {t("Phone")} :{order && oneCustomer && oneCustomer.phone}
                 </Typography>
               </Box>
             ) : (
@@ -131,7 +126,7 @@ const OrderDetailsPage = () => {
             )}
           </Box>
           {/* Tec */}
-          {orders && order && technicians && technician ? (
+          {order && oneTech ? (
             <Box
               sx={{
                 display: "flex",
@@ -146,18 +141,16 @@ const OrderDetailsPage = () => {
                   cursor: "pointer",
                   p: "1rem",
                 }}
-                onClick={() => navigate(`/technicians/${technician.id}`)}
+                onClick={() => navigate(`/technicians/${oneTech.id}`)}
               >
                 <Typography variant="h6">{t("Technician")} </Typography>
 
                 <Typography variant="p">
-                  {t("Name")} :
-                  {orders && order && technician && technician.name}{" "}
+                  {t("Name")} :{order && oneTech && oneTech.name}{" "}
                 </Typography>
                 <br />
                 <Typography variant="p">
-                  {t("Phone")} :
-                  {orders && order && technician && technician.phone}{" "}
+                  {t("Phone")} :{order && oneTech && oneTech.phone}{" "}
                 </Typography>
               </Box>
             </Box>
@@ -167,7 +160,7 @@ const OrderDetailsPage = () => {
 
           {/* invoice */}
 
-          {orders && order && order.invoiceId ? (
+          {order && order && order.data?.invoiceId ? (
             <Box
               sx={{
                 display: "flex",
@@ -180,39 +173,44 @@ const OrderDetailsPage = () => {
 
                 <Typography variant="p">
                   {t("Invoice ID")}:
-                  {orders && order && order.invoiceId === null
+                  {order && order && order.data?.invoiceId === null
                     ? t("No ID")
-                    : order.invoiceId}{" "}
+                    : order && order.data?.invoiceId}{" "}
                 </Typography>
               </Box>
             </Box>
           ) : (
-            <Typography variant="p">{t("No ID")}</Typography>
+            <Typography variant="p">
+              {" "}
+              {t("Invoice ID")}: {t("No ID")}
+            </Typography>
           )}
 
           {/* Paymnet */}
-          {orders && order && order.paymentInfo ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-              }}
-            >
-              <Box>
-                <Typography variant="h6">{t("Payment Info")} </Typography>
-
+          <Box>
+            <Typography variant="h6">{t("Payment Info")} </Typography>
+            {order && order && order.data?.paymentInfo ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
                 <Typography variant="p">
                   {t("Invoice ID")} :
-                  {orders && order && order.paymentInfo === null
+                  {order && order && order.data?.paymentInfo === null
                     ? t("No ID")
-                    : order.paymentInfo}
+                    : order && order.data?.paymentInfo}
                 </Typography>
               </Box>
-            </Box>
-          ) : (
-            <Typography variant="h6">{t("No ID")} </Typography>
-          )}
+            ) : (
+              <Typography variant="p">
+                {" "}
+                {t("Invoice ID")}: {t("No ID")}
+              </Typography>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>

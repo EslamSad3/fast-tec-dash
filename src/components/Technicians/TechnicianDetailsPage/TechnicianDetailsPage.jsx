@@ -1,6 +1,6 @@
 // technicianDetailsPage.jsx
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
 import {
   Box,
@@ -18,8 +18,10 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
+import { DataGrid } from "@mui/x-data-grid";
 
 const TechnicianDetailsPage = () => {
   const [t] = useTranslation();
@@ -33,10 +35,13 @@ const TechnicianDetailsPage = () => {
     updateTechnicianLoading,
     deletTechnicianLoading,
     orders,
+    refreshData,
+    fetchAllTechniciansLoading,
   } = useContext(Context);
 
   const [techOrders, setOrder] = useState(null);
   const [technician, setTechnician] = useState(null);
+  const [techRates, setTechRates] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
@@ -50,6 +55,7 @@ const TechnicianDetailsPage = () => {
   };
   async function handleUpdateTec(status) {
     await updateTechnician(id, status);
+    refreshData();
     setOpenEdit(false);
   }
 
@@ -63,23 +69,54 @@ const TechnicianDetailsPage = () => {
 
   async function handleDeleteTec() {
     await deletTechnician(id);
+    refreshData();
     setOpenDelete(false);
   }
+
+  const columns = [
+    {
+      field: "orderId",
+      headerName: "Order ID",
+      flex: 0.7,
+      minWidth: 50,
+
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row.orderId}`}>
+          <Button variant="contained" color="primary">
+            <LinkIcon />
+            {params.row.orderId}
+          </Button>
+        </Link>
+      ),
+    },
+    {
+      field: "rate",
+      headerName: t("Order Rate"),
+      flex: 0.85,
+      minWidth: 50,
+    },
+    {
+      field: "comment",
+      headerName: t("Comment"),
+      flex: 4,
+      minWidth: 250,
+    },
+  ];
 
   useEffect(() => {
     // Find the technician with the matching id from the URL
     const selectedtechnician = technicians.find((c) => String(c.id) === id);
     // Set the technician state with the selected technician data
     setTechnician(selectedtechnician);
-
+    setTechRates(technician && technician?.rates);
     // get selected tection orders
     const selectedtechnicianOrders = orders.filter(
       (order) => String(order.techId) === id
     );
     setOrder(selectedtechnicianOrders);
-  }, [id, technicians, orders]);
+  }, [id, technicians, orders,techRates]);
 
-  console.log(techOrders);
+
   if (!technician) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
   }
@@ -89,6 +126,7 @@ const TechnicianDetailsPage = () => {
       <Box>
         <Header title={t("Technician Details")} />
 
+        {/* Details */}
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -149,6 +187,7 @@ const TechnicianDetailsPage = () => {
               </Box>
             </Box>
           </Box>
+          {/* Rates */}
 
           <Box
             mt="20px"
@@ -245,6 +284,76 @@ const TechnicianDetailsPage = () => {
             </Box>
           </Box>
         </Box>
+
+        {/* Rates */}
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Header title={t("Rates")} />
+          <Box
+            mt="20px"
+            mx="20px"
+            // display="grid"
+            // gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            // justifyContent="center"
+            // alignItems="center"
+            // Gap="1rem"
+            textAlign={"center"}
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Box>
+              <Typography variant="h6">
+                Over All Rates : {technician && technician.rateAverage}
+              </Typography>
+            </Box>
+
+            <Box
+              mt="40px"
+              height="75vh"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: theme.palette.primary.light,
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderTop: "none",
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `${theme.palette.secondary[200]} !important`,
+                },
+              }}
+            >
+              <DataGrid
+                rows={techRates || []}
+                // loading={fetchAllTechniciansLoading || !techRates}
+                getRowId={(row) => row.orderId}
+                columns={columns}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Orders */}
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",

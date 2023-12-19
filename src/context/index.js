@@ -23,6 +23,11 @@ export function ContextProvider(props) {
 
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
+
+  const [order, setOrder] = useState({});
+  const [oneCustomer, setoneCustomer] = useState({});
+  const [oneTech, setoneTech] = useState({});
+
   const [technicians, setTechnicians] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
   const [allCoupons, setAllCoupons] = useState([]);
@@ -30,12 +35,10 @@ export function ContextProvider(props) {
     localStorage.getItem("AdminToken")
   );
 
-  const [local, setlocal] = useState(null);
-
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
-  const localeHeader = { locale: local };
+  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
 
-  console.log(localeHeader);
+  // console.log(localeHeader);
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
   }
@@ -46,13 +49,13 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
-        values
+        values,
+        { headers: { ...localeHeader } }
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
       console.log(response);
       if (response.status === 200) {
-        localStorage.setItem("locale", "ar");
         toast.success(`${response.data.message}`, {
           position: "top-center",
         });
@@ -314,13 +317,44 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       setOrders(response.data.data);
-      console.log(orders);
-      console.log(response);
     } catch (error) {
       setIsLsLoading(false);
       console.log(error);
     }
   }
+  // Get orders
+  async function fetchOneOrder(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/orders/fetch-order.php`,
+        { orderId: id },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+
+      setIsLsLoading(false);
+      setOrder(response.data);
+      setoneCustomer(response.data.customer);
+      setoneTech(response.data.tech);
+
+      console.log(oneCustomer, "oneCustomer");
+      console.log(oneTech, "oneTech");
+      console.log(response, "One Order");
+    } catch (error) {
+      setIsLsLoading(false);
+      console.log(error);
+    }
+  }
+
+  const refreshData = () => {
+    fetchAllCustomers();
+    fetchAllTechnicians();
+    fetchAvailableTechnicians();
+    fetchAllCoupons();
+    fetchOrders();
+
+    // Add other data fetching functions as needed
+  };
 
   useEffect(() => {
     fetchAllCustomers();
@@ -329,7 +363,7 @@ export function ContextProvider(props) {
     fetchAllCoupons();
     saveAdminToken();
     fetchOrders();
-    setlocal(localStorage.getItem("locale"));
+    localStorage.setItem("locale", "en");
   }, []);
 
   return (
@@ -342,11 +376,13 @@ export function ContextProvider(props) {
         fetchAllTechnicians,
         fetchAvailableTechnicians,
         fetchOrders,
+        fetchOneOrder,
         addNewTechnician,
         deletTechnician,
         updateTechnician,
         fetchAllCoupons,
         createCoupons,
+        refreshData,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,
@@ -361,6 +397,9 @@ export function ContextProvider(props) {
         allCoupons,
         adminToken,
         orders,
+        order,
+        oneCustomer,
+        oneTech,
       }}
     >
       {props.children}
