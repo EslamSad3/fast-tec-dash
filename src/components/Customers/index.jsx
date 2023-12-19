@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 const Customers = () => {
   const { customers, fetchCustomersLoading } = useContext(Context);
   const theme = useTheme();
-  const [t] = useTranslation();
+  const {t} = useTranslation();
   const columns = [
     {
       field: "id",

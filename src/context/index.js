@@ -30,8 +30,11 @@ export function ContextProvider(props) {
     localStorage.getItem("AdminToken")
   );
 
+  const [local, setlocal] = useState(null);
+
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
-  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
+  const localeHeader = { locale: local };
+
   console.log(localeHeader);
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
@@ -49,6 +52,7 @@ export function ContextProvider(props) {
       localStorage.setItem("AdminToken", response.data.accessToken);
       console.log(response);
       if (response.status === 200) {
+        localStorage.setItem("locale", "ar");
         toast.success(`${response.data.message}`, {
           position: "top-center",
         });
@@ -325,7 +329,7 @@ export function ContextProvider(props) {
     fetchAllCoupons();
     saveAdminToken();
     fetchOrders();
-    localStorage.setItem("locale", "en");
+    setlocal(localStorage.getItem("locale"));
   }, []);
 
   return (

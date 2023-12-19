@@ -34,9 +34,10 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const [t, i18n] = useTranslation();
   const [Language, setLanguage] = useState(<Us />);
   const handleChange = (event) => {
-    setLanguage(event.target.value);
+    setLanguage(event.target.value || "en");
     localStorage.setItem("locale", event.target.value);
   };
+  console.log(Language, "Language");
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -48,6 +49,10 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
     navigate("/login");
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    //  handleChange()
+  }, []);
 
   return (
     <AppBar
@@ -81,7 +86,12 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
             }}
           >
             <Typography>
-              {Language && Language === "en" ? <Us /> : <Sa />}
+              {localStorage.getItem("locale") &&
+              localStorage.getItem("locale") == "en" ? (
+                <Us />
+              ) : (
+                <Sa />
+              )}
             </Typography>
             <Select
               labelId="demo-simple-select-label"
@@ -104,7 +114,6 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
                   i18n.changeLanguage("en");
                 }}
               >
-                {/* <Us value="en" /> */}
                 English
               </MenuItem>
             </Select>
