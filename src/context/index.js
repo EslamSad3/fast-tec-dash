@@ -325,7 +325,7 @@ export function ContextProvider(props) {
     fetchAllCoupons();
     saveAdminToken();
     fetchOrders();
-    localStorage.setItem("locale", "ar");
+    localStorage.setItem("locale", "en");
   }, []);
 
   return (
