@@ -18,9 +18,9 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-import LinkIcon from "@mui/icons-material/Link";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
+import LinkIcon from "@mui/icons-material/Link";
 import { DataGrid } from "@mui/x-data-grid";
 
 const TechnicianDetailsPage = () => {
@@ -76,7 +76,7 @@ const TechnicianDetailsPage = () => {
   const columns = [
     {
       field: "orderId",
-      headerName: "Order ID",
+      headerName: t("Order ID"),
       flex: 0.7,
       minWidth: 50,
 
@@ -311,7 +311,7 @@ const TechnicianDetailsPage = () => {
           >
             <Box>
               <Typography variant="h6">
-                Over All Rates : {technician && technician.rateAverage}
+                {t("Over All Rates")} : {technician && technician.rateAverage}
               </Typography>
             </Box>
 

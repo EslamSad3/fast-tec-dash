@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
 import {
   Box,
@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
+import LinkIcon from "@mui/icons-material/Link";
+import { DataGrid } from "@mui/x-data-grid";
 
 const CustomerDetailsPage = () => {
   const { t } = useTranslation();
@@ -35,6 +37,7 @@ const CustomerDetailsPage = () => {
     refreshData,
   } = useContext(Context);
 
+  const [customerRates, setCustomerRates] = useState([]);
   const [custOrders, setOrder] = useState(null);
   const [customer, setCustomer] = useState(null);
 
@@ -55,7 +58,7 @@ const CustomerDetailsPage = () => {
   async function handleUpdateCus(verified, active) {
     try {
       await updateCustomer(id, verified, active);
-      refreshData()
+      refreshData();
       setOpenEdit(false);
     } catch (error) {
       setOpenEdit(false);
@@ -74,20 +77,49 @@ const CustomerDetailsPage = () => {
   async function handleDeleteCus() {
     try {
       await deleteCustomer(id);
-      refreshData()
+      refreshData();
       setOpenDelete(false);
     } catch (error) {
       setOpenDelete(false);
     }
   }
-  useEffect(() => {
-      
 
+  const columns = [
+    {
+      field: "orderId",
+      headerName: t("Order ID"),
+      flex: 0.7,
+      minWidth: 50,
+
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row.orderId}`}>
+          <Button variant="contained" color="primary">
+            <LinkIcon />
+            {params.row.orderId}
+          </Button>
+        </Link>
+      ),
+    },
+    {
+      field: "rate",
+      headerName: t("Order Rate"),
+      flex: 0.85,
+      minWidth: 50,
+    },
+    {
+      field: "comment",
+      headerName: t("Comment"),
+      flex: 4,
+      minWidth: 250,
+    },
+  ];
+
+  useEffect(() => {
     // Find the customer with the matching id from the URL
     const selectedCustomer = customers.find((c) => String(c.id) === id);
     // Set the customer state with the selected customer data
     setCustomer(selectedCustomer);
-
+    setCustomerRates(customer && customer?.rates);
     // get selected tection orders
     const selectedCustomerOrders = orders.filter(
       (order) => String(order.customerId) === id
@@ -244,6 +276,75 @@ const CustomerDetailsPage = () => {
             </Box>
           </Box>
         </Box>
+        {/* Rates */}
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Header title={t("Rates")} />
+          <Box
+            mt="20px"
+            mx="20px"
+            // display="grid"
+            // gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            // justifyContent="center"
+            // alignItems="center"
+            // Gap="1rem"
+            textAlign={"center"}
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Box>
+              <Typography variant="h6">
+                {t("Over All Rates")} : {customerRates && customerRates?.rateAverage}
+              </Typography>
+            </Box>
+
+            <Box
+              mt="40px"
+              height="75vh"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: theme.palette.primary.light,
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderTop: "none",
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `${theme.palette.secondary[200]} !important`,
+                },
+              }}
+            >
+              <DataGrid
+                rows={customerRates || []}
+                // loading={fetchAllTechniciansLoading || !techRates}
+                getRowId={(row) => row?.orderId}
+                columns={columns}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Orders */}
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",

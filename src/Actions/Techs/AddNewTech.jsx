@@ -9,28 +9,29 @@ import {
   CircularProgress,
   FormControl,
   TextField,
-
 } from "@mui/material";
 import Header from "../../components/Header";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
 function AddNewTech() {
+  const [t] = useTranslation();
   const { addNewTechnician, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .required("Name Required")
-      .min(2, "To Short Name (Min 2)")
-      .max(20, "To Long Name (Max 20)"),
+      .required(t("Name Required"))
+      .min(2, t("To Short Name (Min 2)"))
+      .max(20, t("To Long Name (Max 20)")),
     phone: Yup.string()
-      .required("Phone Number Required")
-      .min(8, "Min Phone Number (8) ")
-      .matches(/^[569]\d{7}$/, "Invalid Phone Number"),
+      .required(t("Phone Number Required"))
+      .min(8, t("Min Phone Number (8)"))
+      .matches(/^[569]\d{7}$/, t("Invalid Phone Number")),
     password: Yup.string()
-      .required("Password Required")
-      .min(6, "To Shore Password (Min 6)")
+      .required(t("Password Required"))
+      .min(6, t("To Shore Password (Min 6)"))
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/,
-        "Invalid Password Formate (Q1@we34rt5)"
+        t("Invalid Password Formate (Q1@we34rt5)")
       ),
   });
 
@@ -64,7 +65,7 @@ function AddNewTech() {
         alignItems: "center",
       }}
     >
-      <Header title="Add New Technician"></Header>
+      <Header title={t("Add New Technician")}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* Name */}
@@ -73,7 +74,7 @@ function AddNewTech() {
             margin="normal"
             required
             fullWidth
-            label="Technician Name"
+            label={t("Technician Name")}
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -83,7 +84,7 @@ function AddNewTech() {
           />
           {formik.errors.name && formik.touched.name ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.name}
             </Alert>
           ) : null}
@@ -118,7 +119,7 @@ function AddNewTech() {
               type="text"
               name="phone"
               id="phone"
-              label="Phone ex.(51234567)"
+              label={t("Phone ex.(51234567)")}
               margin="normal"
               required
               fullWidth
@@ -126,7 +127,7 @@ function AddNewTech() {
           </Box>
           {formik.errors.phone && formik.touched.phone ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.phone}
             </Alert>
           ) : null}
@@ -143,11 +144,11 @@ function AddNewTech() {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t("Password")}
           />
           {formik.errors.password && formik.touched.password ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.password}
             </Alert>
           ) : null}

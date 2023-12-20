@@ -14,15 +14,17 @@ import {
 } from "@mui/material";
 import Header from "../../components/Header";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
 function AddNewCoupon() {
+  const [t] = useTranslation();
   const { createCoupons, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
     couponCode: Yup.string()
-      .required("coupon Name Required")
-      .min(2, "To Short coupon Name (Min 2)"),
-    expires: Yup.date().required("Expiration Date Required"),
-    discountValue: Yup.string().required("Discount Value Required"),
+      .required(t("Coupon Name Required"))
+      .min(2, t("To Short coupon Name (Min 2)")),
+    expires: Yup.date().required(t("Expiration Date Required")),
+    discountValue: Yup.string().required(t("Discount Value Required")),
   });
 
   let formik = useFormik({
@@ -49,7 +51,7 @@ function AddNewCoupon() {
         alignItems: "center",
       }}
     >
-      <Header title="Add New Coupon"></Header>
+      <Header title={t("Add New Coupon")}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* couponCode */}
@@ -58,7 +60,7 @@ function AddNewCoupon() {
             margin="normal"
             required
             fullWidth
-            label="Coupon Code"
+            label={t("Coupon Code")}
             value={formik.values.couponCode}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -68,19 +70,19 @@ function AddNewCoupon() {
           />
           {formik.errors.couponCode && formik.touched.couponCode ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t(Error)}</AlertTitle>
               {formik.errors.couponCode}
             </Alert>
           ) : null}
 
           {/* Expiration Date */}
           <Box sx={{ marginTop: "2rem" }}>
-            <label>Expiration Date</label>
+            <label>{t("Expiration Date")}</label>
             <Input
               value={formik.values.expires}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              label="Coupon Expiration Date"
+              label={t("Coupon Expiration Date")}
               margin="normal"
               required
               fullWidth
@@ -92,7 +94,7 @@ function AddNewCoupon() {
 
           {formik.errors.expires && formik.touched.expires ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.expires}
             </Alert>
           ) : null}
@@ -109,12 +111,12 @@ function AddNewCoupon() {
             margin="normal"
             required
             fullWidth
-            label="Discount Value"
+            label={t("Discount Value")}
           />
           {formik.errors.discountValue && formik.touched.discountValue ? (
             <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              {formik.errors.password}
+              <AlertTitle>{t("Error")}</AlertTitle>
+              {formik.errors.discountValue}
             </Alert>
           ) : null}
 
