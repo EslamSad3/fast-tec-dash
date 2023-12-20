@@ -76,7 +76,7 @@ const OrderDetailsPage = () => {
               ) : order && order.data?.status === "6" ? (
                 <Alert severity="success">{t("COMPLETED")}</Alert>
               ) : (
-                ""
+                "Not Listed"
               )}
             </Typography>
           </Box>
