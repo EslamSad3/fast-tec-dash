@@ -198,8 +198,10 @@ export function ContextProvider(props) {
         values,
         { headers: { ...localeHeader, ...adminheaders } }
       );
+      console.log(response);
       if (response.status === 200) {
-        toast.success(response.message);
+        toast.success(response.data.message);
+        navigate("/technicians");
         setIsLsLoading(false);
       }
       setIsLsLoading(false);
