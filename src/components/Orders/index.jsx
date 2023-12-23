@@ -92,6 +92,10 @@ function Orders() {
                     <Typography variant="p" color={theme.palette.success[900]}>
                       {t("COMPLETED")}
                     </Typography>
+                  ) : status === "7" ? (
+                    <Typography variant="p" color={theme.palette.error.main}>
+                      {t("FAILED PAYMENT")}
+                    </Typography>
                   ) : (
                     "Not Listed"
                   )}

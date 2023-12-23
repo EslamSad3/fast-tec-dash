@@ -34,10 +34,12 @@ export function ContextProvider(props) {
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
+  const [language, setlanguage] = useState(localStorage.getItem("locale"));
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
   const localeHeader = { locale: `${localStorage.getItem("locale")}` };
 
+  console.log(language);
   // console.log(localeHeader);
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
@@ -348,12 +350,23 @@ export function ContextProvider(props) {
     }
   }
 
+  const handleChangeDir = () => {
+    if (language && language === "ar") {
+      document.dir = "rtl";
+    } else if (language && language === "en") {
+      document.dir = "ltr";
+    } else {
+      document.dir = "ltr";
+    }
+  };
+
   const refreshData = () => {
     fetchAllCustomers();
     fetchAllTechnicians();
     fetchAvailableTechnicians();
     fetchAllCoupons();
     fetchOrders();
+    handleChangeDir();
 
     // Add other data fetching functions as needed
   };
@@ -365,6 +378,7 @@ export function ContextProvider(props) {
     fetchAllCoupons();
     saveAdminToken();
     fetchOrders();
+    handleChangeDir();
   }, []);
 
   return (
@@ -384,6 +398,7 @@ export function ContextProvider(props) {
         fetchAllCoupons,
         createCoupons,
         refreshData,
+        handleChangeDir,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,
@@ -401,6 +416,7 @@ export function ContextProvider(props) {
         order,
         oneCustomer,
         oneTech,
+        language,
       }}
     >
       {props.children}

@@ -30,6 +30,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import profileImage from "../../assets/images/Fastteclogopng.png";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { Context } from "../../context";
 
 const SideBar = ({
   drawerWidth,
@@ -42,6 +44,8 @@ const SideBar = ({
   const navigate = useNavigate();
   const theme = useTheme();
   const [t] = useTranslation();
+
+  const { language } = useContext(Context);
 
   const navItems = [
     {
@@ -92,7 +96,7 @@ const SideBar = ({
           open={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           variant="persistent"
-          anchor="left"
+          anchor={language === "ar" ? "right" : "left"}
           sx={{
             width: drawerWidth,
             "& .MuiDrawer-paper": {

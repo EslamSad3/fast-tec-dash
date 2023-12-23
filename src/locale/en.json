@@ -85,10 +85,11 @@
   "Invalid Password Formate (Q1@we34rt5)": "Invalid Password Formate (Q1@we34rt5)",
   "Phone ex.(51234567)": "Phone ex.(51234567)",
   "Technician Name": "Technician Name",
-  "Coupon Code":"Coupon Code",
+  "Coupon Code": "Coupon Code",
   "Coupon Name Required": "Coupon Name Required",
-  "To Short coupon Name (Min 2)":"To Short coupon Name (Min 2)",
-  "Expiration Date Required":"Expiration Date Required",
-  "Expiration Date":"Expiration Date",
-  "Discount Value Required":"Discount Value Required"
+  "To Short coupon Name (Min 2)": "To Short coupon Name (Min 2)",
+  "Expiration Date Required": "Expiration Date Required",
+  "Expiration Date": "Expiration Date",
+  "Discount Value Required": "Discount Value Required",
+  "FAILED PAYMENT": "FAILED PAYMENT"
 }

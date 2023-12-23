@@ -74,7 +74,11 @@ const OrderDetailsPage = () => {
               ) : order && order.data?.status === "5" ? (
                 <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
               ) : order && order.data?.status === "6" ? (
-                <Alert severity="success">{t("COMPLETED")}</Alert>
+                <Alert severity="success">{t("COMPLETED")}</Alert> 
+                
+              ) :  order && order.data?.status === "7" ? (
+                <Alert severity="error">{t("FAILED PAYMENT")}</Alert> 
+                
               ) : (
                 "Not Listed"
               )}

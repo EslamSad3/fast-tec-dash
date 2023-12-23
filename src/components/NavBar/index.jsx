@@ -29,15 +29,20 @@ import { useTheme } from "@emotion/react";
 import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { Context } from "../../context";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
+  const { handleChangeDir } = useContext(Context);
   const [t, i18n] = useTranslation();
-  const [Language, setLanguage] = useState(null);
+  const [language, setLanguage] = useState("");
   const handleChange = (event) => {
     setLanguage(event.target.value || "en");
     localStorage.setItem("locale", event.target.value);
+    handleChangeDir();
+    window.location.reload();
   };
-  console.log(Language, "Language");
+ 
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -51,7 +56,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   };
 
   useEffect(() => {
-    //  handleChange()
+     handleChangeDir()
   }, []);
 
   return (
@@ -96,7 +101,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={Language}
+              value={language}
               label="Language"
               onChange={handleChange}
             >

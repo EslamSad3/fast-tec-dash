@@ -276,73 +276,6 @@ const CustomerDetailsPage = () => {
             </Box>
           </Box>
         </Box>
-        {/* Rates */}
-        <Box
-          sx={{
-            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
-            mx: "1rem",
-            mt: "1rem",
-            p: "1.5rem",
-            borderRadius: "10px",
-          }}
-        >
-          <Header title={t("Rates")} />
-          <Box
-            mt="20px"
-            mx="20px"
-            // display="grid"
-            // gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-            // justifyContent="center"
-            // alignItems="center"
-            // Gap="1rem"
-            textAlign={"center"}
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
-            <Box>
-              <Typography variant="h6">
-                {t("Over All Rates")} : {customerRates && customerRates?.rateAverage}
-              </Typography>
-            </Box>
-
-            <Box
-              mt="40px"
-              height="75vh"
-              sx={{
-                "& .MuiDataGrid-root": {
-                  border: "none",
-                },
-                "& .MuiDataGrid-cell": {
-                  borderBottom: "none",
-                },
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: theme.palette.background.alt,
-                  color: theme.palette.secondary[100],
-                  borderBottom: "none",
-                },
-                "& .MuiDataGrid-virtualScroller": {
-                  backgroundColor: theme.palette.primary.light,
-                },
-                "& .MuiDataGrid-footerContainer": {
-                  backgroundColor: theme.palette.background.alt,
-                  color: theme.palette.secondary[100],
-                  borderTop: "none",
-                },
-                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                  color: `${theme.palette.secondary[200]} !important`,
-                },
-              }}
-            >
-              <DataGrid
-                rows={customerRates || []}
-                // loading={fetchAllTechniciansLoading || !techRates}
-                getRowId={(row) => row?.orderId}
-                columns={columns}
-              />
-            </Box>
-          </Box>
-        </Box>
 
         {/* Orders */}
         <Box
@@ -474,6 +407,75 @@ const CustomerDetailsPage = () => {
             ) : (
               "Loading ..."
             )}
+          </Box>
+        </Box>
+
+        {/* Rates */}
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Header title={t("Rates")} />
+          <Box
+            mt="20px"
+            mx="20px"
+            // display="grid"
+            // gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            // justifyContent="center"
+            // alignItems="center"
+            // Gap="1rem"
+            textAlign={"center"}
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Box>
+              <Typography variant="h6">
+                {t("Over All Rates")} :{" "}
+                {customerRates && customerRates?.rateAverage}
+              </Typography>
+            </Box>
+
+            <Box
+              mt="40px"
+              height="75vh"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: theme.palette.primary.light,
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderTop: "none",
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `${theme.palette.secondary[200]} !important`,
+                },
+              }}
+            >
+              <DataGrid
+                rows={customerRates || []}
+                // loading={fetchAllTechniciansLoading || !techRates}
+                getRowId={(row) => row?.orderId}
+                columns={columns}
+              />
+            </Box>
           </Box>
         </Box>
 

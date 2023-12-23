@@ -40,27 +40,10 @@ const Technicians = () => {
       minWidth: 150,
     },
     {
-      field: "online",
+      field: "active",
       headerName: t("Online"),
       flex: 0.25,
       renderCell: (params) => {
-        return (
-          <>
-            {params.value === true ? (
-              <Typography variant="body1">{t("Yes")}</Typography>
-            ) : (
-              <Typography variant="body1">{t("No")}</Typography>
-            )}
-          </>
-        );
-      },
-    },
-    {
-      field: "suspended",
-      headerName: t("Suspended"),
-      flex: 0.25,
-      renderCell: (params) => {
-        console.log(params);
         return (
           <>
             {params.value === true ? (

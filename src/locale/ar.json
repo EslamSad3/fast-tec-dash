@@ -95,5 +95,6 @@
   "To Short coupon Name (Min 2)": "إسم القسيمه لا يقل عن حرفين",
   "Expiration Date Required": "تاريخ الإنتهاء مطلوب",
   "Expiration Date": "تاريخ الإنتهاء",
-  "Discount Value Required": "قيمة الخصم مطلوبه"
+  "Discount Value Required": "قيمة الخصم مطلوبه",
+  "FAILED PAYMENT":"فشل الدفع"
 }
