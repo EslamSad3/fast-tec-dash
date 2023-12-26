@@ -70,7 +70,7 @@ function AddNewCoupon() {
           />
           {formik.errors.couponCode && formik.touched.couponCode ? (
             <Alert severity="error">
-              <AlertTitle>{t(Error)}</AlertTitle>
+              <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.couponCode}
             </Alert>
           ) : null}
