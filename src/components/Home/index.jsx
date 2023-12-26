@@ -98,7 +98,7 @@ function Home() {
                   {t("Customers")}
                 </Typography>
               </Box>
-              <CardContent>
+              <CardContent sx={{ marginTop: "4rem" }}>
                 <Typography variant="h3" textalign={"center"}>
                   {homeData && homeData?.customers}
                 </Typography>
@@ -162,7 +162,7 @@ function Home() {
                   {t("Technicians")}
                 </Typography>
               </Box>
-              <CardContent>
+              <CardContent sx={{ marginTop: "4rem" }}>
                 <Typography variant="h3" textalign={"center"}>
                   {homeData && homeData?.techs}
                 </Typography>
@@ -226,7 +226,7 @@ function Home() {
                   {t("Orders")}
                 </Typography>
               </Box>
-              <CardContent textalign="start">
+              <CardContent textalign="start" sx={{ marginTop: "4rem" }}>
                 <Typography variant="h5">
                   {t("Total")} :{" "}
                   {homeData && homeData.orders && homeData.orders.total}
@@ -297,7 +297,7 @@ function Home() {
                   {t("profit")}
                 </Typography>
               </Box>
-              <CardContent textalign="start">
+              <CardContent textalign="start" sx={{ marginTop: "4rem" }}>
                 <Typography variant="h5">
                   {t("released")} :{" "}
                   {homeData && homeData.profit && homeData.profit.released}
