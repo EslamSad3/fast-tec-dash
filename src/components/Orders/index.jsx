@@ -10,7 +10,7 @@ import {
 import Header from "../Header";
 import { useContext } from "react";
 import { Context } from "../../context";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
@@ -89,7 +89,7 @@ function Orders() {
                       {t("PENDING_PAYMENT")}
                     </Typography>
                   ) : status === "6" ? (
-                    <Typography variant="p" color={theme.palette.success[900]}>
+                    <Typography variant="p" color={theme.palette.info[600]}>
                       {t("COMPLETED")}
                     </Typography>
                   ) : status === "7" ? (

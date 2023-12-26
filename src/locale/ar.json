@@ -96,5 +96,13 @@
   "Expiration Date Required": "تاريخ الإنتهاء مطلوب",
   "Expiration Date": "تاريخ الإنتهاء",
   "Discount Value Required": "قيمة الخصم مطلوبه",
-  "FAILED PAYMENT":"فشل الدفع"
+  "FAILED PAYMENT":"فشل الدفع",
+  "Summary":"ملخص",
+  "Number Of Customers":"عدد العملاء",
+  "Number Of Technicians":"عدد الفنيين",
+  "Number Of completed Orders":"الطلبات المكتمله",
+  "Number Of pending Orders":"الطلبات المعلقه",
+  "profit":"العوائد",
+  "released":"قابله للسحب",
+  "pending":"معلقه"
 }

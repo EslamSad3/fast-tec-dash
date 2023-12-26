@@ -29,11 +29,13 @@ export function ContextProvider(props) {
   const [oneTech, setoneTech] = useState({});
 
   const [technicians, setTechnicians] = useState([]);
+  const [homeData, setHomeData] = useState([]);
   const [availableTechnicians, setAvailableTechnicians] = useState([]);
   const [allCoupons, setAllCoupons] = useState([]);
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
+
   const [language, setlanguage] = useState(localStorage.getItem("locale"));
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
@@ -350,6 +352,29 @@ export function ContextProvider(props) {
     }
   }
 
+  // Home Data
+
+  async function fetHomeData() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/auth/admin/fetch_all_time_data.php`,
+        { headers: { ...adminheaders } }
+      );
+      if (response.status === 200) {
+        setIsLsLoading(false);
+        setHomeData(response.data);
+        console.log(response, "response");
+      } else {
+        setIsLsLoading(false);
+        console.log(response.status, "error Loading Data");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      console.log(error);
+    }
+  }
+
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
@@ -367,6 +392,7 @@ export function ContextProvider(props) {
     fetchAllCoupons();
     fetchOrders();
     handleChangeDir();
+    fetHomeData();
 
     // Add other data fetching functions as needed
   };
@@ -379,6 +405,7 @@ export function ContextProvider(props) {
     saveAdminToken();
     fetchOrders();
     handleChangeDir();
+    fetHomeData();
   }, []);
 
   return (
@@ -399,6 +426,7 @@ export function ContextProvider(props) {
         createCoupons,
         refreshData,
         handleChangeDir,
+        fetHomeData,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,
@@ -417,6 +445,7 @@ export function ContextProvider(props) {
         oneCustomer,
         oneTech,
         language,
+        homeData,
       }}
     >
       {props.children}

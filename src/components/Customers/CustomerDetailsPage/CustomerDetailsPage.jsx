@@ -437,7 +437,7 @@ const CustomerDetailsPage = () => {
             <Box>
               <Typography variant="h6">
                 {t("Over All Rates")} :{" "}
-                {customerRates && customerRates?.rateAverage}
+                {customerRates && Math.ceil(customerRates?.rateAverage)}
               </Typography>
             </Box>
 

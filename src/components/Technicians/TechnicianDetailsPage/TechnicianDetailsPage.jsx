@@ -189,7 +189,7 @@ const TechnicianDetailsPage = () => {
               </Box>
             </Box>
           </Box>
-          {/* Rates */}
+          {/* Rates
 
           <Box
             mt="20px"
@@ -223,7 +223,7 @@ const TechnicianDetailsPage = () => {
                 </Typography>
               </Box>
             </Box>
-          </Box>
+          </Box> */}
         </Box>
 
         {/* Actions */}
@@ -446,7 +446,8 @@ const TechnicianDetailsPage = () => {
           >
             <Box>
               <Typography variant="h6">
-                {t("Over All Rates")} : {technician && technician.rateAverage}
+                {t("Over All Rates")} :{" "}
+                {technician && Math.ceil(technician?.rateAverage)}
               </Typography>
             </Box>
 
