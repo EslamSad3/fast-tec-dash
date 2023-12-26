@@ -18,7 +18,7 @@ import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 function Home() {
-  const { homeData, isLoading } = useContext(Context);
+  const { homeData, isLoading, language } = useContext(Context);
   const [t] = useTranslation();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
@@ -38,6 +38,8 @@ function Home() {
             columnGap="3rem"
             sx={{
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              width: "100%",
+              height: "15rem",
             }}
           >
             {/* Customers */}
@@ -60,33 +62,51 @@ function Home() {
                   position: "absolute",
                   top: "-1.5rem",
                   left: "1rem",
-                  minWidth: "25%",
-                  minHeight: "30%",
-                  borderRadius: "0.55rem",
-                  backgroundColor: theme.palette.neutral.main,
-                  boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                  minWidth: "80%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <EmojiPeopleOutlinedIcon />
-              </Box>
-              <CardContent>
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.neutral.main,
+                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                    borderRadius: "0.55rem",
+                    width: "4rem",
+                    height: "4rem",
+                    display: "flex",
+                    marginRight: "10px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <EmojiPeopleOutlinedIcon />
+                </Box>
+
                 <Typography
-                  sx={{ fontSize: 35 ,marginTop:"50px"}}
+                  sx={{
+                    fontSize: 22,
+                    position: "absolute",
+                  }}
+                  top="2rem"
+                  right={language === "en" ? "1rem" : ""}
+                  left={language === "ar" ? "1rem" : ""}
                   color={theme.palette.secondary[200]}
                   gutterBottom
                 >
                   {t("Customers")}
                 </Typography>
-                <Typography variant="h6">
-                  {t("Number Of Customers")} : {homeData && homeData?.customers}
+              </Box>
+              <CardContent>
+                <Typography variant="h3" textalign={"center"}>
+                  {homeData && homeData?.customers}
                 </Typography>
               </CardContent>
             </Card>
 
             {/* techs */}
+
             <Card
               sx={{
                 backgroundImage: "none",
@@ -106,33 +126,51 @@ function Home() {
                   position: "absolute",
                   top: "-1.5rem",
                   left: "1rem",
-                  minWidth: "25%",
-                  minHeight: "30%",
-                  borderRadius: "0.55rem",
-                  backgroundColor: theme.palette.success.main,
-                  boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                  minWidth: "80%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <EngineeringOutlinedIcon />
-              </Box>
-              <CardContent>
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.success.main,
+                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                    borderRadius: "0.55rem",
+                    width: "4rem",
+                    height: "4rem",
+                    display: "flex",
+                    marginRight: "10px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <EngineeringOutlinedIcon />
+                </Box>
+
                 <Typography
-                  sx={{ fontSize: 35 ,marginTop:"50px"}}
+                  sx={{
+                    fontSize: 22,
+                    position: "absolute",
+                  }}
+                  top="2rem"
+                  right={language === "en" ? "1rem" : ""}
+                  left={language === "ar" ? "1rem" : ""}
                   color={theme.palette.secondary[200]}
                   gutterBottom
                 >
                   {t("Technicians")}
                 </Typography>
-                <Typography variant="h6">
-                  {t("Number Of Technicians")} : {homeData && homeData?.techs}
+              </Box>
+              <CardContent>
+                <Typography variant="h3" textalign={"center"}>
+                  {homeData && homeData?.techs}
                 </Typography>
               </CardContent>
             </Card>
 
             {/* Orders */}
+
             <Card
               sx={{
                 backgroundImage: "none",
@@ -152,42 +190,59 @@ function Home() {
                   position: "absolute",
                   top: "-1.5rem",
                   left: "1rem",
-                  minWidth: "25%",
-                  minHeight: "30%",
-                  borderRadius: "0.55rem",
-                  backgroundColor: theme.palette.warning.main,
-                  boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                  minWidth: "80%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <BorderColorOutlinedIcon />
-              </Box>
-              <CardContent>
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.warning.main,
+                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                    borderRadius: "0.55rem",
+                    width: "4rem",
+                    height: "4rem",
+                    display: "flex",
+                    marginRight: "10px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <BorderColorOutlinedIcon />
+                </Box>
+
                 <Typography
-                  sx={{ fontSize: 35 ,marginTop:"50px"}}
+                  sx={{
+                    fontSize: 22,
+                    position: "absolute",
+                  }}
+                  top="2rem"
+                  right={language === "en" ? "1rem" : ""}
+                  left={language === "ar" ? "1rem" : ""}
                   color={theme.palette.secondary[200]}
                   gutterBottom
                 >
                   {t("Orders")}
                 </Typography>
-
-                <Typography variant="body1">
-                  {t("Number Of Orders")} :
+              </Box>
+              <CardContent textalign="start">
+                <Typography variant="h5">
+                  {t("Total")} :{" "}
                   {homeData && homeData.orders && homeData.orders.total}
                 </Typography>
-                <Typography variant="body1">
-                  {t("Number Of completed Orders")} :
+                <Typography variant="h5">
+                  {t("COMPLETED")} :{" "}
                   {homeData && homeData.orders && homeData.orders.completed}
                 </Typography>
-                <Typography variant="body1">
-                  {t("Number Of pending Orders")} :
+                <Typography variant="h5">
+                  {t("pending")} :{" "}
                   {homeData && homeData.orders && homeData.orders.pending}
                 </Typography>
               </CardContent>
             </Card>
-            {/* Prifite */}
+
+            {/* profit */}
             <Card
               sx={{
                 backgroundImage: "none",
@@ -200,39 +255,55 @@ function Home() {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              onClick={() => navigate("/customers")}
             >
               <Box
                 sx={{
                   position: "absolute",
                   top: "-1.5rem",
                   left: "1rem",
-                  minWidth: "25%",
-                  minHeight: "30%",
-                  borderRadius: "0.55rem",
-                  backgroundColor: theme.palette.info.main,
-                  boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                  minWidth: "80%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <AttachMoneyIcon />
-              </Box>
-              <CardContent>
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.info.main,
+                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                    borderRadius: "0.55rem",
+                    width: "4rem",
+                    height: "4rem",
+                    display: "flex",
+                    marginRight: "10px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <AttachMoneyIcon />
+                </Box>
+
                 <Typography
-                  sx={{ fontSize: 35 ,marginTop:"50px"}}
+                  sx={{
+                    fontSize: 22,
+                    position: "absolute",
+                  }}
+                  top="2rem"
+                  right={language === "en" ? "1rem" : ""}
+                  left={language === "ar" ? "1rem" : ""}
                   color={theme.palette.secondary[200]}
                   gutterBottom
                 >
                   {t("profit")}
                 </Typography>
-                <Typography variant="h6">
-                  {t("released")} :
+              </Box>
+              <CardContent textalign="start">
+                <Typography variant="h5">
+                  {t("released")} :{" "}
                   {homeData && homeData.profit && homeData.profit.released}
                 </Typography>
-                <Typography variant="h6">
-                  {t("pending")} :
+                <Typography variant="h5">
+                  {t("pending")} :{" "}
                   {homeData && homeData.profit && homeData.profit.pending}
                 </Typography>
               </CardContent>
