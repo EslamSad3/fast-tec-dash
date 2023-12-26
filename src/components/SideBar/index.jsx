@@ -108,6 +108,7 @@ const SideBar = ({
               boxShadow: "0 0 4px rgba(0,0,0,0.5)",
             },
           }}
+          right={language === "ar" ? "-2rem" : ""}
         >
           <Box width="100%">
             <Box m="1.5rem 2rem 2rem 3rem">
