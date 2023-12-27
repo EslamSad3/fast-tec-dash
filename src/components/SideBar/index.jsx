@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
+  ChevronLeftOutlined,
 } from "@mui/icons-material";
 
 import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
@@ -85,9 +86,11 @@ const SideBar = ({
     },
   ];
 
-  useEffect(() => {
-    setActive(pathname.substring(1));
-  }, [pathname]);
+  // useEffect(() => {
+  //   setActive((prevActive) =>
+  //     prevActive.localeCompare(lcText) === 0 ? "" : lcText
+  //   );
+  // }, [pathname]);
 
   return (
     <Box component="nav">
@@ -143,7 +146,9 @@ const SideBar = ({
                         navigate(
                           `/${entext.split(" ").join("").toLowerCase()}`
                         );
-                        setActive(lcText);
+                        setActive((prevActive) =>
+                          prevActive.localeCompare(lcText) === 0 ? "" : lcText
+                        );
                       }}
                       sx={{
                         backgroundColor:
@@ -158,7 +163,8 @@ const SideBar = ({
                     >
                       <ListItemIcon
                         sx={{
-                          ml: "2rem",
+                          ml: language === "en" ? "2rem" : "0",
+                          mr: language === "ar" ? "2rem" : "0",
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
@@ -167,10 +173,19 @@ const SideBar = ({
                       >
                         {icon}
                       </ListItemIcon>
-                      <ListItemText primary={text} />
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
+
+                      <ListItemText
+                        primary={text}
+                        sx={{
+                          textAlign: "start",
+                        }}
+                      />
+                      {active === lcText &&
+                        (language === "en" ? (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        ) : (
+                          <ChevronLeftOutlined sx={{ mr: "auto" }} />
+                        ))}
                     </ListItemButton>
                   </ListItem>
                 );
