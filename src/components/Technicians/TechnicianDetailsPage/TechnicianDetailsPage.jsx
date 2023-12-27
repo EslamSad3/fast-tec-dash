@@ -117,8 +117,6 @@ const TechnicianDetailsPage = () => {
   }, [id, technicians, orders,techRates]);
 
 
-  console.log(technician, "technician");
-
   if (!technician) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
   }

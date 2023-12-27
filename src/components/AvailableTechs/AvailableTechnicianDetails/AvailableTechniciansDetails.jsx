@@ -82,7 +82,6 @@ const TechnicianDetailsPage = () => {
     setOrder(selectedtechnicianOrders);
   }, [id, technicians, orders]);
 
-  console.log(techOrders);
   if (!technician) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
   }

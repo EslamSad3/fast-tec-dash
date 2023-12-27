@@ -43,7 +43,6 @@ function AddNewTech() {
     // Call the addNewTechnician function with the updated values
     await addNewTechnician(updatedValues);
     // Log the updated values
-    console.log(updatedValues);
   }
   let formik = useFormik({
     initialValues: {

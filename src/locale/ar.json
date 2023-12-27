@@ -105,5 +105,15 @@
   "profit": "الأرباح",
   "released": "قابله للسحب",
   "pending": "معلقه",
-  "Total": "الإجمالي"
+  "Total": "الإجمالي",
+  "Notifications":"التــنـبـيـهـات",
+  "Receiver Required":"المستلم مطلوب",
+  "Title Required":"العنوان مطلوب",
+  "Notification body Required":"المحتـوى مطلـوب",
+  "title":"العنوان",
+  "body":"المحتوى",
+  "Message":"الرساله",
+  "Send New Notification":"إرسال تنبيه جديد",
+  "Send":"إرسال",
+  "Expiration Date must be in the future":"لا يمكن إختيار تاريخ سابق"
 }

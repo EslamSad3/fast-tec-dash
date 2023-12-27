@@ -20,7 +20,6 @@ const Technicians = () => {
     useContext(Context);
   const theme = useTheme();
 
-  console.log(technicians, "technicians");
   const columns = [
     {
       field: "id",

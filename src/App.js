@@ -24,6 +24,7 @@ import AvailableTechnicianDetails from "./components/AvailableTechs/AvailableTec
 import CouponDetailsPage from "./components/Coupons/CouponDetailsPage/CouponDetailsPage";
 import AddNewCoupon from "./Actions/Coupons/AddNewCoupon";
 import OrderDetailsPage from "./components/Orders/OrderDetailsPage/OrderDetailsPage";
+import NotificationsToAll from "./Actions/Notifications/NotificationsToAll";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -145,6 +146,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Configuration />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <ProtectedRoute>
+                    <NotificationsToAll />
                   </ProtectedRoute>
                 }
               />

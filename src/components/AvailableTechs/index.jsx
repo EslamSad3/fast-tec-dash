@@ -39,7 +39,6 @@ const Availtechnicians = () => {
       headerName: t("Online"),
       flex: 0.25,
       renderCell: (params) => {
-        console.log(params);
         return (
           <>
             {params.value === true ? (

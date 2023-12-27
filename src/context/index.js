@@ -41,8 +41,7 @@ export function ContextProvider(props) {
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
   const localeHeader = { locale: `${localStorage.getItem("locale")}` };
 
-  console.log(language);
-  // console.log(localeHeader);
+
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
   }
@@ -58,7 +57,6 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
-      console.log(response);
       if (response.status === 200) {
         toast.success(`${response.data.message}`, {
           position: "top-center",
@@ -75,7 +73,6 @@ export function ContextProvider(props) {
           position: toast.POSITION.TOP_CENTER,
         });
         setIsLsLoading(false);
-        console.log(error);
       }
     }
   }
@@ -89,11 +86,9 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setCustomers(response.data.data);
-      console.log(customers, "All Customers");
       setfetchCustomersLoading(false);
     } catch (error) {
       setfetchCustomersLoading(false);
-      console.log(error, "All Customers");
     }
   }
 
@@ -106,7 +101,6 @@ export function ContextProvider(props) {
         { id, verified, active },
         { headers: { ...localeHeader, ...adminheaders } }
       );
-      console.log("Response:", response);
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -168,12 +162,10 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setTechnicians(response.data.data);
-      console.log(technicians, "All technicians");
 
       setfetchAllTechniciansLsLoading(false);
     } catch (error) {
       setfetchAllTechniciansLsLoading(false);
-      console.log(error, "All technicians");
     }
   }
   // fetch Available technicians
@@ -185,11 +177,9 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setAvailableTechnicians(response.data.data);
-      console.log(availableTechnicians, "Available technicians");
       setfetchAvailableTechniciansLsLoading(false);
     } catch (error) {
       setfetchAvailableTechniciansLsLoading(false);
-      console.log(error, "Available technicians");
     }
   }
 
@@ -202,7 +192,6 @@ export function ContextProvider(props) {
         values,
         { headers: { ...localeHeader, ...adminheaders } }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success(response.data.message);
         navigate("/technicians");
@@ -212,7 +201,6 @@ export function ContextProvider(props) {
     } catch (error) {
       toast.error(error.response.data.message);
       setIsLsLoading(false);
-      console.log(error);
     }
   }
 
@@ -225,9 +213,7 @@ export function ContextProvider(props) {
         { id, active: status },
         { headers: { ...localeHeader, ...adminheaders } }
       );
-      console.log(response);
       if (response.status === 200) {
-        console.log(response.status);
         toast.success(response.data.message);
         setupdateTechnicianLsLoading(false);
       }
@@ -235,7 +221,6 @@ export function ContextProvider(props) {
     } catch (error) {
       toast.error(error.response.data.message);
       setupdateTechnicianLsLoading(false);
-      console.log(error);
     }
   }
 
@@ -281,11 +266,9 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setAllCoupons(response.data.data);
-      console.log(allCoupons, "All coupons");
       setIsLsLoading(false);
     } catch (error) {
       setIsLsLoading(false);
-      console.log(error, "All coupons");
     }
   }
 
@@ -325,7 +308,6 @@ export function ContextProvider(props) {
       setOrders(response.data.data);
     } catch (error) {
       setIsLsLoading(false);
-      console.log(error);
     }
   }
   // Get orders
@@ -343,12 +325,9 @@ export function ContextProvider(props) {
       setoneCustomer(response.data.customer);
       setoneTech(response.data.tech);
 
-      console.log(oneCustomer, "oneCustomer");
-      console.log(oneTech, "oneTech");
-      console.log(response, "One Order");
+
     } catch (error) {
       setIsLsLoading(false);
-      console.log(error);
     }
   }
 
@@ -364,14 +343,33 @@ export function ContextProvider(props) {
       if (response.status === 200) {
         setIsLsLoading(false);
         setHomeData(response.data);
-        console.log(response, "response");
       } else {
         setIsLsLoading(false);
-        console.log(response.status, "error Loading Data");
       }
     } catch (error) {
       setIsLsLoading(false);
-      console.log(error);
+    }
+  }
+
+  // Send New Notification
+  async function sendNewNotification(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/notifications/send-notification.php`,
+        values,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        setIsLsLoading(false);
+        toast.error("Error sending notification");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      toast.error(error.response.data.message);
     }
   }
 
@@ -427,6 +425,7 @@ export function ContextProvider(props) {
         refreshData,
         handleChangeDir,
         fetHomeData,
+        sendNewNotification,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,

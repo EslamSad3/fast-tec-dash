@@ -24,8 +24,6 @@ const OrderDetailsPage = () => {
     fetchOrder();
   }, []);
 
-  // console.log(oneCustomer, "oneCustomer");
-  // console.log(oneTech, "oneTech");
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed

@@ -15,17 +15,30 @@ import {
 import Header from "../../components/Header";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 function AddNewCoupon() {
   const [t] = useTranslation();
-  const { createCoupons, isLoading } = useContext(Context);
+  const { createCoupons, isLoading, refreshData } = useContext(Context);
+  const navigate = useNavigate()
   const validationSchema = Yup.object().shape({
     couponCode: Yup.string()
       .required(t("Coupon Name Required"))
       .min(2, t("To Short coupon Name (Min 2)")),
-    expires: Yup.date().required(t("Expiration Date Required")),
+    expires: Yup.date()
+      .required(t("Expiration Date Required"))
+      .test(
+        "not-in-past",
+        t("Expiration Date must be in the future"),
+        (value) => {
+          // Custom validation function to check if the date is not in the past
+          const currentDate = new Date();
+          return !value || new Date(value) > currentDate;
+        }
+      ),
     discountValue: Yup.string().required(t("Discount Value Required")),
   });
+
 
   let formik = useFormik({
     initialValues: {
@@ -39,7 +52,8 @@ function AddNewCoupon() {
 
   async function hanldeAddNewCoupons() {
     await createCoupons(formik.values);
-    console.log(formik.values);
+    refreshData()
+navigate("/coupons");
   }
 
   return (
@@ -92,7 +106,7 @@ function AddNewCoupon() {
             />
           </Box>
 
-          {formik.errors.expires && formik.touched.expires ? (
+          {formik.errors.expires && formik.touched.expires  ? (
             <Alert severity="error">
               <AlertTitle>{t("Error")}</AlertTitle>
               {formik.errors.expires}
