@@ -18,10 +18,7 @@ function AddNewTech() {
   const [t] = useTranslation();
   const { addNewTechnician, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .required(t("Name Required"))
-      .min(2, t("To Short Name (Min 2)"))
-      .max(20, t("To Long Name (Max 20)")),
+    name: Yup.string().required(t("Name Required")),
     phone: Yup.string()
       .required(t("Phone Number Required"))
       .min(8, t("Min Phone Number (8)"))
