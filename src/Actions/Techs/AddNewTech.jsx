@@ -20,7 +20,8 @@ function AddNewTech() {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required(t("Name Required"))
-      .min(2, t("To Short Name (Min 2)")),
+      .min(2, t("To Short Name (Min 2)"))
+      .max(20, t("To Long Name (Max 20)")),
     phone: Yup.string()
       .required(t("Phone Number Required"))
       .min(8, t("Min Phone Number (8)"))
