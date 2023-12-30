@@ -41,7 +41,6 @@ export function ContextProvider(props) {
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
   const localeHeader = { locale: `${localStorage.getItem("locale")}` };
 
-
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
   }
@@ -55,6 +54,7 @@ export function ContextProvider(props) {
         values,
         { headers: { ...localeHeader } }
       );
+      console.log(response);
       setIsLsLoading(false);
       localStorage.setItem("AdminToken", response.data.accessToken);
       if (response.status === 200) {
@@ -324,8 +324,6 @@ export function ContextProvider(props) {
       setOrder(response.data);
       setoneCustomer(response.data.customer);
       setoneTech(response.data.tech);
-
-
     } catch (error) {
       setIsLsLoading(false);
     }
