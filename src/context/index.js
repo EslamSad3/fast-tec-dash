@@ -37,9 +37,11 @@ export function ContextProvider(props) {
   );
 
   const [language, setlanguage] = useState(localStorage.getItem("locale"));
+  const [localeHeader, setlocaleHeader] = useState({
+    locale: `${localStorage.getItem("locale")}` || "ar",
+  });
 
   let adminheaders = { Authorization: `${localStorage.getItem("AdminToken")}` };
-  const localeHeader = { locale: `${localStorage.getItem("locale")}` };
 
   function saveAdminToken() {
     setAdminToken(localStorage.getItem("AdminToken"));
@@ -69,6 +71,7 @@ export function ContextProvider(props) {
       }
     } catch (error) {
       if (error.response.status !== 200) {
+        // console.log(error);
         toast.error(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -402,6 +405,7 @@ export function ContextProvider(props) {
     fetchOrders();
     handleChangeDir();
     fetHomeData();
+    setlocaleHeader({ locale: "ar" });
   }, []);
 
   return (
