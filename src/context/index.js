@@ -374,6 +374,30 @@ export function ContextProvider(props) {
     }
   }
 
+  // change order status by admin
+  async function changeOrderStatusByAdmin(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/orders/cancel-order.php`,
+        {
+          orderId: id,
+        },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data?.message);
+      } else {
+        setIsLsLoading(false);
+        toast.error("Error sending notification");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      toast.error(error.response.data?.message);
+    }
+  }
+
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
@@ -428,6 +452,7 @@ export function ContextProvider(props) {
         handleChangeDir,
         fetHomeData,
         sendNewNotification,
+        changeOrderStatusByAdmin,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,

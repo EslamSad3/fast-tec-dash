@@ -36,7 +36,6 @@ const TechnicianDetailsPage = () => {
     deletTechnicianLoading,
     orders,
     refreshData,
-    fetchAllTechniciansLoading,
   } = useContext(Context);
 
   const [techOrders, setOrder] = useState(null);
@@ -45,6 +44,7 @@ const TechnicianDetailsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
+  console.log(technician);
   const navigate = useNavigate();
   // Edit
   const handleClickOpenEdit = () => {
@@ -114,8 +114,7 @@ const TechnicianDetailsPage = () => {
       (order) => String(order.techId) === id
     );
     setOrder(selectedtechnicianOrders);
-  }, [id, technicians, orders,techRates]);
-
+  }, [id, technicians, orders, techRates]);
 
   if (!technician) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -142,13 +141,25 @@ const TechnicianDetailsPage = () => {
               alignItems: "center",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Typography variant="h6">
                 {t("Technician ID")} : {technician.id}
               </Typography>
               <Typography variant="small">
                 {" "}
                 {t("Creation Date")} : {technician.created_at}
+              </Typography>
+              <Typography variant="small">
+                {" "}
+                {t("last Location Update")} :{" "}
+                {technician.lastLocationUpdate === null
+                  ? t("Not Defined")
+                  : technician.lastLocationUpdate}
               </Typography>
             </Box>
             <Box

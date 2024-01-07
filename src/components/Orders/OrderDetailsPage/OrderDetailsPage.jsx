@@ -1,29 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
-import { Box, Typography, Alert, useTheme, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Alert,
+  useTheme,
+  useMediaQuery,
+  Button,
+} from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
 const OrderDetailsPage = () => {
   const [t] = useTranslation();
   const { id } = useParams();
-  const { order, fetchOneOrder, refreshData, oneCustomer, oneTech } =
-    useContext(Context);
+  const {
+    order,
+    fetchOneOrder,
+    refreshData,
+    oneCustomer,
+    oneTech,
+    changeOrderStatusByAdmin,
+  } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
 
+  async function handleChangeStatus() {
+    await changeOrderStatusByAdmin(id);
+    fetchOrder();
+  }
   // Fetch order
-
   async function fetchOrder() {
     await fetchOneOrder(id);
-
     refreshData();
   }
 
   useEffect(() => {
     fetchOrder();
   }, []);
-
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -49,13 +63,22 @@ const OrderDetailsPage = () => {
           }}
         >
           <Box>
-            <Typography variant="h6">
-              {t("Order ID")} : {order && order.data?.id}
-            </Typography>
-            <Typography variant="small">
-              {" "}
-              {t("Date")} : {order && order.data?.creationDate}
-            </Typography>
+            <Box>
+              <Typography variant="h6">
+                {t("Order ID")} : {order && order.data?.id}
+              </Typography>
+              <Typography variant="small">
+                {" "}
+                {t("Date")} : {order && order.data?.creationDate}
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => handleChangeStatus()}
+            >
+              {t("Change Status")}
+            </Button>
           </Box>
           <Box>
             <Typography variant="p" component="div">
@@ -72,11 +95,9 @@ const OrderDetailsPage = () => {
               ) : order && order.data?.status === "5" ? (
                 <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
               ) : order && order.data?.status === "6" ? (
-                <Alert severity="success">{t("COMPLETED")}</Alert> 
-                
-              ) :  order && order.data?.status === "7" ? (
-                <Alert severity="error">{t("FAILED PAYMENT")}</Alert> 
-                
+                <Alert severity="success">{t("COMPLETED")}</Alert>
+              ) : order && order.data?.status === "7" ? (
+                <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
               ) : (
                 "Not Listed"
               )}
