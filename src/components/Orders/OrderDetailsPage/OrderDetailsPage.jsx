@@ -72,10 +72,11 @@ const OrderDetailsPage = () => {
                 {t("Date")} : {order && order.data?.creationDate}
               </Typography>
             </Box>
-            {(order && order.data?.status === "0") ||
-            (order && order.data?.status === "3") ||
-            (order && order.data?.status === "4") ||
-            (order && order.data?.status === "5") ? (
+            {(order && order.data?.status === "1") ||
+            (order && order.data?.status === "2") ||
+            (order && order.data?.status === "6") ? (
+              ""
+            ) : (
               <Button
                 variant="outlined"
                 color="error"
@@ -83,8 +84,6 @@ const OrderDetailsPage = () => {
               >
                 {t("Cancel Order")}
               </Button>
-            ) : (
-              ""
             )}
           </Box>
           <Box>
