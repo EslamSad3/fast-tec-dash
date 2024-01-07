@@ -116,7 +116,7 @@
   "Send New Notification": "إرسال تنبيه جديد",
   "Send": "إرسال",
   "Expiration Date must be in the future": "لا يمكن إختيار تاريخ سابق",
-  "Change Status": "تغيير حالة الطلب",
+  "Cancel Order": "الغاء الطلب",
   "Not Defined":"غير معروف",
   "last Location Update":"اخر تحديث للمكان"
 }

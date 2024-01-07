@@ -72,13 +72,20 @@ const OrderDetailsPage = () => {
                 {t("Date")} : {order && order.data?.creationDate}
               </Typography>
             </Box>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => handleChangeStatus()}
-            >
-              {t("Change Status")}
-            </Button>
+            {(order && order.data?.status === "0") ||
+            (order && order.data?.status === "3") ||
+            (order && order.data?.status === "4") ||
+            (order && order.data?.status === "5") ? (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => handleChangeStatus()}
+              >
+                {t("Cancel Order")}
+              </Button>
+            ) : (
+              ""
+            )}
           </Box>
           <Box>
             <Typography variant="p" component="div">
