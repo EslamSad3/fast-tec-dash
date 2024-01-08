@@ -187,12 +187,12 @@ const TechnicianDetailsPage = () => {
               </Box>
               <Box sx={{ my: "1rem" }}>
                 {technician.assigned === true ? (
-                  <Alert severity="success">
-                    {t("Assigned")}: {t("No")}
-                  </Alert>
-                ) : (
                   <Alert severity="error">
                     {t("Assigned")}: {t("Yes")}
+                  </Alert>
+                ) : (
+                  <Alert severity="success">
+                    {t("Assigned")}: {t("No")}
                   </Alert>
                 )}
               </Box>
