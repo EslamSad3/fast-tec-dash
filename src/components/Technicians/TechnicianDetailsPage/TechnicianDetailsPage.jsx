@@ -44,7 +44,6 @@ const TechnicianDetailsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  console.log(technician);
   const navigate = useNavigate();
   // Edit
   const handleClickOpenEdit = () => {

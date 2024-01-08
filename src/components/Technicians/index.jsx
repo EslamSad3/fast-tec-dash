@@ -19,7 +19,6 @@ const Technicians = () => {
   const { technicians, fetchAllTechniciansLoading, refreshData } =
     useContext(Context);
   const theme = useTheme();
-console.log(technicians);
   const columns = [
     {
       field: "id",
