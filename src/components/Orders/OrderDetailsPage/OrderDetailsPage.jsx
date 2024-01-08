@@ -8,6 +8,7 @@ import {
   useTheme,
   useMediaQuery,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,7 @@ const OrderDetailsPage = () => {
     oneCustomer,
     oneTech,
     changeOrderStatusByAdmin,
+    isLoading,
   } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
@@ -82,7 +84,11 @@ const OrderDetailsPage = () => {
                 color="error"
                 onClick={() => handleChangeStatus()}
               >
-                {t("Cancel Order")}
+                {isLoading ? (
+                  <CircularProgress color="primary" />
+                ) : (
+                  t("Cancel Order")
+                )}
               </Button>
             )}
           </Box>
