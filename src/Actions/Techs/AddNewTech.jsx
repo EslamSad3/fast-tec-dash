@@ -24,7 +24,7 @@ function AddNewTech() {
     phone: Yup.string()
       .required(t("Phone Number Required"))
       .min(8, t("Min Phone Number (8)"))
-      .matches(/^[569]\d{7}$/, t("Invalid Phone Number")),
+      .matches(/^[4569]\d{7}$/, t("Invalid Phone Number")),
     password: Yup.string()
       .required(t("Password Required"))
       .min(6, t("To Shore Password (Min 6)"))
