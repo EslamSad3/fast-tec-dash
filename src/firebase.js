@@ -1,22 +1,13 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAWV0FWlIooBnWW7ncOZUO3EPhU0ii5ndY",
-  authDomain: "fast-tec-a80fd.firebaseapp.com",
-  databaseURL: "https://fast-tec-a80fd-default-rtdb.firebaseio.com",
-  projectId: "fast-tec-a80fd",
-  storageBucket: "fast-tec-a80fd.appspot.com",
-  messagingSenderId: "951524565584",
-  appId: "1:951524565584:web:999a5e2032b72c26eea755",
-  measurementId: "G-ZX820ND3Q4",
+  apiKey: "AIzaSyBA7w3k2myOwnpsRbo75PS2vaf8L9naNEE",
+  authDomain: "fcmtest-a43b8.firebaseapp.com",
+  projectId: "fcmtest-a43b8",
+  storageBucket: "fcmtest-a43b8.appspot.com",
+  messagingSenderId: "762144589269",
+  appId: "1:762144589269:web:ceeb02fbb79d741924695c",
 };
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
@@ -25,8 +16,9 @@ export const requestPermission = () => {
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
       console.log("Notification User Permission Granted.");
+
       return getToken(messaging, {
-        vapidKey: `BMIeydStJAtXdM_GcSB-o2S-SQbmQ384TCdB5cbMBv14LegaDV38aU5HmbVHaqBkIboqGoGd7pQVjNp8-hpOkoE`,
+        vapidKey: `BCKk4HHlwsWEsULePAzNDkOrRQr2-zl1gUvTuax3c6UDUOdf6DLxLC1cN_tFSfAxcwEJqYk17FuUlW-ke1wqQkk`,
       })
         .then((currentToken) => {
           if (currentToken) {
@@ -47,7 +39,7 @@ export const requestPermission = () => {
   });
 };
 
-requestPermission();
+
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
@@ -55,3 +47,5 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
+
+requestPermission();
