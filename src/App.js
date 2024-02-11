@@ -25,6 +25,7 @@ import CouponDetailsPage from "./components/Coupons/CouponDetailsPage/CouponDeta
 import AddNewCoupon from "./Actions/Coupons/AddNewCoupon";
 import OrderDetailsPage from "./components/Orders/OrderDetailsPage/OrderDetailsPage";
 import NotificationsToAll from "./Actions/Notifications/NotificationsToAll";
+import Notification from "./FCM/Notification/Notification";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -168,6 +169,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>
+          <Notification />
         </ContextProvider>
       </ThemeProvider>
       <ToastContainer />
