@@ -28,6 +28,7 @@ import NotificationsToAll from "./Actions/Notifications/NotificationsToAll";
 import Notification from "./FCM/Notification/Notification";
 
 function App() {
+  console.log('v2')
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
