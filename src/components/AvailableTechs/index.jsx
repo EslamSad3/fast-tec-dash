@@ -51,8 +51,8 @@ const Availtechnicians = () => {
       },
     },
     {
-      field: "suspended",
-      headerName: t("Suspended"),
+      field: "active",
+      headerName: t("Active"),
       flex: 0.25,
       renderCell: (params) => {
         return (

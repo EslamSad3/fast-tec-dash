@@ -138,6 +138,19 @@ const TechnicianDetailsPage = () => {
                   </Alert>
                 )}
               </Box>
+
+              <Box sx={{ my: "1rem" }}>
+                {technician.online === true ? (
+                  <Alert severity="success">
+                    {t("Online")}: {t("Yes")}
+                  </Alert>
+                ) : (
+                  <Alert severity="error">
+                    {t("Online")}: {t("No")}
+                  </Alert>
+                )}
+              </Box>
+
               <Box sx={{ my: "1rem" }}>
                 {technician.assigned === true ? (
                   <Alert severity="success">

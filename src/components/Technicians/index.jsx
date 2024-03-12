@@ -39,6 +39,21 @@ const Technicians = () => {
     },
     {
       field: "active",
+      headerName: t("Active"),
+      flex: 0.25,
+      renderCell: (params) => {
+        return (
+          <>
+            {params.value === true ? (
+              <Typography variant="body1">{t("Yes")}</Typography>
+            ) : (
+              <Typography variant="body1">{t("No")}</Typography>
+            )}
+          </>
+        );
+      },
+    },    {
+      field: "online",
       headerName: t("Online"),
       flex: 0.25,
       renderCell: (params) => {

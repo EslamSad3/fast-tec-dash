@@ -173,6 +173,7 @@ const TechnicianDetailsPage = () => {
                 {t("Language")} : {t(`${technician.lang}`)}
               </Typography>
 
+<Typography>
               <Box sx={{ my: "1rem" }}>
                 {technician.active === true ? (
                   <Alert severity="success">
@@ -184,6 +185,20 @@ const TechnicianDetailsPage = () => {
                   </Alert>
                 )}
               </Box>
+              </Typography>
+
+              <Box sx={{ my: "1rem" }}>
+                {technician.online === true ? (
+                  <Alert severity="success">
+                    {t("Online")}: {t("Yes")}
+                  </Alert>
+                ) : (
+                  <Alert severity="error">
+                    {t("Online")}: {t("No")}
+                  </Alert>
+                )}
+              </Box>
+
               <Box sx={{ my: "1rem" }}>
                 {technician.assigned === true ? (
                   <Alert severity="error">
