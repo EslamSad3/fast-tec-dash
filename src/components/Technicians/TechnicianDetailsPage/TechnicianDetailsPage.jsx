@@ -15,8 +15,6 @@ import {
   Alert,
   useMediaQuery,
   useTheme,
-  Card,
-  CardContent,
 } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
@@ -44,7 +42,7 @@ const TechnicianDetailsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  console.log(techOrders)
+  console.log(techOrders);
   const navigate = useNavigate();
   // Edit
   const handleClickOpenEdit = () => {
@@ -103,7 +101,6 @@ const TechnicianDetailsPage = () => {
     },
   ];
 
-  
   const ordersColumns = [
     {
       field: "id",
@@ -113,7 +110,6 @@ const TechnicianDetailsPage = () => {
 
       renderCell: (params) => (
         <Link to={`/orders/${params.row?.id}`}>
-          
           <Button variant="contained" color="primary">
             <LinkIcon />
             {params.row?.id}
@@ -132,32 +128,30 @@ const TechnicianDetailsPage = () => {
       headerName: t("Status"),
       flex: 2,
       minWidth: 250,
-       renderCell: (params) => (
-        
-          <Box>
-            <Typography variant="p" component="div">
-              {params && params.row?.status === "0" ? (
-                <Alert severity="success">{t("NEW")}</Alert>
-              ) : params && params.row?.status === "1" ? (
-                <Alert severity="error">{t("CANCELLED")}</Alert>
-              ) : params && params.row?.status === "2" ? (
-                <Alert severity="warning">{t("REJECTED")}</Alert>
-              ) : params && params.row?.status === "3" ? (
-                <Alert severity="info">{t("ON_WAY")}</Alert>
-              ) : params && params.row?.status === "4" ? (
-                <Alert severity="info">{t("IN_PROGRESS")}</Alert>
-              ) : params && params.row?.status === "5" ? (
-                <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
-              ) : params && params.row?.status === "6" ? (
-                <Alert severity="success">{t("COMPLETED")}</Alert>
-              ) : params && params.row?.status === "7" ? (
-                <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
-              ) : (
-                "Not Listed"
-              )}
-            </Typography>
-          </Box>
-
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="p" component="div">
+            {params && params.row?.status === "0" ? (
+              <Alert severity="success">{t("NEW")}</Alert>
+            ) : params && params.row?.status === "1" ? (
+              <Alert severity="error">{t("CANCELLED")}</Alert>
+            ) : params && params.row?.status === "2" ? (
+              <Alert severity="warning">{t("REJECTED")}</Alert>
+            ) : params && params.row?.status === "3" ? (
+              <Alert severity="info">{t("ON_WAY")}</Alert>
+            ) : params && params.row?.status === "4" ? (
+              <Alert severity="info">{t("IN_PROGRESS")}</Alert>
+            ) : params && params.row?.status === "5" ? (
+              <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
+            ) : params && params.row?.status === "6" ? (
+              <Alert severity="success">{t("COMPLETED")}</Alert>
+            ) : params && params.row?.status === "7" ? (
+              <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+            ) : (
+              "Not Listed"
+            )}
+          </Typography>
+        </Box>
       ),
     },
   ];
@@ -233,18 +227,18 @@ const TechnicianDetailsPage = () => {
                 {t("Language")} : {t(`${technician.lang}`)}
               </Typography>
 
-<Typography>
-              <Box sx={{ my: "1rem" }}>
-                {technician.active === true ? (
-                  <Alert severity="success">
-                    {t("Active")}: {t("Yes")}
-                  </Alert>
-                ) : (
-                  <Alert severity="error">
-                    {t("Active")}: {t("No")}
-                  </Alert>
-                )}
-              </Box>
+              <Typography>
+                <Box sx={{ my: "1rem" }}>
+                  {technician.active === true ? (
+                    <Alert severity="success">
+                      {t("Active")}: {t("Yes")}
+                    </Alert>
+                  ) : (
+                    <Alert severity="error">
+                      {t("Active")}: {t("No")}
+                    </Alert>
+                  )}
+                </Box>
               </Typography>
 
               <Box sx={{ my: "1rem" }}>
@@ -272,41 +266,6 @@ const TechnicianDetailsPage = () => {
               </Box>
             </Box>
           </Box>
-          {/* Rates
-
-          <Box
-            mt="20px"
-            display="grid"
-            gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-            justifyContent="space-between"
-            rowGap="20px"
-            columnGap="1.33%"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-              }}
-            >
-              <Box>
-                <Typography variant="h6">{t("Technician")} </Typography>
-
-                <Typography variant="p">
-                  {t("Name")} :
-                  {technicians && technician && technician && technician.name}{" "}
-                </Typography>
-                <br />
-                <Typography variant="p">
-                  {t("Phone")} :
-                  {technicians && technician && technician && technician.phone}{" "}
-                </Typography>
-              </Box>
-            </Box>
-          </Box> */}
         </Box>
 
         {/* Actions */}
@@ -371,143 +330,6 @@ const TechnicianDetailsPage = () => {
         </Box>
 
         {/* Orders */}
-        {/** 
-        <Box
-          sx={{
-            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
-            mx: "1rem",
-            mt: "1rem",
-            mb: "1rem",
-            p: "1.5rem",
-            borderRadius: "10px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-            }}
-          >
-            <Box>
-              <Header title={t("Technician Orders")} />
-              <Typography variant="p" mx="20px">
-                {t("Number Of Orders")} :
-                {technicians && technician && orders && techOrders.length}
-              </Typography>
-            </Box>
-
-            {technicians && technician && orders && techOrders ? (
-              <Box
-                mt="20px"
-                mx="20px"
-                display="grid"
-                gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-                justifyContent="space-between"
-                rowGap="20px"
-                columnGap="1.33%"
-                sx={{
-                  "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                }}
-              >
-                {technicians &&
-                  technician &&
-                  orders &&
-                  techOrders.map((torder) => {
-                    return (
-                      <>
-                        <Card
-                          key={torder.id}
-                          sx={{
-                            backgroundImage: "none",
-                            backgroundColor: theme.palette.background.alt,
-                            borderRadius: "0.55rem",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => navigate(`/orders/${torder.id}`)}
-                        >
-                          <CardContent>
-                            <Typography
-                              sx={{ fontSize: 14 }}
-                              color={theme.palette.secondary[200]}
-                              gutterBottom
-                            >
-                              {t("Order ID")} : {torder.id}
-                            </Typography>
-                            <Typography variant="p" component="div">
-                              {`${t("Status")} : `}
-                              {torder.status === "0" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.success.main}
-                                >
-                                  {t("NEW")}
-                                </Typography>
-                              ) : torder.status === "1" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.error.main}
-                                >
-                                  {t("CANCELLED")}
-                                </Typography>
-                              ) : torder.status === "2" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.warning.main}
-                                >
-                                  {t("REJECTED")}
-                                </Typography>
-                              ) : torder.status === "3" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.info.main}
-                                >
-                                  {t("ON_WAY")}
-                                </Typography>
-                              ) : torder.status === "4" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.info[300]}
-                                >
-                                  {t("IN_PROGRESS")}
-                                </Typography>
-                              ) : torder.status === "5" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.warning[600]}
-                                >
-                                  {t("PENDING_PAYMENT")}
-                                </Typography>
-                              ) : torder.status === "6" ? (
-                                <Typography
-                                  variant="p"
-                                  color={theme.palette.success[900]}
-                                >
-                                  {t("COMPLETED")}
-                                </Typography>
-                              ) : (
-                                ""
-                              )}
-                            </Typography>
-                            <Typography variant="body2">
-                              {t("Customer ID")} : {torder.customerId}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </>
-                    );
-                  })}
-              </Box>
-            ) : (
-              "Loading ..."
-            )}
-          </Box>
-        </Box>
-*/}
-
-
-
-        {/* Orders */}
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -533,8 +355,7 @@ const TechnicianDetailsPage = () => {
           >
             <Box>
               <Typography variant="h6">
-                {t("Orders")} :{" "}
-                {technician && techOrders.length}
+                {t("Orders")} : {technician && techOrders.length}
               </Typography>
             </Box>
 
@@ -571,14 +392,11 @@ const TechnicianDetailsPage = () => {
                 // loading={fetchAllTechniciansLoading || !techRates}
                 getRowId={(row) => row.id}
                 columns={ordersColumns}
-                 pageSizeOptions={[20]}
+                pageSizeOptions={[20]}
               />
             </Box>
           </Box>
         </Box>
-
-
-
 
         {/* Rates */}
         <Box
@@ -644,8 +462,7 @@ const TechnicianDetailsPage = () => {
                 // loading={fetchAllTechniciansLoading || !techRates}
                 getRowId={(row) => row.orderId}
                 columns={columns}
-                 pageSizeOptions={[20]}
-
+                pageSizeOptions={[20]}
               />
             </Box>
           </Box>
