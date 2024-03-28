@@ -52,7 +52,8 @@ const Technicians = () => {
           </>
         );
       },
-    },    {
+    },
+    {
       field: "online",
       headerName: t("Online"),
       flex: 0.25,

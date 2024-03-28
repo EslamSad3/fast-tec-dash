@@ -179,6 +179,7 @@ const TechnicianDetailsPage = () => {
       <Box>
         <Header title={t("Technician Details")} />
 
+        {/* Details */}
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -194,13 +195,25 @@ const TechnicianDetailsPage = () => {
               alignItems: "center",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Typography variant="h6">
                 {t("Technician ID")} : {technician.id}
               </Typography>
               <Typography variant="small">
                 {" "}
                 {t("Creation Date")} : {technician.created_at}
+              </Typography>
+              <Typography variant="small">
+                {" "}
+                {t("last Location Update")} :{" "}
+                {technician.lastLocationUpdate === null
+                  ? t("Not Defined")
+                  : technician.lastLocationUpdate}
               </Typography>
             </Box>
             <Box
@@ -215,20 +228,22 @@ const TechnicianDetailsPage = () => {
                 {t("Language")} : {t(`${technician.lang}`)}
               </Typography>
 
-              <Box sx={{ my: "1rem" }}>
-                {technician.active === true ? (
-                  <Alert severity="success">
-                    {t("Active")}: {t("Yes")}
-                  </Alert>
-                ) : (
-                  <Alert severity="error">
-                    {t("Active")}: {t("No")}
-                  </Alert>
-                )}
-              </Box>
+              <Typography>
+                <Box sx={{ my: "1rem" }}>
+                  {technician?.active === true ? (
+                    <Alert severity="success">
+                      {t("Active")}: {t("Yes")}
+                    </Alert>
+                  ) : (
+                    <Alert severity="error">
+                      {t("Active")}: {t("No")}
+                    </Alert>
+                  )}
+                </Box>
+              </Typography>
 
               <Box sx={{ my: "1rem" }}>
-                {technician.online === true ? (
+                {technician?.online === true ? (
                   <Alert severity="success">
                     {t("Online")}: {t("Yes")}
                   </Alert>
@@ -240,49 +255,15 @@ const TechnicianDetailsPage = () => {
               </Box>
 
               <Box sx={{ my: "1rem" }}>
-                {technician.assigned === true ? (
-                  <Alert severity="success">
-                    {t("Assigned")}: {t("No")}
-                  </Alert>
-                ) : (
+                {technician?.assigned === true ? (
                   <Alert severity="error">
                     {t("Assigned")}: {t("Yes")}
                   </Alert>
+                ) : (
+                  <Alert severity="success">
+                    {t("Assigned")}: {t("No")}
+                  </Alert>
                 )}
-              </Box>
-            </Box>
-          </Box>
-
-          <Box
-            mt="20px"
-            display="grid"
-            gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-            justifyContent="space-between"
-            rowGap="20px"
-            columnGap="1.33%"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-              }}
-            >
-              <Box>
-                <Typography variant="h6">{t("Technician")} </Typography>
-
-                <Typography variant="p">
-                  {t("Name")} :
-                  {technicians && technician && technician && technician.name}{" "}
-                </Typography>
-                <br />
-                <Typography variant="p">
-                  {t("Phone")} :
-                  {technicians && technician && technician && technician.phone}{" "}
-                </Typography>
               </Box>
             </Box>
           </Box>
