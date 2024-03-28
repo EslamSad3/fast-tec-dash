@@ -44,6 +44,7 @@ const TechnicianDetailsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
+  console.log(techOrders)
   const navigate = useNavigate();
   // Edit
   const handleClickOpenEdit = () => {
@@ -99,6 +100,65 @@ const TechnicianDetailsPage = () => {
       headerName: t("Comment"),
       flex: 4,
       minWidth: 250,
+    },
+  ];
+
+  
+  const ordersColumns = [
+    {
+      field: "id",
+      headerName: t("Order ID"),
+      flex: 0.7,
+      minWidth: 50,
+
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row?.id}`}>
+          
+          <Button variant="contained" color="primary">
+            <LinkIcon />
+            {params.row?.id}
+          </Button>
+        </Link>
+      ),
+    },
+    {
+      field: "customerId",
+      headerName: t("Customer ID"),
+      flex: 0.85,
+      minWidth: 50,
+    },
+    {
+      field: "status",
+      headerName: t("Status"),
+      flex: 2,
+      minWidth: 250,
+       renderCell: (params) => (
+        
+          <Box>
+            <Typography variant="p" component="div">
+              {params && params.row?.status === "0" ? (
+                <Alert severity="success">{t("NEW")}</Alert>
+              ) : params && params.row?.status === "1" ? (
+                <Alert severity="error">{t("CANCELLED")}</Alert>
+              ) : params && params.row?.status === "2" ? (
+                <Alert severity="warning">{t("REJECTED")}</Alert>
+              ) : params && params.row?.status === "3" ? (
+                <Alert severity="info">{t("ON_WAY")}</Alert>
+              ) : params && params.row?.status === "4" ? (
+                <Alert severity="info">{t("IN_PROGRESS")}</Alert>
+              ) : params && params.row?.status === "5" ? (
+                <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
+              ) : params && params.row?.status === "6" ? (
+                <Alert severity="success">{t("COMPLETED")}</Alert>
+              ) : params && params.row?.status === "7" ? (
+                <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+              ) : (
+                "Not Listed"
+              )}
+            </Typography>
+          </Box>
+
+      ),
     },
   ];
 
@@ -311,6 +371,7 @@ const TechnicianDetailsPage = () => {
         </Box>
 
         {/* Orders */}
+        {/** 
         <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -442,6 +503,82 @@ const TechnicianDetailsPage = () => {
             )}
           </Box>
         </Box>
+*/}
+
+
+
+        {/* Orders */}
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Header title={t("Orders")} />
+          <Box
+            mt="20px"
+            mx="20px"
+            // display="grid"
+            // gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            // justifyContent="center"
+            // alignItems="center"
+            // Gap="1rem"
+            textAlign={"center"}
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Box>
+              {/* <Typography variant="h6">
+                {t("Over All Rates")} :{" "}
+                {technician && Math.ceil(technician?.rateAverage)}
+              </Typography> */}
+            </Box>
+
+            <Box
+              mt="40px"
+              height="75vh"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: theme.palette.primary.light,
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  borderTop: "none",
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `${theme.palette.secondary[200]} !important`,
+                },
+              }}
+            >
+              <DataGrid
+                rows={techOrders || []}
+                // loading={fetchAllTechniciansLoading || !techRates}
+                getRowId={(row) => row.id}
+                columns={ordersColumns}
+                 pageSizeOptions={[20]}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+
+
 
         {/* Rates */}
         <Box
@@ -507,6 +644,8 @@ const TechnicianDetailsPage = () => {
                 // loading={fetchAllTechniciansLoading || !techRates}
                 getRowId={(row) => row.orderId}
                 columns={columns}
+                 pageSizeOptions={[20]}
+
               />
             </Box>
           </Box>
