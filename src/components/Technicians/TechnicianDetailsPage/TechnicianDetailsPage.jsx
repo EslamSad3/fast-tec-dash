@@ -532,10 +532,10 @@ const TechnicianDetailsPage = () => {
             }}
           >
             <Box>
-              {/* <Typography variant="h6">
-                {t("Over All Rates")} :{" "}
-                {technician && Math.ceil(technician?.rateAverage)}
-              </Typography> */}
+              <Typography variant="h6">
+                {t("Orders")} :{" "}
+                {technician && techOrders.length}
+              </Typography>
             </Box>
 
             <Box
