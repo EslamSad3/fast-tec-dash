@@ -19,6 +19,8 @@ function ChangeTechPassword() {
   const { id } = useParams();
   const [t] = useTranslation();
   const { changeTechPassword, isLoading } = useContext(Context);
+
+
   const validationSchema = Yup.object().shape({
     newPassword: Yup.string()
       .required(t("Password Required"))
@@ -27,6 +29,9 @@ function ChangeTechPassword() {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/,
         t("Invalid Password Formate (Q1@we34rt5)")
       ),
+    // password: Yup.string()
+    //   .required("Password confirmation required")
+    //   .oneOf([Yup.ref("newPassword")], "Passwords must match"),
   });
 
   async function hanldeChangeTechPassword(values) {
@@ -76,6 +81,27 @@ function ChangeTechPassword() {
               {formik.errors.newPassword}
             </Alert>
           ) : null}
+
+{/* Confirm */}
+          {/* <TextField
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+            name="password"
+            id="password"
+            margin="normal"
+            required
+            fullWidth
+            label={t("Password")}
+          />
+          {formik.errors.password && formik.touched.password ? (
+            <Alert severity="error">
+              <AlertTitle>{t("Error")}</AlertTitle>
+              {formik.errors.password}
+            </Alert>
+          ) : null} */}
+
 
           <Button
             disabled={!(formik.isValid && formik.dirty)}
