@@ -422,12 +422,12 @@ const TechnicianDetailsPage = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            <Box>
+            {/* <Box>
               <Typography variant="h6">
                 {t("Over All Rates")} :{" "}
                 {technician && Math.ceil(technician?.rateAverage)}
               </Typography>
-            </Box>
+            </Box> */}
 
             <Box
               mt="40px"
