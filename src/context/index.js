@@ -207,6 +207,52 @@ export function ContextProvider(props) {
     }
   }
 
+  // Edit Technician
+  async function editTechData(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/auth/tech/edit-tech.php`,
+        values,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        navigate(`/technicians/${values?.techId}`);
+
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+      console.log(error);
+    }
+  }
+
+  // changeTechPassword
+  async function changeTechPassword(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/auth/tech/change-tech-password.php`,
+        values,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        navigate(`/technicians/${values?.techId}`);
+
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+      console.log(error);
+    }
+  }
+
   // update  technician
   async function updateTechnician(id, status) {
     try {
@@ -444,6 +490,8 @@ export function ContextProvider(props) {
         fetchOrders,
         fetchOneOrder,
         addNewTechnician,
+        editTechData,
+        changeTechPassword,
         deletTechnician,
         updateTechnician,
         fetchAllCoupons,

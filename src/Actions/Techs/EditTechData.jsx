@@ -13,10 +13,12 @@ import {
 import Header from "../../components/Header";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
-function AddNewTech() {
+function EditTechData() {
+  const { id } = useParams();
   const [t] = useTranslation();
-  const { addNewTechnician, isLoading } = useContext(Context);
+  const { editTechData, isLoading } = useContext(Context);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required(t("Name Required"))
@@ -25,23 +27,16 @@ function AddNewTech() {
       .required(t("Phone Number Required"))
       .min(8, t("Min Phone Number (8)"))
       .matches(/^[4569]\d{7}$/, t("Invalid Phone Number")),
-    password: Yup.string()
-      .required(t("Password Required"))
-      .min(6, t("To Shore Password (Min 6)"))
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/,
-        t("Invalid Password Formate (Q1@we34rt5)")
-      ),
   });
 
-  async function hanldeAddNewTechnician(values) {
+  async function hanldeEditTecData(values) {
     // Combine country code with phone number
     const phoneNumber = values.countryCode + values.phone;
     // Create a new object with the combined phone number
     const updatedValues = { ...values, phone: phoneNumber };
     // Call the addNewTechnician function with the updated values
     console.log(updatedValues);
-    await addNewTechnician(updatedValues);
+    await editTechData(updatedValues);
     // Log the updated values
   }
   let formik = useFormik({
@@ -49,10 +44,10 @@ function AddNewTech() {
       name: "",
       phone: "",
       countryCode: "+965",
-      password: "",
+      techId: id,
     },
     validationSchema,
-    onSubmit: hanldeAddNewTechnician,
+    onSubmit: hanldeEditTecData,
   });
 
   return (
@@ -64,7 +59,7 @@ function AddNewTech() {
         alignItems: "center",
       }}
     >
-      <Header title={t("Add New Technician")}></Header>
+      <Header title={t("Edit Tech Details")}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* Name */}
@@ -131,34 +126,13 @@ function AddNewTech() {
             </Alert>
           ) : null}
 
-          {/* password */}
-
-          <TextField
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            name="password"
-            id="password"
-            margin="normal"
-            required
-            fullWidth
-            label={t("Password")}
-          />
-          {formik.errors.password && formik.touched.password ? (
-            <Alert severity="error">
-              <AlertTitle>{t("Error")}</AlertTitle>
-              {formik.errors.password}
-            </Alert>
-          ) : null}
-
           <Button
             disabled={!(formik.isValid && formik.dirty)}
             variant="contained"
             sx={{ marginY: "20px" }}
             type="submit"
           >
-            {isLoading ? <CircularProgress color="success" /> : "Add"}
+            {isLoading ? <CircularProgress color="success" /> : t("Edit Tech")}
           </Button>
         </FormControl>
       </form>
@@ -166,4 +140,4 @@ function AddNewTech() {
   );
 }
 
-export default AddNewTech;
+export default EditTechData;

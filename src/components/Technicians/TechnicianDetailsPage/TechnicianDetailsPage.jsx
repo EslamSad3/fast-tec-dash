@@ -286,7 +286,7 @@ const TechnicianDetailsPage = () => {
             mt="20px"
             mx="20px"
             display="grid"
-            gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
             justifyContent="center"
             alignItems="center"
             rowGap="5px"
@@ -295,6 +295,7 @@ const TechnicianDetailsPage = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
+            {/* Delete */}
             <Box>
               <Button
                 variant="outlined"
@@ -310,6 +311,7 @@ const TechnicianDetailsPage = () => {
               </Button>
             </Box>
 
+            {/* Deactivate */}
             <Box>
               {updateTechnicianLoading ? (
                 <CircularProgress sx={{ color: "#fafafa" }} />
@@ -323,6 +325,38 @@ const TechnicianDetailsPage = () => {
                   {technician.active === true
                     ? t("Deactivate")
                     : t("Reactivate")}
+                </Button>
+              )}
+            </Box>
+
+            {/* Edit */}
+            <Box>
+              {updateTechnicianLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="info"
+                  // onClick={() => handleUpdateTec(!technician.active)}
+                  onClick={() => navigate(`/technician/${id}/edit`)}
+                >
+                  {t("Edit Tech")}
+                </Button>
+              )}
+            </Box>
+
+            {/* Change Password */}
+            <Box>
+              {updateTechnicianLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  // onClick={() => handleUpdateTec(!technician.active)}
+                  onClick={() => navigate(`/technician/${id}/changePassword`)}
+                >
+                  {t("Change Password")}
                 </Button>
               )}
             </Box>

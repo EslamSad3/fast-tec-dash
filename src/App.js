@@ -26,6 +26,8 @@ import AddNewCoupon from "./Actions/Coupons/AddNewCoupon";
 import OrderDetailsPage from "./components/Orders/OrderDetailsPage/OrderDetailsPage";
 import NotificationsToAll from "./Actions/Notifications/NotificationsToAll";
 import Notification from "./FCM/Notification/Notification";
+import EditTechData from "./Actions/Techs/EditTechData";
+import ChangeTechPassword from "./Actions/Techs/ChangeTechPassword";
 
 function App() {
 
@@ -84,6 +86,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TechnicianDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/technician/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditTechData />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/technician/:id/changePassword"
+                element={
+                  <ProtectedRoute>
+                    <ChangeTechPassword />
                   </ProtectedRoute>
                 }
               />
