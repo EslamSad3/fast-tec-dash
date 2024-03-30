@@ -1,7 +1,4 @@
-// importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-// importScripts(
-//   "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js"
-// );
+
 importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js")
 //the Firebase config object
@@ -27,14 +24,3 @@ messaging.onBackgroundMessage(function (payload) {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// const subscribeToTopic = async () => {
-//   try {
-//     console.log("testing");
-//     await firebase.messaging.subscribeToTopic("admin");
-//     console.log("Subscribed to topic successfully.");
-//   } catch (error) {
-//     console.log("Error subscribing to topic:", error);
-//   }
-// };
-
-// subscribeToTopic();

@@ -1,5 +1,7 @@
+import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBA7w3k2myOwnpsRbo75PS2vaf8L9naNEE",
   authDomain: "fcmtest-a43b8.firebaseapp.com",
@@ -12,6 +14,9 @@ const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
 export const requestPermission = () => {
+  let adminheaders = {
+    Authorization: `${localStorage.getItem("AdminToken")}`,
+  };
   console.log("Requesting User Permission......");
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
@@ -22,6 +27,13 @@ export const requestPermission = () => {
       })
         .then((currentToken) => {
           if (currentToken) {
+            axios.put(
+              `${process.env.REACT_APP_BASE_URL}/auth/admin/add-admin-token.php`,
+              {
+                fcmToken: currentToken,
+              },
+              { headers: { ...adminheaders } }
+            );
             console.log("Client Token: ", currentToken);
           } else {
             console.log("Failed to generate the app registration token.");
@@ -38,8 +50,6 @@ export const requestPermission = () => {
     }
   });
 };
-
-
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
