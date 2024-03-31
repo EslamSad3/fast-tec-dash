@@ -35,6 +35,7 @@ const CustomerDetailsPage = () => {
     orders,
     customers,
     refreshData,
+    isLoading,  
   } = useContext(Context);
 
   const [customerRates, setCustomerRates] = useState([]);
@@ -84,6 +85,7 @@ const CustomerDetailsPage = () => {
     }
   }
 
+  // rates
   const columns = [
     {
       field: "orderId",
@@ -114,6 +116,66 @@ const CustomerDetailsPage = () => {
     },
   ];
 
+  // orders
+
+  const customerOrders = [
+    {
+      field: "id",
+      headerName: t("Order ID"),
+      flex: 0.5,
+      maxWidth: 150,
+    },
+    {
+      field: "customerId",
+      headerName: t("Customer ID"),
+      flex: 0.5,
+      minWidth: 150,
+    },
+    {
+      field: "status",
+      headerName: t("Status"),
+      flex: 0.5,
+      minWidth: 150,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="p" component="div">
+            {params.row.status === "0" ? (
+              <Alert severity="success">{t("NEW")}</Alert>
+            ) : params.row.status === "1" ? (
+              <Alert severity="error">{t("CANCELLED")}</Alert>
+            ) : params.row.status === "2" ? (
+              <Alert severity="warning">{t("REJECTED")}</Alert>
+            ) : params.row.status === "3" ? (
+              <Alert severity="info">{t("ON_WAY")}</Alert>
+            ) : params.row.status === "4" ? (
+              <Alert severity="info">{t("IN_PROGRESS")}</Alert>
+            ) : params.row.status === "5" ? (
+              <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
+            ) : params.row.status === "6" ? (
+              <Alert severity="success">{t("COMPLETED")}</Alert>
+            ) : params.row.status === "7" ? (
+              <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+            ) : (
+              "Not Listed"
+            )}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "viewDetails",
+      headerName: t("View Details"),
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row.id}`}>
+          <Button variant="contained" color="primary">
+            {t("View Details")}
+          </Button>
+        </Link>
+      ),
+    },
+  ];
   useEffect(() => {
     // Find the customer with the matching id from the URL
     const selectedCustomer = customers.find((c) => String(c.id) === id);
@@ -278,7 +340,17 @@ const CustomerDetailsPage = () => {
         </Box>
 
         {/* Orders */}
-        <Box
+
+        <Box>
+          <Header title={t("Customer Orders")} />
+          <Typography variant="p" mx="20px">
+            {t("Number Of Orders")} :
+            {customers && customer && orders && custOrders.length}
+          </Typography>
+        </Box>
+
+        {/*  */}
+        {/* <Box
           sx={{
             boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
             mx: "1rem",
@@ -408,6 +480,42 @@ const CustomerDetailsPage = () => {
               "Loading ..."
             )}
           </Box>
+        </Box> */}
+
+        <Box
+          mt="40px"
+          height="75vh"
+          sx={{
+            "& .MuiDataGrid-root": {
+              border: "none",
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: "none",
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: theme.palette.background.alt,
+              color: theme.palette.secondary[100],
+              borderBottom: "none",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              backgroundColor: theme.palette.primary.light,
+            },
+            "& .MuiDataGrid-footerContainer": {
+              backgroundColor: theme.palette.background.alt,
+              color: theme.palette.secondary[100],
+              borderTop: "none",
+            },
+            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+              color: `${theme.palette.secondary[200]} !important`,
+            },
+          }}
+        >
+          <DataGrid
+            rows={custOrders || []}
+            loading={isLoading || !custOrders}
+            getRowId={(row) => row.id}
+            columns={customerOrders}
+          />
         </Box>
 
         {/* Rates */}
@@ -435,10 +543,12 @@ const CustomerDetailsPage = () => {
             }}
           >
             <Box>
+              {/*
               <Typography variant="h6">
                 {t("Over All Rates")} :{" "}
                 {customerRates && Math.ceil(customerRates?.rateAverage)}
-              </Typography>
+              </Typography> 
+              */}
             </Box>
 
             <Box

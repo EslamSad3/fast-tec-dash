@@ -6,13 +6,16 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Button,
+  Alert,
 } from "@mui/material";
 import Header from "../Header";
 import { useContext } from "react";
 import { Context } from "../../context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 
 function Orders() {
   const navigate = useNavigate();
@@ -20,6 +23,64 @@ function Orders() {
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const [t] = useTranslation();
+  const columns = [
+    {
+      field: "id",
+      headerName: t("Order ID"),
+      flex: 0.5,
+      maxWidth: 150,
+    },
+    {
+      field: "customerId",
+      headerName: t("Customer ID"),
+      flex: 0.5,
+      minWidth: 150,
+    },
+    {
+      field: "status",
+      headerName: t("Status"),
+      flex: 0.5,
+      minWidth: 150,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="p" component="div">
+            {params.row.status === "0" ? (
+              <Alert severity="success">{t("NEW")}</Alert>
+            ) : params.row.status === "1" ? (
+              <Alert severity="error">{t("CANCELLED")}</Alert>
+            ) : params.row.status === "2" ? (
+              <Alert severity="warning">{t("REJECTED")}</Alert>
+            ) : params.row.status === "3" ? (
+              <Alert severity="info">{t("ON_WAY")}</Alert>
+            ) : params.row.status === "4" ? (
+              <Alert severity="info">{t("IN_PROGRESS")}</Alert>
+            ) : params.row.status === "5" ? (
+              <Alert severity="info">{t("PENDING_PAYMENT")}</Alert>
+            ) : params.row.status === "6" ? (
+              <Alert severity="success">{t("COMPLETED")}</Alert>
+            ) : params.row.status === "7" ? (
+              <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+            ) : (
+              "Not Listed"
+            )}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "viewDetails",
+      headerName: t("View Details"),
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => (
+        <Link to={`/orders/${params.row.id}`}>
+          <Button variant="contained" color="primary">
+            {t("View Details")}
+          </Button>
+        </Link>
+      ),
+    },
+  ];
 
   useEffect(() => {
     refreshData();
@@ -31,85 +92,41 @@ function Orders() {
       <small>
         {t("Number Of Orders")} : {orders.length}
       </small>
-      {orders || !isLoading ? (
-        <Box
-          mt="20px"
-          display="grid"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          justifyContent="space-between"
-          rowGap="20px"
-          columnGap="1.33%"
-          sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          }}
-        >
-          {orders.map(({ id, customerId, status }) => (
-            <Card
-              key={id}
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: theme.palette.background.alt,
-                borderRadius: "0.55rem",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate(`/orders/${id}`)}
-            >
-              <CardContent>
-                <Typography
-                  sx={{ fontSize: 14 }}
-                  color={theme.palette.secondary[200]}
-                  gutterBottom
-                >
-                  {t("Order ID")} : {id}
-                </Typography>
-                <Typography variant="p" component="div">
-                  {`${t("Status")} : `}
-                  {status === "0" ? (
-                    <Typography variant="p" color={theme.palette.success.main}>
-                      {t("NEW")}
-                    </Typography>
-                  ) : status === "1" ? (
-                    <Typography variant="p" color={theme.palette.error.main}>
-                      {t("CANCELLED")}
-                    </Typography>
-                  ) : status === "2" ? (
-                    <Typography variant="p" color={theme.palette.warning.main}>
-                      {t("REJECTED")}
-                    </Typography>
-                  ) : status === "3" ? (
-                    <Typography variant="p" color={theme.palette.info.main}>
-                      {t("ON_WAY")}
-                    </Typography>
-                  ) : status === "4" ? (
-                    <Typography variant="p" color={theme.palette.info[300]}>
-                      {t("IN_PROGRESS")}
-                    </Typography>
-                  ) : status === "5" ? (
-                    <Typography variant="p" color={theme.palette.warning[600]}>
-                      {t("PENDING_PAYMENT")}
-                    </Typography>
-                  ) : status === "6" ? (
-                    <Typography variant="p" color={theme.palette.info[600]}>
-                      {t("COMPLETED")}
-                    </Typography>
-                  ) : status === "7" ? (
-                    <Typography variant="p" color={theme.palette.error.main}>
-                      {t("FAILED PAYMENT")}
-                    </Typography>
-                  ) : (
-                    "Not Listed"
-                  )}
-                </Typography>
-                <Typography variant="body2">
-                  {t("Customer ID")} : {customerId}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
-      ) : (
-        <>Loading...</>
-      )}
+      <Box
+        mt="40px"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: theme.palette.background.alt,
+            color: theme.palette.secondary[100],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: theme.palette.primary.light,
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: theme.palette.background.alt,
+            color: theme.palette.secondary[100],
+            borderTop: "none",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${theme.palette.secondary[200]} !important`,
+          },
+        }}
+      >
+        <DataGrid
+          rows={orders || []}
+          loading={isLoading || !orders}
+          getRowId={(row) => row.id}
+          columns={columns}
+        />
+      </Box>
     </Box>
   );
 }

@@ -444,6 +444,32 @@ export function ContextProvider(props) {
     }
   }
 
+  // accept order
+  async function acceptOrder(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/orders/accept-order.php`,
+        {
+          orderId: id,
+        },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data?.message);
+        navigate(`/orders/${id}`);
+        fetchOrders();
+      } else {
+        setIsLsLoading(false);
+        toast.error("Error sending notification");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      toast.error(error.response.data?.message);
+    }
+  }
+
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
