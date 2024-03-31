@@ -448,10 +448,12 @@ export function ContextProvider(props) {
   async function acceptOrder(id) {
     try {
       setIsLsLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/orders/accept-order.php`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/orders/admin-update-order.php`,
         {
           orderId: id,
+          // status: status,
+          // estimatedArrivalTime: estimatedArrivalTime,
         },
         { headers: { ...localeHeader, ...adminheaders } }
       );
@@ -462,7 +464,36 @@ export function ContextProvider(props) {
         fetchOrders();
       } else {
         setIsLsLoading(false);
-        toast.error("Error sending notification");
+        toast.error("Failed to accept");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      toast.error(error.response.data?.message);
+    }
+  }
+
+  // reject Order
+
+  async function rejectOrder(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/orders/admin-update-order.php`,
+        {
+          status: "2",
+          orderId: id,
+          // estimatedArrivalTime: estimatedArrivalTime,
+        },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      if (response.status === 200) {
+        toast.success(response.data?.message);
+        navigate(`/orders/${id}`);
+        fetchOrders();
+      } else {
+        setIsLsLoading(false);
+        toast.error("Failed to Reject");
       }
     } catch (error) {
       setIsLsLoading(false);
@@ -527,6 +558,8 @@ export function ContextProvider(props) {
         fetHomeData,
         sendNewNotification,
         changeOrderStatusByAdmin,
+        acceptOrder,
+        rejectOrder,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,

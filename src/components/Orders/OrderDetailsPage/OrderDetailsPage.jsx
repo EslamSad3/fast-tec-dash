@@ -9,6 +9,11 @@ import {
   useMediaQuery,
   Button,
   CircularProgress,
+  DialogActions,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
@@ -23,14 +28,36 @@ const OrderDetailsPage = () => {
     oneTech,
     changeOrderStatusByAdmin,
     isLoading,
+    rejectOrder,
   } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
 
+  const [openReject, setopenReject] = useState(false);
+  const [orderStatus, setOrderStatus] = useState("");
+
+  console.log(order);
+
+  // Delete
+  const handleClickopenReject = () => {
+    setopenReject(true);
+  };
+  const handleCloseReject = () => {
+    setopenReject(false);
+  };
+
+  // cancel order
   async function handleChangeStatus() {
     await changeOrderStatusByAdmin(id);
     fetchOrder();
   }
+  // reject order
+  async function handleRejectOrder() {
+    await rejectOrder(id);
+    handleCloseReject()
+    fetchOrder();
+  }
+
   // Fetch order
   async function fetchOrder() {
     await fetchOneOrder(id);
@@ -38,8 +65,11 @@ const OrderDetailsPage = () => {
   }
 
   useEffect(() => {
+    // setOrderStatus(order.data?.status);
     fetchOrder();
   }, []);
+
+  // console.log(orderStatus);
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -74,11 +104,8 @@ const OrderDetailsPage = () => {
                 {t("Date")} : {order && order.data?.creationDate}
               </Typography>
             </Box>
-            {(order && order.data?.status === "1") ||
-            (order && order.data?.status === "2") ||
-            (order && order.data?.status === "6") ? (
-              ""
-            ) : (
+
+            {order && order.data?.status !== "0" && (
               <Button
                 variant="outlined"
                 color="error"
@@ -248,6 +275,82 @@ const OrderDetailsPage = () => {
           </Box>
         </Box>
       </Box>
+      {/* Actions */}
+
+      {order && order.data?.status === "0" && (
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Header title={t("Actions")} />
+
+          <Box
+            mt="20px"
+            mx="20px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="row"
+            rowGap="5px"
+            columnGap="5px"
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleClickopenReject}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                t("Reject")
+              )}
+            </Button>
+            <Button variant="outlined" color="success">
+              {isLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                t("Accept")
+              )}
+            </Button>
+          </Box>
+        </Box>
+      )}
+
+      <Dialog
+        open={openReject}
+        onClose={handleCloseReject}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{t("Reject")}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Reject")}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant="contained" color="error" onClick={handleCloseReject}>
+            {t("No")}
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleRejectOrder()}
+            autoFocus
+          >
+            {t("Yes")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
