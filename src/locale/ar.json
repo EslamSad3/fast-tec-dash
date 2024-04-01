@@ -123,5 +123,11 @@
   "Expiration Date must be in the future": "لا يمكن إختيار تاريخ سابق",
   "Cancel Order": "الغاء الطلب",
   "Not Defined":"غير معروف",
-  "last Location Update":"اخر تحديث للمكان"
+  "last Location Update":"اخر تحديث للمكان",
+  "Accept":"قبول",
+  "Reject":"رفض",
+  "Cancel":"إلغاء",
+  "Are you sure you to reject":"هل انت متأكد من رفض الطلب",
+  "Pick Time":"اختر وقت الوصول المتوقع",
+  "Estimated Time Arrival":"وقت الوصول"
 }

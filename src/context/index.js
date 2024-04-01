@@ -445,22 +445,18 @@ export function ContextProvider(props) {
   }
 
   // accept order
-  async function acceptOrder(id) {
+  async function acceptOrder(values) {
     try {
       setIsLsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/orders/admin-update-order.php`,
-        {
-          orderId: id,
-          // status: status,
-          // estimatedArrivalTime: estimatedArrivalTime,
-        },
+        values,
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setIsLsLoading(false);
       if (response.status === 200) {
         toast.success(response.data?.message);
-        navigate(`/orders/${id}`);
+        navigate(`/orders/${values.orderId}`);
         fetchOrders();
       } else {
         setIsLsLoading(false);

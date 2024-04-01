@@ -121,6 +121,9 @@ function Orders() {
         }}
       >
         <DataGrid
+          initialState={{
+            sorting: { sortModel: [{ field: "status", sort: "asc" }] },
+          }}
           rows={orders || []}
           loading={isLoading || !orders}
           getRowId={(row) => row.id}

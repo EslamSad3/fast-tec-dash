@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../../context";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import * as dayjs from "dayjs";
 import {
   Box,
   Typography,
@@ -29,21 +34,36 @@ const OrderDetailsPage = () => {
     changeOrderStatusByAdmin,
     isLoading,
     rejectOrder,
+    acceptOrder,
   } = useContext(Context);
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
 
   const [openReject, setopenReject] = useState(false);
-  const [orderStatus, setOrderStatus] = useState("");
+  const [openAccept, setopenAccept] = useState(false);
+  const [timeArrival, settimeArrival] = useState(null);
+  const [accetpData, setAcceptData] = useState({
+    orderId: id,
+    status: 3,
+    estimatedArrivalTime: timeArrival,
+  });
 
-  console.log(order);
-
-  // Delete
+  // Reject
   const handleClickopenReject = () => {
     setopenReject(true);
   };
+
   const handleCloseReject = () => {
     setopenReject(false);
+  };
+
+  // accept
+  const handleClickopenAccept = () => {
+    setopenAccept(true);
+  };
+
+  const handleCloseAccept = () => {
+    setopenAccept(false);
   };
 
   // cancel order
@@ -51,11 +71,34 @@ const OrderDetailsPage = () => {
     await changeOrderStatusByAdmin(id);
     fetchOrder();
   }
+
   // reject order
   async function handleRejectOrder() {
     await rejectOrder(id);
-    handleCloseReject()
+    handleCloseReject();
     fetchOrder();
+  }
+
+  // accept
+  async function handleAcceptOrder() {
+    if (timeArrival == null) {
+      // handle the case where timeArrival is null (e.g., show an error message)
+      console.log("time null");
+    } else {
+      // format the time using dayjs
+      const formattedTimeArrival = dayjs(timeArrival).format("hh:mm");
+
+      // update the accept data with formatted time
+      const updatedAcceptData = {
+        ...accetpData,
+        estimatedArrivalTime: formattedTimeArrival,
+      };
+
+      await acceptOrder(updatedAcceptData);
+      handleCloseAccept();
+      fetchOrder();
+      console.log(updatedAcceptData);
+    }
   }
 
   // Fetch order
@@ -313,7 +356,11 @@ const OrderDetailsPage = () => {
                 t("Reject")
               )}
             </Button>
-            <Button variant="outlined" color="success">
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={handleClickopenAccept}
+            >
               {isLoading ? (
                 <CircularProgress sx={{ color: "#fafafa" }} />
               ) : (
@@ -323,7 +370,7 @@ const OrderDetailsPage = () => {
           </Box>
         </Box>
       )}
-
+      {/* Reject */}
       <Dialog
         open={openReject}
         onClose={handleCloseReject}
@@ -333,7 +380,7 @@ const OrderDetailsPage = () => {
         <DialogTitle id="alert-dialog-title">{t("Reject")}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {t("Reject")}
+            {t("Are you sure you to reject")}
           </DialogContentText>
         </DialogContent>
 
@@ -345,10 +392,56 @@ const OrderDetailsPage = () => {
             variant="contained"
             color="success"
             onClick={() => handleRejectOrder()}
-            autoFocus
+            sx={{ m: 2 }}
           >
             {t("Yes")}
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* acceptt */}
+      <Dialog
+        open={openAccept}
+        onClose={handleCloseAccept}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{t("Accept")}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Pick Time")}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["TimePicker"]}>
+              <TimePicker
+                label={t("Estimated Time Arrival")}
+                disablePast
+                value={timeArrival}
+                onChange={(newTime) => {
+                  settimeArrival(newTime);
+                }}
+              />
+
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleAcceptOrder}
+              >
+                {t("Accept")}
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleCloseAccept}
+                sx={{ m: 2 }}
+              >
+                {t("Cancel")}
+              </Button>
+            </DemoContainer>
+          </LocalizationProvider>
         </DialogActions>
       </Dialog>
     </Box>
