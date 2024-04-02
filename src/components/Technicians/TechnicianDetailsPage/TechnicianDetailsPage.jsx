@@ -423,7 +423,7 @@ const TechnicianDetailsPage = () => {
             >
               <DataGrid
                 initialState={{
-                  sorting: { sortModel: [{ field: "id", sort: "asc" }] },
+                  sorting: { sortModel: [{ field: "id", sort: "desc" }] },
                 }}
                 rows={techOrders || []}
                 // loading={fetchAllTechniciansLoading || !techRates}
