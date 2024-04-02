@@ -129,5 +129,9 @@
   "Cancel":"إلغاء",
   "Are you sure you to reject":"هل انت متأكد من رفض الطلب",
   "Pick Time":"اختر وقت الوصول المتوقع",
-  "Estimated Time Arrival":"وقت الوصول"
+  "Estimated Time Arrival":"وقت الوصول",
+  "Cost":"تكلفة الطلب",
+  "Discount":"الخصم",
+  "Total Cost After Discound":"تكلفة الطلب بعد الخصم",
+  "Total Cost":"التكلفه الاجماليه"
 }

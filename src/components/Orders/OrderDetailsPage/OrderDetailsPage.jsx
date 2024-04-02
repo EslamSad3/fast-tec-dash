@@ -39,6 +39,7 @@ const OrderDetailsPage = () => {
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
 
+  console.log(order);
   const [openReject, setopenReject] = useState(false);
   const [openAccept, setopenAccept] = useState(false);
   const [timeArrival, settimeArrival] = useState(null);
@@ -263,9 +264,9 @@ const OrderDetailsPage = () => {
             <Typography variant="h6">{t("Technician Not Found")} </Typography>
           )}
 
-          {/* invoice */}
+          {/* Cost */}
 
-          {order && order && order.data?.invoiceId ? (
+          {order && (
             <Box
               sx={{
                 display: "flex",
@@ -273,6 +274,42 @@ const OrderDetailsPage = () => {
                 flexDirection: "column",
               }}
             >
+              <Box
+                sx={{
+                  boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  p: "1rem",
+                }}
+              >
+                <Typography variant="h6">{t("Cost")} </Typography>
+
+                <Typography variant="p">
+                  {t("Total Cost")} :{order && order.data?.totalCost}
+                </Typography>
+                <br />
+                <Typography variant="p">
+                  {t("Discount")} :{order && order.data?.discountValue}
+                </Typography>
+                <br />
+                <Typography variant="p">
+                  {t("Total Cost After Discound")} :
+                  {order && order.data?.totalCostAfterDiscount}{" "}
+                </Typography>
+              </Box>
+            </Box>
+          )}
+          {/* invoice */}
+
+          <Box
+            sx={{
+              boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+              borderRadius: "10px",
+              cursor: "pointer",
+              p: "1rem",
+            }}
+          >
+            {order && order && order.data?.invoiceId ? (
               <Box>
                 <Typography variant="h6">{t("Order Info")} </Typography>
 
@@ -283,13 +320,13 @@ const OrderDetailsPage = () => {
                     : order && order.data?.invoiceId}{" "}
                 </Typography>
               </Box>
-            </Box>
-          ) : (
-            <Typography variant="p">
-              {" "}
-              {t("Invoice ID")}: {t("No ID")}
-            </Typography>
-          )}
+            ) : (
+              <Typography variant="p">
+                {" "}
+                {t("Invoice ID")}: {t("No ID")}
+              </Typography>
+            )}
+          </Box>
 
           {/* Paymnet */}
           <Box>
