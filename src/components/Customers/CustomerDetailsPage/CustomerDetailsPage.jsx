@@ -512,7 +512,7 @@ const CustomerDetailsPage = () => {
         >
           <DataGrid
             initialState={{
-              sorting: { sortModel: [{ field: "status", sort: "asc" }] },
+              sorting: { sortModel: [{ field: "id", sort: "asc" }] },
             }}
             rows={custOrders || []}
             loading={isLoading || !custOrders}
