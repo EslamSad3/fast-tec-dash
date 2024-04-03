@@ -2,6 +2,7 @@ import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
+import messageSound from "./assets/sounds/notification_sound.mp3";
 const firebaseConfig = {
   apiKey: "AIzaSyBA7w3k2myOwnpsRbo75PS2vaf8L9naNEE",
   authDomain: "fcmtest-a43b8.firebaseapp.com",
@@ -12,6 +13,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
+const sound = new Audio(messageSound);
 
 export const requestPermission = () => {
   let adminheaders = {
@@ -55,6 +57,13 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       resolve(payload);
+      if (!document.hasFocus()) {
+        sound.load();
+        sound.play();
+      } else {
+        sound.load();
+        sound.play();
+      }
     });
   });
 
