@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 const sound = new Audio(messageSound);
+// const notification = new Notification();
 
 export const requestPermission = () => {
   let adminheaders = {
@@ -57,6 +58,19 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       resolve(payload);
+      const notification = new Notification(payload);
+
+      // Add onclick event to the notification
+      notification.onclick = () => {
+        // Check if payload contains data and orderId
+        if (payload && payload.data && payload.data.orderId) {
+          // Open the order page in a new tab
+          window.open(
+            `http://localhost:3000/orders/${payload.data.orderId}`,
+            "_blank"
+          );
+        }
+      };
       if (!document.hasFocus()) {
         sound.load();
         sound.play();
