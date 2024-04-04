@@ -58,13 +58,6 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       resolve(payload);
-      if (!document.hasFocus()) {
-        sound.load();
-        sound.play();
-      } else {
-        sound.load();
-        sound.play();
-      }
     });
   });
 

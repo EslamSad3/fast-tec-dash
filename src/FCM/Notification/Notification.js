@@ -30,7 +30,6 @@ function Notification() {
       toast.success(
         `${payload?.notification?.title}: ${payload?.notification?.body}`,
         {
-          duration: 600000,
           position: "top-right",
         }
       );
@@ -41,7 +40,7 @@ function Notification() {
   }, [payloadFromFCM]);
   return (
     <>
-      <ToastContainer onClick={handleNotificationClick} />
+      <ToastContainer onClick={handleNotificationClick} autoClose={60000} />
     </>
   );
 }
