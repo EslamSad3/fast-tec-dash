@@ -35,7 +35,14 @@ function Notification() {
   }, [payloadFromFCM]);
   return (
     <>
-      <ToastContainer onClick={handleNotificationClick} autoClose={60000} />
+      <ToastContainer
+        onClick={handleNotificationClick}
+        autoClose={
+          payloadFromFCM && payloadFromFCM.data && payloadFromFCM.data.orderId
+            ? 60000
+            : 5000
+        }
+      />
     </>
   );
 }
