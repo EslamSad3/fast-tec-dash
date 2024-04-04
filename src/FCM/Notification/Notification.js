@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 function Notification() {
   const sound = new Audio(messageSound);
-  const [notification, setNotification] = useState(null);
+
   const navigate = useNavigate();
   const [payloadFromFCM, setPayload] = useState("");
   // Inside your useEffect or wherever you handle the notification click
@@ -18,19 +18,14 @@ function Notification() {
   useEffect(() => {
     requestPermission();
     const unsubscribe = onMessageListener().then((payload) => {
-      setNotification({
-        title: payload?.notification?.title,
-        body: payload?.notification?.body,
-      });
-
       setPayload(payload);
-
       sound.load();
       sound.play();
       toast.success(
         `${payload?.notification?.title}: ${payload?.notification?.body}`,
         {
-          position: "top-right",
+          duration: 10,
+          position: "top-center",
         }
       );
     });
