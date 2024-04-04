@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { onMessageListener, requestPermission } from "../../firebase";
 import messageSound from "../../assets/sounds/notification_sound.mp3";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 function Notification() {
   const sound = new Audio(messageSound);
-  const [notification, setNotification] = useState({ title: "", body: "" });
+  const [notification, setNotification] = useState(null);
   const navigate = useNavigate();
+  const [payloadFromFCM, setPayload] = useState("");
+  // Inside your useEffect or wherever you handle the notification click
+  const handleNotificationClick = () => {
+    if (payloadFromFCM && payloadFromFCM.data && payloadFromFCM.data.orderId) {
+      navigate(`/orders/${payloadFromFCM.data.orderId}`);
+    }
+  };
   useEffect(() => {
     requestPermission();
     const unsubscribe = onMessageListener().then((payload) => {
@@ -15,37 +23,26 @@ function Notification() {
         body: payload?.notification?.body,
       });
 
+      setPayload(payload);
+
+      sound.load();
+      sound.play();
       toast.success(
         `${payload?.notification?.title}: ${payload?.notification?.body}`,
         {
-          duration: 60000,
+          duration: 600000,
           position: "top-right",
         }
       );
-
-      if (!document.hasFocus()) {
-        sound.load();
-        sound.play();
-        // if (payload?.data?.orderId) {
-        //   navigate(`/orders/${payload.data.orderId}`);
-        // }
-      } else {
-        // if (payload?.data?.orderId) {
-        //   navigate(`/orders/${payload.data.orderId}`);
-        // }
-
-        sound.load();
-        sound.play();
-      }
     });
     return () => {
       unsubscribe.catch((err) => console.log("failed: ", err));
     };
-  }, []);
+  }, [payloadFromFCM]);
   return (
-    <div>
-      <ToastContainer />
-    </div>
+    <>
+      <ToastContainer onClick={handleNotificationClick} />
+    </>
   );
 }
 export default Notification;

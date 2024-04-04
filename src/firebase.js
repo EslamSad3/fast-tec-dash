@@ -58,19 +58,6 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       resolve(payload);
-      const notification = new Notification(payload);
-
-      // Add onclick event to the notification
-      notification.onclick = () => {
-        // Check if payload contains data and orderId
-        if (payload && payload.data && payload.data.orderId) {
-          // Open the order page in a new tab
-          window.open(
-            `http://localhost:3000/orders/${payload.data.orderId}`,
-            "_blank"
-          );
-        }
-      };
       if (!document.hasFocus()) {
         sound.load();
         sound.play();
