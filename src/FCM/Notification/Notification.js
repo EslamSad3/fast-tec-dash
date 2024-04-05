@@ -25,7 +25,7 @@ function Notification() {
         `${payload?.notification?.title}: ${payload?.notification?.body}`,
         {
           duration: 10,
-          position: "top-center",
+          position: "top-right",
         }
       );
     });
