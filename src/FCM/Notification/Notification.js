@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { onMessageListener, requestPermission } from "../../firebase";
 import messageSound from "../../assets/sounds/notification_sound.mp3";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 function Notification() {
   const sound = new Audio(messageSound);
 
