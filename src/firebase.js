@@ -62,6 +62,8 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       resolve(payload);
+      sound.load();
+      sound.play();
     });
   });
 

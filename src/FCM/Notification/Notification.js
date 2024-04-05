@@ -4,22 +4,23 @@ import { onMessageListener, requestPermission } from "../../firebase";
 import messageSound from "../../assets/sounds/notification_sound.mp3";
 import { useNavigate } from "react-router-dom";
 function Notification() {
-  const sound = new Audio(messageSound);
-
-  const navigate = useNavigate();
   const [payloadFromFCM, setPayload] = useState("");
+  
+  const sound = new Audio(messageSound);
+  const navigate = useNavigate();
+  
   // Inside your useEffect or wherever you handle the notification click
   const handleNotificationClick = () => {
     if (payloadFromFCM && payloadFromFCM.data && payloadFromFCM.data.orderId) {
       navigate(`/orders/${payloadFromFCM.data.orderId}`);
     }
   };
+
   useEffect(() => {
     requestPermission();
     const unsubscribe = onMessageListener().then((payload) => {
       setPayload(payload);
-      sound.load();
-      sound.play();
+      console.log(payload, "payload");
       toast.success(
         `${payload?.notification?.title}: ${payload?.notification?.body}`,
         {
