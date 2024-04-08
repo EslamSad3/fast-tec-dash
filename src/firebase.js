@@ -18,7 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 const sound = new Audio(messageSound);
-// const notification = new Notification();
 
 export const requestPermission = () => {
   let adminheaders = {
@@ -63,7 +62,25 @@ export const onMessageListener = () =>
     onMessage(messaging, (payload) => {
       resolve(payload);
       sound.load();
-      sound.play();
+      sound.play().catch((err) => {
+        console.error(err);
+      });
+      
+      const notificationTitle =
+        payload?.notification?.title || "New Notification";
+      const notificationOptions = {
+        body: payload?.notification?.body || "Notification body",
+      };
+
+      new Notification(notificationTitle, notificationOptions).addEventListener(
+        "click",
+        () => {
+          window.open(
+            `http://127.0.0.1:3000/orders/${payload?.data?.orderId}`,
+            "_blank"
+          );
+        }
+      )
     });
   });
 
