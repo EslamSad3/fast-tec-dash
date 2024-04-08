@@ -74,15 +74,19 @@ export const onMessageListener = () =>
 
       const currentOrigin = window.location.origin;
 
-      new Notification(notificationTitle, notificationOptions).addEventListener(
-        "click",
-        () => {
+      if (payload && payload.data && payload.data.orderId) {
+        new Notification(
+          notificationTitle,
+          notificationOptions
+        ).addEventListener("click", () => {
           window.open(
             `${currentOrigin}/orders/${payload?.data?.orderId}`,
             "_blank"
           );
-        }
-      );
+        });
+      } else{
+        new Notification(notificationTitle, notificationOptions);
+      }
     });
   });
 
