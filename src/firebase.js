@@ -65,22 +65,24 @@ export const onMessageListener = () =>
       sound.play().catch((err) => {
         console.error(err);
       });
-      
+
       const notificationTitle =
         payload?.notification?.title || "New Notification";
       const notificationOptions = {
         body: payload?.notification?.body || "Notification body",
       };
 
+      const currentOrigin = window.location.origin;
+
       new Notification(notificationTitle, notificationOptions).addEventListener(
         "click",
         () => {
           window.open(
-            `http://127.0.0.1:3000/orders/${payload?.data?.orderId}`,
+            `${currentOrigin}/orders/${payload?.data?.orderId}`,
             "_blank"
           );
         }
-      )
+      );
     });
   });
 
