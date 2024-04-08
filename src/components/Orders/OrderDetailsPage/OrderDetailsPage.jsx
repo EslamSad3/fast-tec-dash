@@ -459,6 +459,7 @@ const OrderDetailsPage = () => {
               <TimePicker
                 label={t("Estimated Time Arrival")}
                 disablePast
+                minutesStep={1}
                 value={timeArrival || new Date()}
                 onChange={(newTime) => {
                   settimeArrival(newTime);
