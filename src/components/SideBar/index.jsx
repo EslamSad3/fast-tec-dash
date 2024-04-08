@@ -86,11 +86,11 @@ const SideBar = ({
       icon: <NotificationsActiveIcon />,
     },
 
-    {
-      text: t("Configuration"),
-      entext: "Configuration",
-      icon: <ToggleOnOutlinedIcon />,
-    },
+    // {
+    //   text: t("Configuration"),
+    //   entext: "Configuration",
+    //   icon: <ToggleOnOutlinedIcon />,
+    // },
   ];
 
   // useEffect(() => {
