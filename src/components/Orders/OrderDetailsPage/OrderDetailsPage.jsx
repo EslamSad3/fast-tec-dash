@@ -42,12 +42,15 @@ const OrderDetailsPage = () => {
   console.log(order);
   const [openReject, setopenReject] = useState(false);
   const [openAccept, setopenAccept] = useState(false);
-  const [timeArrival, settimeArrival] = useState(null);
+  // const [timeArrival, settimeArrival] = useState(null);
+  const [timeArrival, settimeArrival] = useState(dayjs().add(10, "minute")); // Initial value: current time + 10 minutes
   const [accetpData, setAcceptData] = useState({
     orderId: id,
     status: 3,
     estimatedArrivalTime: timeArrival,
   });
+
+  console.log(timeArrival, "timeArrival");
 
   // Reject
   const handleClickopenReject = () => {
@@ -88,7 +91,7 @@ const OrderDetailsPage = () => {
     } else {
       // format the time using dayjs
       const formattedTimeArrival = dayjs(timeArrival).format("hh:mm");
-
+      console.log(formattedTimeArrival, "formattedTimeArrival");
       // update the accept data with formatted time
       const updatedAcceptData = {
         ...accetpData,
@@ -96,9 +99,9 @@ const OrderDetailsPage = () => {
       };
 
       await acceptOrder(updatedAcceptData);
+      console.log(updatedAcceptData);
       handleCloseAccept();
       fetchOrder();
-      console.log(updatedAcceptData);
     }
   }
 
@@ -456,7 +459,7 @@ const OrderDetailsPage = () => {
               <TimePicker
                 label={t("Estimated Time Arrival")}
                 disablePast
-                value={timeArrival}
+                value={timeArrival || new Date()}
                 onChange={(newTime) => {
                   settimeArrival(newTime);
                 }}
