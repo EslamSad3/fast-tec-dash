@@ -18,9 +18,7 @@ import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 function Orders() {
-  const navigate = useNavigate();
   const { orders, isLoading, refreshData } = useContext(Context);
-  const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const [t] = useTranslation();
   const columns = [
@@ -60,6 +58,10 @@ function Orders() {
               <Alert severity="success">{t("COMPLETED")}</Alert>
             ) : params.row.status === "7" ? (
               <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+            ) : params.row.status === "8" ? (
+              <Alert severity="info">{t("Assign Technician")}</Alert>
+            ) : params.row.status === "9" ? (
+              <Alert severity="success">{t("Assigned by Admin")}</Alert>
             ) : (
               "Not Listed"
             )}

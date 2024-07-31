@@ -180,6 +180,7 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader, ...adminheaders } }
       );
       setAvailableTechnicians(response.data.data);
+
       setfetchAvailableTechniciansLsLoading(false);
     } catch (error) {
       setfetchAvailableTechniciansLsLoading(false);
@@ -497,6 +498,31 @@ export function ContextProvider(props) {
     }
   }
 
+  // assignTechByAdmin
+
+  async function assignTechByAdmin(id, tech) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/orders/assign-tech-order.php`,
+        { orderId: id, techId: tech },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      console.log(response, "assign tech response");
+      if (response.status === 200) {
+        toast.success(response.data?.message);
+        fetchOrders();
+      } else {
+        setIsLsLoading(false);
+        toast.error("Failed to Assign Technician");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      toast.error("Error");
+      console.error(error);
+    }
+  }
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
@@ -556,6 +582,7 @@ export function ContextProvider(props) {
         changeOrderStatusByAdmin,
         acceptOrder,
         rejectOrder,
+        assignTechByAdmin,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,

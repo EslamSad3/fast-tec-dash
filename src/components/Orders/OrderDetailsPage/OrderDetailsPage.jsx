@@ -6,11 +6,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import * as dayjs from "dayjs";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import {
   Box,
   Typography,
   Alert,
-  useTheme,
   useMediaQuery,
   Button,
   CircularProgress,
@@ -35,13 +38,18 @@ const OrderDetailsPage = () => {
     isLoading,
     rejectOrder,
     acceptOrder,
+    availableTechnicians,
+    assignTechByAdmin,
   } = useContext(Context);
+
+  console.log(availableTechnicians, "avaulableTech");
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
 
   console.log(order);
   const [openReject, setopenReject] = useState(false);
   const [openAccept, setopenAccept] = useState(false);
+  const [openSelectTech, setopenSelectTech] = useState(false);
   // const [timeArrival, settimeArrival] = useState(null);
   const [timeArrival, settimeArrival] = useState(dayjs().add(10, "minute")); // Initial value: current time + 10 minutes
   const [accetpData, setAcceptData] = useState({
@@ -49,6 +57,12 @@ const OrderDetailsPage = () => {
     status: 3,
     estimatedArrivalTime: timeArrival,
   });
+
+  const [tech, setTech] = useState("");
+
+  const handleSetTec = (event) => {
+    setTech(event.target.value);
+  };
 
   console.log(timeArrival, "timeArrival");
 
@@ -68,6 +82,14 @@ const OrderDetailsPage = () => {
 
   const handleCloseAccept = () => {
     setopenAccept(false);
+  };
+  // Select Tech
+  const handleClickopenSelectTech = () => {
+    setopenSelectTech(true);
+  };
+
+  const handleCloseSelectTech = () => {
+    setopenSelectTech(false);
   };
 
   // cancel order
@@ -111,6 +133,13 @@ const OrderDetailsPage = () => {
     refreshData();
   }
 
+  // Assign tech
+  async function assignTech(tech) {
+    await assignTechByAdmin(id, tech);
+    fetchOrder();
+    handleCloseSelectTech();
+  }
+
   useEffect(() => {
     // setOrderStatus(order.data?.status);
     fetchOrder();
@@ -152,7 +181,7 @@ const OrderDetailsPage = () => {
               </Typography>
             </Box>
 
-            {order && order.data?.status !== "0" && (
+            {order && order.data?.status !== "1" && (
               <Button
                 variant="outlined"
                 color="error"
@@ -184,6 +213,16 @@ const OrderDetailsPage = () => {
                 <Alert severity="success">{t("COMPLETED")}</Alert>
               ) : order && order.data?.status === "7" ? (
                 <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
+              ) : order && order.data?.status === "8" ? (
+                <Button
+                  onClick={handleClickopenSelectTech}
+                  variant="contained"
+                  color="primary"
+                >
+                  {t("Assign Technician")}
+                </Button>
+              ) : order && order.data?.status === "9" ? (
+                <Alert severity="success">{t("Assigned by Admin")}</Alert>
               ) : (
                 "Not Listed"
               )}
@@ -439,7 +478,7 @@ const OrderDetailsPage = () => {
         </DialogActions>
       </Dialog>
 
-      {/* acceptt */}
+      {/* accept */}
       <Dialog
         open={openAccept}
         onClose={handleCloseAccept}
@@ -483,6 +522,61 @@ const OrderDetailsPage = () => {
               </Button>
             </DemoContainer>
           </LocalizationProvider>
+        </DialogActions>
+      </Dialog>
+
+      {/* Assign Tech */}
+
+      <Dialog
+        open={openSelectTech}
+        onClose={handleCloseSelectTech}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Assign Technician")}
+        </DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth>
+            <InputLabel id="select-tech">Tech</InputLabel>
+            <Select
+              labelId="select-tech"
+              id="demo-simple-select"
+              value={tech}
+              label="Tech"
+              onChange={handleSetTec}
+            >
+              {availableTechnicians.map((technician) => {
+                return (
+                  <MenuItem key={technician.id} value={technician.id}>
+                    {technician.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => assignTech(tech)}
+          >
+            {isLoading ? (
+              <CircularProgress sx={{ color: "#fafafa" }} />
+            ) : (
+              t("Assign")
+            )}
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleCloseSelectTech}
+            sx={{ m: 2 }}
+          >
+            {t("Cancel")}
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
