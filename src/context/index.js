@@ -519,8 +519,7 @@ export function ContextProvider(props) {
       }
     } catch (error) {
       setIsLsLoading(false);
-      toast.error("Error");
-      console.error(error);
+      toast.error(error.response.data.message);
     }
   }
   const handleChangeDir = () => {
