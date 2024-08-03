@@ -181,19 +181,27 @@ const OrderDetailsPage = () => {
               </Typography>
             </Box>
 
-            {order && order.data?.status !== "1" && (
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => handleChangeStatus()}
-              >
-                {isLoading ? (
-                  <CircularProgress color="primary" />
-                ) : (
-                  t("Cancel Order")
-                )}
-              </Button>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {order && order.data?.status !== "1" && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => handleChangeStatus()}
+                >
+                  {isLoading ? (
+                    <CircularProgress color="primary" />
+                  ) : (
+                    t("Cancel Order")
+                  )}
+                </Button>
+              )}
+            </Box>
           </Box>
           <Box>
             <Typography variant="p" component="div">
@@ -214,13 +222,7 @@ const OrderDetailsPage = () => {
               ) : order && order.data?.status === "7" ? (
                 <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
               ) : order && order.data?.status === "8" ? (
-                <Button
-                  onClick={handleClickopenSelectTech}
-                  variant="contained"
-                  color="primary"
-                >
-                  {t("Assign Technician")}
-                </Button>
+                <Alert severity="error">{t("No tech assigned")}</Alert>
               ) : order && order.data?.status === "9" ? (
                 <Alert severity="success">{t("Assigned by Admin")}</Alert>
               ) : (
@@ -228,6 +230,15 @@ const OrderDetailsPage = () => {
               )}
             </Typography>
           </Box>
+          {order && order.data?.status === "8" && (
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={() => handleClickopenSelectTech()}
+            >
+              {isLoading ? <CircularProgress color="primary" /> : t("Assign")}
+            </Button>
+          )}
         </Box>
 
         <Box

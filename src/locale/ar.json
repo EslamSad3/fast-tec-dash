@@ -136,5 +136,6 @@
   "Total Cost": "التكلفه الاجماليه",
   "Assign Technician": "تعيين فني",
   "Assigned by Admin": "تم التعيين بواسطة المدير",
-  "Assign": "تعيين"
+  "Assign": " تعيين فني",
+  "No tech assigned":"بدون فني"
 }

@@ -59,7 +59,7 @@ function Orders() {
             ) : params.row.status === "7" ? (
               <Alert severity="error">{t("FAILED PAYMENT")}</Alert>
             ) : params.row.status === "8" ? (
-              <Alert severity="info">{t("Assign Technician")}</Alert>
+              <Alert severity="info">{t("No tech assigned")}</Alert>
             ) : params.row.status === "9" ? (
               <Alert severity="success">{t("Assigned by Admin")}</Alert>
             ) : (

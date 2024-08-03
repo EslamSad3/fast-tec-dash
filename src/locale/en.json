@@ -97,5 +97,6 @@
   "Discount Value Required": "Discount Value Required",
   "FAILED PAYMENT": "FAILED PAYMENT",
   "Assign Technician": "Assign Technician",
-  "Assigned by Admin": "Assigned by Admin"
+  "Assigned by Admin": "Assigned by Admin",
+  "No tech assigned":"No tech assigned"
 }
