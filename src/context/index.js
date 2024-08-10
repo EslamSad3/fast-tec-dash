@@ -557,16 +557,10 @@ export function ContextProvider(props) {
   };
 
   useEffect(() => {
-    fetchAllCustomers();
-    fetchAllTechnicians();
-    fetchAvailableTechnicians();
-    fetchAllCoupons();
+    refreshData();
     saveAdminToken();
-    fetchOrders();
-    handleChangeDir();
-    fetHomeData();
     setlocaleHeader({ locale: "ar" });
-  }, []);
+  }, [testUser]);
 
   return (
     <Context.Provider
