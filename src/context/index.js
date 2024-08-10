@@ -35,6 +35,8 @@ export function ContextProvider(props) {
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
+  const [testUser, settestUser] = useState(localStorage.getItem("testUser"));
+  console.log(testUser);
 
   const [language, setlanguage] = useState(localStorage.getItem("locale"));
   const [localeHeader, setlocaleHeader] = useState({
@@ -56,14 +58,17 @@ export function ContextProvider(props) {
         values,
         { headers: { ...localeHeader } }
       );
-      console.log(response);
       setIsLsLoading(false);
+      console.log(response);
+      localStorage.setItem("testUser", response.data.data.email);
+
       localStorage.setItem("AdminToken", response.data.accessToken);
       if (response.status === 200) {
         toast.success(`${response.data.message}`, {
           position: "top-center",
         });
         navigate("/dashboard");
+        refreshData()
       } else {
         toast.error(`${response.data.message}`, {
           position: toast.POSITION.TOP_CENTER,
@@ -601,6 +606,7 @@ export function ContextProvider(props) {
         oneTech,
         language,
         homeData,
+        testUser,
       }}
     >
       {props.children}

@@ -33,7 +33,7 @@ import { useContext } from "react";
 import { Context } from "../../context";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
-  const { handleChangeDir } = useContext(Context);
+  const { handleChangeDir, testUser } = useContext(Context);
   const [t, i18n] = useTranslation();
   const [language, setLanguage] = useState("");
   const handleChange = (event) => {
@@ -42,7 +42,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
     handleChangeDir();
     window.location.reload();
   };
- 
+
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   };
 
   useEffect(() => {
-     handleChangeDir()
+    handleChangeDir();
   }, []);
 
   return (
@@ -147,21 +147,24 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
                 borderRadius="50%"
                 sx={{ objectFit: "cover" }}
               />
-              <Box textAlign="left">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="0.85rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  Admin
-                </Typography>
-                <Typography
-                  fontSize="0.75rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  Admin
-                </Typography>
-              </Box>
+              {!testUser && (
+                <Box textAlign="left">
+                  <Typography
+                    fontWeight="bold"
+                    fontSize="0.85rem"
+                    sx={{ color: theme.palette.secondary[100] }}
+                  >
+                    Admin
+                  </Typography>
+                  <Typography
+                    fontSize="0.75rem"
+                    sx={{ color: theme.palette.secondary[200] }}
+                  >
+                    Admin
+                  </Typography>
+                </Box>
+              )}
+
               <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
               />
