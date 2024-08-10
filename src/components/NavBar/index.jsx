@@ -50,7 +50,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
-    localStorage.removeItem("AdminToken");
+    localStorage.clear();
     navigate("/login");
     setAnchorEl(null);
   };

@@ -53,35 +53,42 @@ export function ContextProvider(props) {
   async function handleLogingIn(values) {
     try {
       setIsLsLoading(true);
+
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
         values,
         { headers: { ...localeHeader } }
       );
-      setIsLsLoading(false);
-      console.log(response);
-      localStorage.setItem("testUser", response.data.data.email);
 
-      localStorage.setItem("AdminToken", response.data.accessToken);
       if (response.status === 200) {
+        const { email } = response.data.data;
+        const { accessToken } = response.data;
+
+        localStorage.setItem("testUser", email);
+        localStorage.setItem("AdminToken", accessToken);
+
+        settestUser(email);
+        refreshData();
+
         toast.success(`${response.data.message}`, {
           position: "top-center",
         });
+
         navigate("/dashboard");
-        refreshData()
       } else {
         toast.error(`${response.data.message}`, {
           position: toast.POSITION.TOP_CENTER,
         });
       }
     } catch (error) {
-      if (error.response.status !== 200) {
-        // console.log(error);
-        toast.error(`${error.response.data.message}`, {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        setIsLsLoading(false);
-      }
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred.";
+
+      toast.error(errorMessage, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } finally {
+      setIsLsLoading(false);
     }
   }
 
