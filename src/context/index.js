@@ -571,8 +571,8 @@ export function ContextProvider(props) {
         values,
         { headers: { ...localeHeader, ...adminheaders } }
       );
+      console.log(response);
       setIsLsLoading(false);
-      console.log(response, "tech finished work ");
       if (response.status === 200) {
         toast.success("Tech finished work");
         refreshData();
