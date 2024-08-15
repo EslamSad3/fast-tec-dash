@@ -4,7 +4,7 @@ import React from "react";
 const Header = ({ title, subtitle }) => {
   return (
     <Box>
-      <Typography variant="h2" fontWeight="bold" sx={{ m: "15px" }}>
+      <Typography variant="h2" fontWeight="bold" sx={{ m: "15px" , textAlign:"center"}}>
         {title}
       </Typography>
       <Typography variant="h5">{subtitle}</Typography>

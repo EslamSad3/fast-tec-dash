@@ -36,7 +36,6 @@ export function ContextProvider(props) {
     localStorage.getItem("AdminToken")
   );
   const [testUser, settestUser] = useState(localStorage.getItem("testUser"));
-  console.log(testUser);
 
   const [language, setlanguage] = useState(localStorage.getItem("locale"));
   const [localeHeader, setlocaleHeader] = useState({
@@ -60,16 +59,19 @@ export function ContextProvider(props) {
         { headers: { ...localeHeader } }
       );
 
+      console.log(response, "response");
       if (response.status === 200) {
         const { email } = response.data.data;
         const { accessToken } = response.data;
+        settestUser(email);
 
         localStorage.setItem("testUser", email);
-        localStorage.setItem("AdminToken", accessToken);
-
-        settestUser(email);
+        if (response.data.data.role === "admin") {
+          localStorage.setItem("AdminToken", accessToken);
+        } else {
+          localStorage.setItem("UserToken", accessToken);
+        }
         refreshData();
-
         toast.success(`${response.data.message}`, {
           position: "top-center",
         });
@@ -534,6 +536,57 @@ export function ContextProvider(props) {
       toast.error(error.response.data.message);
     }
   }
+
+  // tech arrived
+
+  async function techArrived(orderId) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/orders/admin-update-order.php`,
+        { status: "4", orderId },
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      console.log(response, "tech arrived response");
+      if (response.status === 200) {
+        toast.success(response.data?.message);
+        refreshData();
+      } else {
+        setIsLsLoading(false);
+        toast.error("Failed to Update Order Status");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      console.log(error);
+      toast.error("Failed to Update Order Status");
+    }
+  }
+  // Tech Done
+  async function techDone(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/orders/admin-update-order.php`,
+        values,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      console.log(response, "tech finished work ");
+      if (response.status === 200) {
+        toast.success("Tech finished work");
+        refreshData();
+      } else {
+        setIsLsLoading(false);
+        toast.error("failed to finish");
+      }
+    } catch (error) {
+      setIsLsLoading(false);
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+    }
+  }
+
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
@@ -588,6 +641,8 @@ export function ContextProvider(props) {
         acceptOrder,
         rejectOrder,
         assignTechByAdmin,
+        techArrived,
+        techDone,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,
