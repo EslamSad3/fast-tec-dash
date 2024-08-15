@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 import Header from "../../Header";
 import { useTranslation } from "react-i18next";
+import OrderDone from "../../../Actions/Orders/OrderDone";
 const OrderDetailsPage = () => {
   const [t] = useTranslation();
   const { id } = useParams();
@@ -40,17 +41,18 @@ const OrderDetailsPage = () => {
     acceptOrder,
     availableTechnicians,
     assignTechByAdmin,
+    techArrived,
   } = useContext(Context);
 
-  console.log(availableTechnicians, "avaulableTech");
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const navigate = useNavigate();
-
-  console.log(order);
+  // reject
   const [openReject, setopenReject] = useState(false);
+  // Accept
   const [openAccept, setopenAccept] = useState(false);
+  // Arrived tech
+  const [openTechArrived, setopenTechArrived] = useState(false);
   const [openSelectTech, setopenSelectTech] = useState(false);
-  // const [timeArrival, settimeArrival] = useState(null);
   const [timeArrival, settimeArrival] = useState(dayjs().add(10, "minute")); // Initial value: current time + 10 minutes
   const [accetpData, setAcceptData] = useState({
     orderId: id,
@@ -63,8 +65,6 @@ const OrderDetailsPage = () => {
   const handleSetTec = (event) => {
     setTech(event.target.value);
   };
-
-  console.log(timeArrival, "timeArrival");
 
   // Reject
   const handleClickopenReject = () => {
@@ -82,6 +82,15 @@ const OrderDetailsPage = () => {
 
   const handleCloseAccept = () => {
     setopenAccept(false);
+  };
+
+  // Tech Arrived
+  const handleClickopenTechArrived = () => {
+    setopenTechArrived(true);
+  };
+
+  const handleCloseTechArrived = () => {
+    setopenTechArrived(false);
   };
   // Select Tech
   const handleClickopenSelectTech = () => {
@@ -108,12 +117,10 @@ const OrderDetailsPage = () => {
   // accept
   async function handleAcceptOrder() {
     if (timeArrival == null) {
-      // handle the case where timeArrival is null (e.g., show an error message)
-      console.log("time null");
+      return;
     } else {
       // format the time using dayjs
       const formattedTimeArrival = dayjs(timeArrival).format("hh:mm");
-      console.log(formattedTimeArrival, "formattedTimeArrival");
       // update the accept data with formatted time
       const updatedAcceptData = {
         ...accetpData,
@@ -121,7 +128,6 @@ const OrderDetailsPage = () => {
       };
 
       await acceptOrder(updatedAcceptData);
-      console.log(updatedAcceptData);
       handleCloseAccept();
       fetchOrder();
     }
@@ -140,12 +146,16 @@ const OrderDetailsPage = () => {
     handleCloseSelectTech();
   }
 
+  async function techArrival() {
+    await techArrived(id);
+    fetchOrder();
+    handleCloseTechArrived();
+  }
+
   useEffect(() => {
     // setOrderStatus(order.data?.status);
     fetchOrder();
   }, []);
-
-  // console.log(orderStatus);
 
   if (!order) {
     return <div>Loading...</div>; // Add a loading state or redirect as needed
@@ -154,7 +164,98 @@ const OrderDetailsPage = () => {
   return (
     <Box>
       <Header title={t("Order Details")} />
+      {/* Actions */}
 
+      {order && order.data?.status === "0" && (
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Box
+            mt="20px"
+            mx="20px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="row"
+            rowGap="5px"
+            columnGap="5px"
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleClickopenReject}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                t("Reject")
+              )}
+            </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={handleClickopenAccept}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                t("Accept")
+              )}
+            </Button>
+          </Box>
+        </Box>
+      )}
+
+      {/* techArrived */}
+
+      {order && order.data?.status === "3" && (
+        <Box
+          sx={{
+            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
+            mx: "1rem",
+            mt: "1rem",
+            p: "1.5rem",
+            borderRadius: "10px",
+          }}
+        >
+          <Box
+            mt="20px"
+            mx="20px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="row"
+            rowGap="5px"
+            columnGap="5px"
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={handleClickopenTechArrived}
+            >
+              {isLoading ? (
+                <CircularProgress sx={{ color: "#fafafa" }} />
+              ) : (
+                t("Tech Arrived")
+              )}
+            </Button>
+          </Box>
+        </Box>
+      )}
+
+      {order && order.data?.status === "4" && <OrderDone />}
       <Box
         sx={{
           boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
@@ -408,58 +509,7 @@ const OrderDetailsPage = () => {
           </Box>
         </Box>
       </Box>
-      {/* Actions */}
 
-      {order && order.data?.status === "0" && (
-        <Box
-          sx={{
-            boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.25)",
-            mx: "1rem",
-            mt: "1rem",
-            p: "1.5rem",
-            borderRadius: "10px",
-          }}
-        >
-          <Header title={t("Actions")} />
-
-          <Box
-            mt="20px"
-            mx="20px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="row"
-            rowGap="5px"
-            columnGap="5px"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleClickopenReject}
-            >
-              {isLoading ? (
-                <CircularProgress sx={{ color: "#fafafa" }} />
-              ) : (
-                t("Reject")
-              )}
-            </Button>
-            <Button
-              variant="outlined"
-              color="success"
-              onClick={handleClickopenAccept}
-            >
-              {isLoading ? (
-                <CircularProgress sx={{ color: "#fafafa" }} />
-              ) : (
-                t("Accept")
-              )}
-            </Button>
-          </Box>
-        </Box>
-      )}
       {/* Reject */}
       <Dialog
         open={openReject}
@@ -470,7 +520,7 @@ const OrderDetailsPage = () => {
         <DialogTitle id="alert-dialog-title">{t("Reject")}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {t("Are you sure you to reject")}
+            {t("Are you sure you want to reject")}
           </DialogContentText>
         </DialogContent>
 
@@ -587,6 +637,41 @@ const OrderDetailsPage = () => {
             sx={{ m: 2 }}
           >
             {t("Cancel")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Tech Arrival */}
+      <Dialog
+        open={openTechArrived}
+        onClose={handleCloseTechArrived}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Update Technician Arrival")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("Are you sure you want to update order status?")}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleCloseTechArrived}
+          >
+            {t("No")}
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => techArrival()}
+            sx={{ m: 2 }}
+          >
+            {t("Yes")}
           </Button>
         </DialogActions>
       </Dialog>
