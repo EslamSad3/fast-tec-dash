@@ -1,26 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
-  Card,
-  CardContent,
-  Typography,
-  useTheme,
-  useMediaQuery,
   Button,
+  Tabs,
+  Tab,
+  useTheme,
   Alert,
+  Typography,
 } from "@mui/material";
-import Header from "../Header";
-import { useContext } from "react";
-import { Context } from "../../context";
-import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Header from "../Header";
+import { Context } from "../../context";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Orders() {
   const { orders, isLoading, refreshData } = useContext(Context);
+  console.log(orders,"orders")
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    refreshData();
+  }, []);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const tab = queryParams.get("tab");
+    if (tab !== null) {
+      setSelectedTab(Number(tab));
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    let filtered = [];
+    switch (selectedTab) {
+      case 0:
+        filtered = orders; // All Orders
+        break;
+      case 1:
+        filtered = orders.filter((order) => order.status === "8"); // No Tech Assigned
+        break;
+      case 2:
+        filtered = orders.filter(
+          (order) => order.status === "0" || order.status === "9"
+        ); // New Orders and Assigned by Admin
+        break;
+      case 3:
+        filtered = orders.filter((order) => order.status === "3"); // On Way
+        break;
+      case 4:
+        filtered = orders.filter((order) => order.status === "4"); // In Progress
+        break;
+      case 5:
+        filtered = orders.filter((order) => order.status === "5"); // Pending Payment
+        break;
+      case 6:
+        filtered = orders.filter((order) => order.status === "7"); // Failed Payment
+        break;
+      case 7:
+        filtered = orders.filter((order) => order.status === "2"); // Rejected
+        break;
+      default:
+        filtered = orders;
+    }
+    setFilteredOrders(filtered);
+  }, [orders, selectedTab]);
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+    navigate(`?tab=${newValue}`);
+  };
+
+  const handleViewDetails = (orderId) => {
+    navigate(`/orders/${orderId}?tab=${selectedTab}`);
+  };
+
   const columns = [
     {
       field: "id",
@@ -41,7 +100,7 @@ function Orders() {
       minWidth: 150,
       renderCell: (params) => (
         <Box>
-          <Typography variant="p" component="div">
+          <Typography variant="body1" component="div">
             {params.row.status === "0" ? (
               <Alert severity="success">{t("NEW")}</Alert>
             ) : params.row.status === "1" ? (
@@ -75,25 +134,37 @@ function Orders() {
       flex: 1,
       minWidth: 100,
       renderCell: (params) => (
-        <Link to={`/orders/${params.row.id}`}>
-          <Button variant="contained" color="primary">
-            {t("View Details")}
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleViewDetails(params.row.id)}
+        >
+          {t("View Details")}
+        </Button>
       ),
     },
   ];
 
-  useEffect(() => {
-    refreshData();
-  }, []);
-
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={t("Orders")} subtitle={t("list of Orders")} />
+      <Header title={t("Orders")} subtitle={t("List of Orders")} />
       <small>
         {t("Number Of Orders")} : {orders.length}
       </small>
+      <Tabs
+        value={selectedTab}
+        onChange={handleTabChange}
+        aria-label="order status tabs"
+      >
+        <Tab label={t("All Orders")} />
+        <Tab label={t("No Tech Assigned")} />
+        <Tab label={t("New")} />
+        <Tab label={t("On Way")} />
+        <Tab label={t("In Progress")} />
+        <Tab label={t("Pending Payment")} />
+        <Tab label={t("Failed Payment")} />
+        <Tab label={t("Rejected")} />
+      </Tabs>
       <Box
         mt="40px"
         height="75vh"
@@ -126,7 +197,7 @@ function Orders() {
           initialState={{
             sorting: { sortModel: [{ field: "id", sort: "desc" }] },
           }}
-          rows={orders || []}
+          rows={filteredOrders || []}
           loading={isLoading || !orders}
           getRowId={(row) => row.id}
           columns={columns}

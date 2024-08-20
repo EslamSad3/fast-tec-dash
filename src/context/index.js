@@ -48,47 +48,38 @@ export function ContextProvider(props) {
     setAdminToken(localStorage.getItem("AdminToken"));
   }
 
-  //   login
   async function handleLogingIn(values) {
     try {
       setIsLsLoading(true);
 
-      const response = await axios.post(
+      const { data, status } = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/auth/admin/login-admin.php`,
         values,
         { headers: { ...localeHeader } }
       );
 
-      console.log(response, "response");
-      if (response.status === 200) {
-        const { email } = response.data.data;
-        const { accessToken } = response.data;
-        settestUser(email);
+      if (status === 200) {
+        const { email, id } = data.data;
+        const { accessToken } = data;
 
-        localStorage.setItem("testUser", email);
-        if (response.data.data.role === "admin") {
-          localStorage.setItem("AdminToken", accessToken);
-        } else {
-          localStorage.setItem("UserToken", accessToken);
+        if (email === "provider@fast-tec.com") {
+          localStorage.setItem("testUser", email);
+          settestUser(email);
         }
-        refreshData();
-        toast.success(`${response.data.message}`, {
-          position: "top-center",
-        });
 
+        const tokenKey = id === "1" ? "AdminToken" : "UserToken";
+        localStorage.setItem(tokenKey, accessToken);
+
+        toast.success(data.message, { position: "top-center" });
         navigate("/dashboard");
       } else {
-        toast.error(`${response.data.message}`, {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(data.message, { position: "top-center" });
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "An unexpected error occurred.";
 
-      toast.error(errorMessage, {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      toast.error(errorMessage, { position: "top-center" });
     } finally {
       setIsLsLoading(false);
     }
