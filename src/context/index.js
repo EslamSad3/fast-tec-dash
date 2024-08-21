@@ -23,6 +23,10 @@ export function ContextProvider(props) {
 
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
+  // set Completed orders
+  const [completedOrders, setCompletedOrders] = useState([]);
+  // set cancelled orders
+  const [cancelledOrders, setCancelledOrders] = useState([]);
 
   const [order, setOrder] = useState({});
   const [oneCustomer, setoneCustomer] = useState({});
@@ -578,6 +582,38 @@ export function ContextProvider(props) {
     }
   }
 
+  // fetch completed orders
+  async function fetchCompletedOrders() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/orders/fetch-completed-orders.php`,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      setCompletedOrders(response.data.data);
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch cancelled orders
+  async function fetchCancelledOrders() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/orders/fetch-cancelled-orders.php`,
+        { headers: { ...localeHeader, ...adminheaders } }
+      );
+      setIsLsLoading(false);
+      console.log(response, "cancelled orders");
+
+      setCancelledOrders(response.data.data);
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
   const handleChangeDir = () => {
     if (language && language === "ar") {
       document.dir = "rtl";
@@ -596,6 +632,8 @@ export function ContextProvider(props) {
     fetchOrders();
     handleChangeDir();
     fetHomeData();
+    fetchCompletedOrders();
+    fetchCancelledOrders();
 
     // Add other data fetching functions as needed
   };
@@ -634,6 +672,8 @@ export function ContextProvider(props) {
         assignTechByAdmin,
         techArrived,
         techDone,
+        fetchCompletedOrders,
+        fetchCancelledOrders,
         isLoading,
         fetchCustomersLoading,
         deleteCustomersLoading,
@@ -651,6 +691,8 @@ export function ContextProvider(props) {
         order,
         oneCustomer,
         oneTech,
+        completedOrders,
+        cancelledOrders,
         language,
         homeData,
         testUser,

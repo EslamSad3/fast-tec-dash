@@ -26,7 +26,8 @@ import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import profileImage from "../../assets/images/Fastteclogopng.png";
@@ -72,6 +73,16 @@ const SideBar = ({
       text: t("Orders"),
       entext: "Orders",
       icon: <BorderColorOutlinedIcon />,
+    },
+    {
+      text: t("Completed Orders"),
+      entext: "Completed Orders",
+      icon: <ThumbUpIcon />,
+    },
+    {
+      text: t("Cancelled orders"),
+      entext: "Cancelled orders",
+      icon: <ThumbDownAltIcon />,
     },
     !testUser && {
       text: t("Coupons"),

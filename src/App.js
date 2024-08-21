@@ -28,6 +28,8 @@ import NotificationsToAll from "./Actions/Notifications/NotificationsToAll";
 import Notification from "./FCM/Notification/Notification";
 import EditTechData from "./Actions/Techs/EditTechData";
 import ChangeTechPassword from "./Actions/Techs/ChangeTechPassword";
+import FetchCompletedOrders from "./components/Orders/CompletedOrders";
+import FetchcancelledOrders from "./components/Orders/CancelledOrders";
 
 function App() {
 
@@ -158,6 +160,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <OrderDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/completedorders"
+                element={
+                  <ProtectedRoute>
+                    <FetchCompletedOrders />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/cancelledorders"
+                element={
+                  <ProtectedRoute>
+                    <FetchcancelledOrders />
                   </ProtectedRoute>
                 }
               />
