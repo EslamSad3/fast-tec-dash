@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import Header from "./../Header";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext, useState, useEffect } from "react";
@@ -13,6 +13,8 @@ const FetchCompletedOrders = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const [searchPhone, setSearchPhone] = useState("");
+
   const handleViewDetails = (orderId) => {
     navigate(`/orders/${orderId}`);
   };
@@ -21,10 +23,16 @@ const FetchCompletedOrders = () => {
     const customer = customers.find((cust) => cust.id === customerId);
     return customer ? customer.name : t("Unknown Customer");
   };
+
   const getCustomerPhone = (customerId) => {
     const customer = customers.find((cust) => cust.id === customerId);
-    return customer ? customer.phone : t("Unknown Customer");
+    return customer ? customer.phone : "";
   };
+
+  const filteredOrders = completedOrders.filter((order) => {
+    const customerPhone = getCustomerPhone(order.customerId);
+    return customerPhone.includes(searchPhone);
+  });
 
   const columns = [
     {
@@ -78,11 +86,15 @@ const FetchCompletedOrders = () => {
     <Box m="1.5rem 2.5rem">
       <Header
         title={t("Completed Orders")}
-        subtitle={t("List of Completed Orders")}
       />
-      <Typography>
-        {t("Number of Completed Orders")}: {completedOrders.length}
-      </Typography>
+      <TextField
+        label={t("Search by Customer Phone")}
+        variant="outlined"
+        fullWidth
+        value={searchPhone}
+        onChange={(e) => setSearchPhone(e.target.value)}
+        sx={{ marginBottom: "1.5rem" }}
+      />
       <Box
         mt="40px"
         height="75vh"
@@ -112,7 +124,7 @@ const FetchCompletedOrders = () => {
         }}
       >
         <DataGrid
-          rows={completedOrders || []}
+          rows={filteredOrders || []}
           loading={isLoading || !completedOrders}
           getRowId={(row) => row.id}
           columns={columns}

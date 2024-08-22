@@ -4,6 +4,7 @@ import {
   Button,
   Tabs,
   Tab,
+  TextField,
   useTheme,
   Alert,
   Typography,
@@ -15,10 +16,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Orders() {
-  const { orders, isLoading, refreshData } = useContext(Context);
-  console.log(orders,"orders")
+  const { orders, customers, isLoading, refreshData } = useContext(Context);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [searchPhone, setSearchPhone] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -37,11 +38,10 @@ function Orders() {
   }, [location.search]);
 
   useEffect(() => {
-    let filtered = [];
+    let filtered = orders;
+
+    // Filter by selected tab
     switch (selectedTab) {
-      case 0:
-        filtered = orders; // All Orders
-        break;
       case 1:
         filtered = orders.filter((order) => order.status === "8"); // No Tech Assigned
         break;
@@ -68,8 +68,17 @@ function Orders() {
       default:
         filtered = orders;
     }
+
+    // Filter by phone number
+    if (searchPhone) {
+      filtered = filtered.filter((order) => {
+        const customer = customers.find((cust) => cust.id === order.customerId);
+        return customer?.phone.includes(searchPhone);
+      });
+    }
+
     setFilteredOrders(filtered);
-  }, [orders, selectedTab]);
+  }, [orders, selectedTab, searchPhone, customers]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -78,6 +87,16 @@ function Orders() {
 
   const handleViewDetails = (orderId) => {
     navigate(`/orders/${orderId}?tab=${selectedTab}`);
+  };
+
+  const getCustomerName = (customerId) => {
+    const customer = customers.find((cust) => cust.id === customerId);
+    return customer ? customer.name : t("Unknown Customer");
+  };
+
+  const getCustomerPhone = (customerId) => {
+    const customer = customers.find((cust) => cust.id === customerId);
+    return customer ? customer.phone : "";
   };
 
   const columns = [
@@ -92,6 +111,20 @@ function Orders() {
       headerName: t("Customer ID"),
       flex: 0.5,
       minWidth: 150,
+    },
+    {
+      field: "customerName",
+      headerName: t("Customer Name"),
+      flex: 1,
+      minWidth: 200,
+      valueGetter: (params) => getCustomerName(params.row.customerId),
+    },
+    {
+      field: "customerPhone",
+      headerName: t("Customer Phone"),
+      flex: 1,
+      minWidth: 200,
+      valueGetter: (params) => getCustomerPhone(params.row.customerId),
     },
     {
       field: "status",
@@ -147,10 +180,15 @@ function Orders() {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={t("Orders")} subtitle={t("List of Orders")} />
-      <small>
-        {t("Number Of Orders")} : {orders.length}
-      </small>
+      <Header title={t("Orders")} />
+      <TextField
+        label={t("Search by Customer Phone")}
+        variant="outlined"
+        fullWidth
+        value={searchPhone}
+        onChange={(e) => setSearchPhone(e.target.value)}
+        sx={{ marginBottom: "1.5rem" }}
+      />
       <Tabs
         value={selectedTab}
         onChange={handleTabChange}
